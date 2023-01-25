@@ -24,4 +24,18 @@ public abstract class AbstractDynamicCard extends AbstractDefaultCard {
         super(id, languagePack.getCardStrings(id).NAME, img, cost, languagePack.getCardStrings(id).DESCRIPTION, type, color, rarity, target);
 
     }
+
+    public AbstractDynamicCard(final String id,
+                               final String name,
+                               final String img,
+                               final String description,
+                               final int cost,
+                               final CardType type,
+                               final CardColor color,
+                               final CardRarity rarity,
+                               final CardTarget target) {
+
+        super(id, name, img, cost,description, type, color, rarity, target);
+
+    }
 }
