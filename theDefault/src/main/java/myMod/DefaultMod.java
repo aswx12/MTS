@@ -225,6 +225,7 @@ public class DefaultMod implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         logger.info("Done adding mod settings");
         
     }
@@ -271,12 +272,12 @@ public class DefaultMod implements
     }// NO
     
     // ====== YOU CAN EDIT AGAIN ======
-    
-    
+
     public static void initialize() {
         logger.info("========================= Initializing Default Mod. Hi. =========================");
         DefaultMod defaultmod = new DefaultMod();
         logger.info("========================= /Default Mod Initialized. Hello World./ =========================");
+
     }
     
     // ============== /SUBSCRIBE, CREATE THE COLOR_GRAY, INITIALIZE/ =================

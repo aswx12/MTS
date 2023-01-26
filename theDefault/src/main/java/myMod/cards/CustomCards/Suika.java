@@ -16,8 +16,8 @@ import myMod.cards.AbstractDynamicCard;
 import myMod.characters.TheDefault;
 
 
-import java.io.File;
-
+import java.io.File;  // Import the File class
+import java.io.IOException;
 import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
@@ -72,7 +72,6 @@ public class Suika extends AbstractDynamicCard
     { // public Suika() - This one and the one right under the imports are the most important ones, don't forget them
         super(ID, "Suika",IMG, "Suika card",COST, TYPE, COLOR, RARITY, TARGET);
         baseDamage = DAMAGE;
-        
     }
 
 
