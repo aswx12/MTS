@@ -1,6 +1,7 @@
 package myMod;
 
 import basemod.*;
+import basemod.devcommands.ConsoleCommand;
 import basemod.eventUtil.AddEventParams;
 import basemod.helpers.RelicType;
 import basemod.interfaces.*;
@@ -304,7 +305,7 @@ public class DefaultMod implements
     @Override
     public void receivePostInitialize() {
         logger.info("Loading badge image and mod options");
-        
+
         // Load the Mod Badge
         Texture badgeTexture = TextureLoader.getTexture(BADGE_IMAGE);
         
@@ -334,7 +335,6 @@ public class DefaultMod implements
         
         BaseMod.registerModBadge(badgeTexture, MODNAME, AUTHOR, DESCRIPTION, settingsPanel);
 
-        
         // =============== EVENTS =================
         // https://github.com/daviscook477/BaseMod/wiki/Custom-Events
 
@@ -359,6 +359,9 @@ public class DefaultMod implements
 
         // =============== /EVENTS/ =================
         logger.info("Done loading badge Image and mod options");
+        ConsoleCommand.addCommand("test", CommandTest.class);
+
+
     }
     
     // =============== / POST-INITIALIZE/ =================
@@ -422,6 +425,7 @@ public class DefaultMod implements
         // Add the Custom Dynamic variables
         BaseMod.addDynamicVariable(new DefaultCustomVariable());
         BaseMod.addDynamicVariable(new DefaultSecondMagicNumber());
+       // BaseMod.addCard(new Suika());
         
         logger.info("Adding cards");
         // Add the cards

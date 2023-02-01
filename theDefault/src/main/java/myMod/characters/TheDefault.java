@@ -19,6 +19,7 @@ import com.megacrit.cardcrawl.helpers.ScreenShake;
 import com.megacrit.cardcrawl.localization.CharacterStrings;
 import com.megacrit.cardcrawl.screens.CharSelectInfo;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
+import myMod.cards.CustomCards.commonstrike;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import myMod.DefaultMod;
@@ -155,7 +156,7 @@ public class TheDefault extends CustomPlayer {
         ArrayList<String> retVal = new ArrayList<>();
 
         logger.info("Begin loading starter Deck Strings");
-
+        retVal.add(commonstrike.ID);
         retVal.add(DefaultCommonAttack.ID);
         retVal.add(DefaultUncommonAttack.ID);
         retVal.add(DefaultRareAttack.ID);

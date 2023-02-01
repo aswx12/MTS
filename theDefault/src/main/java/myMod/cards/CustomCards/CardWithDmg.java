@@ -24,7 +24,7 @@ import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
 @AutoAdd.Seen
-public class Suika extends AbstractDynamicCard
+public class CardWithDmg extends AbstractDynamicCard
 {
 
     /*
@@ -46,7 +46,7 @@ public class Suika extends AbstractDynamicCard
      */
 
     // TEXT DECLARATION
-    public static final String ID = DefaultMod.makeID(Suika.class.getSimpleName()); // USE THIS ONE FOR THE TEMPLATE;
+    public static final String ID = DefaultMod.makeID(CardWithDmg.class.getSimpleName()); // USE THIS ONE FOR THE TEMPLATE;
     public static final String IMG = makeCardPath("Attack.png");// "public static final String IMG = makeCardPath("Suika.png");
     // This does mean that you will need to have an image with the same NAME as the card in your image folder for it to run correctly.
 
@@ -62,15 +62,15 @@ public class Suika extends AbstractDynamicCard
     private static final int COST = 5;  // COST = 3
     private static final int UPGRADED_COST = 3; // UPGRADED_COST = 3
 
-    public static int DAMAGE = 2;    // DAMAGE = 2
+    public static int DAMAGE = 1000;    // DAMAGE = 2
     private static final int UPGRADE_PLUS_DMG = 3;  // UPGRADE_PLUS_DMG = 3
 
     // /STAT DECLARATION/
     //UI ui = new UI();
 
-    public Suika()
+    public CardWithDmg ()
     { // public Suika() - This one and the one right under the imports are the most important ones, don't forget them
-        super(ID, "Suika", IMG, "Suika card does !D!", COST, TYPE, COLOR, RARITY, TARGET);
+        super(ID, "CardWithDmg", IMG, "this does !D! dmg  !D!", COST, TYPE, COLOR, RARITY, TARGET);
         baseDamage = DAMAGE;
 
     }
