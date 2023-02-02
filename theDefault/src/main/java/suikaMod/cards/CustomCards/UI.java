@@ -35,7 +35,6 @@ public class UI extends JFrame
     {
         UI ui = new UI();
 
-
     }
 
     public UI()
@@ -127,6 +126,7 @@ public class UI extends JFrame
         });
     }
 
+    //region Utils
     public String CreateBasicAttCard(JTextField name, JTextField cost, JTextField upgradeCost, JTextField dmg, JTextField upgradePlusDmg)
     {
         return CardTemplateStrings.BasicAttackCard(name, cost, upgradeCost, dmg, upgradePlusDmg);
@@ -169,5 +169,6 @@ public class UI extends JFrame
             throw new RuntimeException(e);
         }
     }
+    //endregion
 
 }
