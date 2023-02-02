@@ -4,9 +4,9 @@
 
     <!--Hello! You'll basically should only need to change these names and the steam path (just below)-->
     <!--The author name(s) as they appear in MTS and any other comments are in your ModTheSpire.json-->
-    <groupId>mymod</groupId>
-    <artifactId>MyMod</artifactId> <!--Keep a note of this one: this is the ID used in the "auto add cards" method-->
-    <name>My Mod</name>
+    <groupId>suikamod</groupId>
+    <artifactId>suikaMod</artifactId> <!--Keep a note of this one: this is the ID used in the "auto add cards" method-->
+    <name>Suika Mod</name>
     <version>0.0.1</version>
     <description>Let the thesis begin.</description>
 
