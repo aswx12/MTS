@@ -3,24 +3,21 @@ package suikaMod.cards.CustomCards;
 import suikaMod.DefaultMod;
 
 import javax.swing.*;
+import java.util.regex.Pattern;
 
-public class CardTemplateStrings
-{
+public class CardTemplateStrings {
     public static String MODID = DefaultMod.MODID;
-    public static int intParse(JTextField stringToParse)
-    {
+
+    public static int intParse(JTextField stringToParse) {
         return Integer.parseInt(stringToParse.getText());
     }
 
-    //region Basic Attack
-    public static String BasicAttackCard(JTextField name,
-                                         JTextField cost,
-                                         JTextField upgradeCost,
-                                         JTextField dmg,
-                                         JTextField upgradePlusDmg)
-    {
+    public static String upperCase(JComboBox string) {
+        return string.getSelectedItem().toString().toUpperCase();
+    }
 
-        String attackCard = "package "+ MODID+".cards.CustomCards;\n" +
+    public static String Imports() {
+        String imports = "package " + MODID + ".cards.CustomCards;\n" +
                 "\n" +
                 "import basemod.AutoAdd;\n" +
                 "import basemod.BaseMod;\n" +
@@ -33,25 +30,50 @@ public class CardTemplateStrings
                 "import com.megacrit.cardcrawl.localization.CardStrings;\n" +
                 "import com.megacrit.cardcrawl.localization.LocalizedStrings;\n" +
                 "import com.megacrit.cardcrawl.monsters.AbstractMonster;\n" +
-                "import "+ MODID+".DefaultMod;\n" +
-                "import "+ MODID+".cards.AbstractDynamicCard;\n" +
-                "import "+ MODID+".characters.TheDefault;\n" +
+                "import " + MODID + ".DefaultMod;\n" +
+                "import " + MODID + ".cards.AbstractDynamicCard;\n" +
+                "import " + MODID + ".characters.TheDefault;\n" +
                 "\n" +
-                "import static "+ MODID+".DefaultMod.makeCardPath;\n" +
+                "import static " + MODID + ".DefaultMod.makeCardPath;\n" +
                 "\n" +
                 "import java.io.File;  // Import the File class\n" +
                 "import java.io.IOException;\n" +
                 "\n" +
                 "import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;\n" +
                 "\n" +
-                "\n" +
-                "@AutoAdd.Seen\n" +
+                "\n" + "";
+        return imports;
+    }
+
+    //region Basic Attack
+    public static String BasicAttackCard(JTextField name,
+                                         JTextField cost,
+                                         JTextField upgradeCost,
+                                         JTextField dmg,
+                                         JTextField upgradePlusDmg,
+                                         JComboBox rarity,
+                                         JComboBox target,
+                                         JTextArea description,
+                                         JCheckBox seen) {
+
+        String targetSpaceCheck = upperCase(target);
+        if (targetSpaceCheck.matches(".*\\s+.*"))
+            targetSpaceCheck = targetSpaceCheck.replaceAll("[\\s|\\u00A0]+", "_");
+
+        String unlocked = "";
+        if (seen.isSelected())
+            unlocked = "Seen";
+        else
+            unlocked = "Notseen";
+
+        String attackCard = Imports() +
+                "@AutoAdd." + unlocked + "\n" +
                 "public class " + name.getText() + " extends AbstractDynamicCard\n" +
                 "{\n" +
                 "    public static final String ID = DefaultMod.makeID(" + name.getText() + ".class.getSimpleName()); \n" +
                 "    public static final String IMG = makeCardPath(\"Attack.png\"); \n" +
-                "    private static final CardRarity RARITY = CardRarity.COMMON; //  Up to you, I like auto-complete on these\n" +
-                "    private static final CardTarget TARGET = CardTarget.ENEMY;  //   since they don't change much.\n" +
+                "    private static final CardRarity RARITY = CardRarity." + upperCase(rarity) + "; \n" +
+                "    private static final CardTarget TARGET = CardTarget." + targetSpaceCheck + "; \n" +
                 "    private static final CardType TYPE = CardType.ATTACK;       //\n" +
                 "    public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;\n" +
                 "\n" +
@@ -65,7 +87,7 @@ public class CardTemplateStrings
                 "\n" +
                 "    public " + name.getText() + " ()\n" +
                 "    { \n" +
-                "        super(ID, \"" + name.getText() + "\", IMG," + "\"Deal !D! damage\"" + ", COST, TYPE, COLOR, RARITY, TARGET);\n" +
+                "        super(ID, \"" + name.getText() + "\", IMG," + "\"" + description.getText() + "\"" + ", COST, TYPE, COLOR, RARITY, TARGET);\n" +
                 "        baseDamage = DAMAGE;\n" +
                 "        this.tags.add(CardTags.STARTER_STRIKE); \n" +
                 "        this.tags.add(CardTags.STRIKE);\n" +

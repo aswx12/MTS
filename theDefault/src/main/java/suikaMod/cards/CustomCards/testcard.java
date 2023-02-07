@@ -24,12 +24,12 @@ import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
 @AutoAdd.Seen
-public class newesttest extends AbstractDynamicCard
+public class testcard extends AbstractDynamicCard
 {
-    public static final String ID = DefaultMod.makeID(newesttest.class.getSimpleName()); 
+    public static final String ID = DefaultMod.makeID(testcard.class.getSimpleName()); 
     public static final String IMG = makeCardPath("Attack.png"); 
-    private static final CardRarity RARITY = CardRarity.COMMON; //  Up to you, I like auto-complete on these
-    private static final CardTarget TARGET = CardTarget.ENEMY;  //   since they don't change much.
+    private static final CardRarity RARITY = CardRarity.UNCOMMON; 
+    private static final CardTarget TARGET = CardTarget.ENEMY; 
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
@@ -41,9 +41,9 @@ public class newesttest extends AbstractDynamicCard
 
     // /STAT DECLARATION/
 
-    public newesttest ()
+    public testcard ()
     { 
-        super(ID, "newesttest", IMG,"Deal !D! damage", COST, TYPE, COLOR, RARITY, TARGET);
+        super(ID, "testcard", IMG,"this is the test card", COST, TYPE, COLOR, RARITY, TARGET);
         baseDamage = DAMAGE;
         this.tags.add(CardTags.STARTER_STRIKE); 
         this.tags.add(CardTags.STRIKE);

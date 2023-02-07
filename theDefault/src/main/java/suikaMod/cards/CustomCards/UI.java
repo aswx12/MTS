@@ -10,8 +10,7 @@ import java.nio.charset.*;
 import java.nio.file.*;
 //import static suikaMod.cards.CustomCards.CardTemplateStrings.MODID;
 
-public class UI extends JFrame
-{
+public class UI extends JFrame {
     JPanel mainPanel;
     JButton CreateNewCard;
     private JTextField CardName;
@@ -26,19 +25,24 @@ public class UI extends JFrame
     private JLabel dmgLabel;
     private JLabel upPlusDmgLabel;
     private JPanel attackCardPanel;
+    private JComboBox rarityList;
+    private JLabel rarityLabel;
+    private JComboBox targetList;
+    private JTextArea descriptionField;
+    private JLabel DescriptionLabel;
+    private JLabel targetLabel;
+    private JCheckBox unlockCheck;
 
     public static int damage;
 
     JFileChooser f = new JFileChooser();
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         UI ui = new UI();
 
     }
 
-    public UI()
-    {
+    public UI() {
         setContentPane(mainPanel);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,68 +52,65 @@ public class UI extends JFrame
         //tests te=new tests();
 
 
-        CreateNewCard.addActionListener(new ActionListener()
-        {
+        CreateNewCard.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent b)
-            {
+            public void actionPerformed(ActionEvent b) {
                 String curDir = System.getProperty("user.dir");
-                File workingDirectory = new File(System.getProperty("user.dir") + "/src/main/java/" + GetModId() + "/cards");
+                File workingDirectory = new File(System.getProperty("user.dir") + "/theDefault/src/main/java/" + GetModId() + "/cards");
                 f.setCurrentDirectory(workingDirectory);
 
-                if (!CardName.getText().isEmpty())
-                {
+                if (!CardName.getText().isEmpty()) {
                     f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                     f.showSaveDialog(null);
                     File file = new File(f.getSelectedFile() + "/" + CardName.getText() + ".java");
 
                     f.setCurrentDirectory(f.getSelectedFile());
-                    try
-                    {
+                    try {
 
                         // create a new file with name specified
                         // by the file object
                         boolean value = file.createNewFile();
-                        if (value)
-                        {
+                        if (value) {
                             JOptionPane.showMessageDialog(CreateNewCard, "New Card created");
                             attackCardPanel.setVisible(true);
                             CreateButton.setVisible(true);
                             CreateNewCard.setVisible(false);
                             pack();
 
-                        } else
-                        {
+                        } else {
                             JOptionPane.showMessageDialog(CreateNewCard, "Card Exists, switching to edit mode");
                         }
-                    } catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.getStackTrace();
                     }
 
-                } else
-                {
+                } else {
                     JOptionPane.showMessageDialog(CreateNewCard, "Name Field can't be empty!");
                 }
             }
         });
-        CreateButton.addActionListener(new ActionListener()
-        {
+        CreateButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent b)
-            {
+            public void actionPerformed(ActionEvent b) {
                 if (!isNumeric(costField.getText()) ||
                         !isNumeric(upCostField.getText()) ||
                         !isNumeric(dmgField.getText()) ||
-                        !isNumeric(upPlusDmgField.getText()))
-                {
+                        !isNumeric(upPlusDmgField.getText())) {
                     JOptionPane.showMessageDialog(CreateButton, "Cost and Damage field must be whole numbers!");
                     return;
                 }
 
-                String cardContent = CreateBasicAttCard(CardName, costField, upCostField, dmgField, upPlusDmgField);
-                try
-                {
+                String cardContent = CreateBasicAttCard(
+                        CardName,
+                        costField,
+                        upCostField,
+                        dmgField,
+                        upPlusDmgField,
+                        rarityList,
+                        targetList,
+                        descriptionField,
+                        unlockCheck);
+                try {
                     // Creates a Writer using FileWriter
                     FileWriter output = new FileWriter(f.getSelectedFile() + "/" + CardName.getText() + ".java");
 
@@ -119,8 +120,7 @@ public class UI extends JFrame
                     JOptionPane.showMessageDialog(CreateButton, "Card Properties applied!");
                     // Closes the writer
                     output.close();
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.getStackTrace();
                 }
             }
@@ -128,45 +128,53 @@ public class UI extends JFrame
     }
 
     //region Utils
-    public String CreateBasicAttCard(JTextField name, JTextField cost, JTextField upgradeCost, JTextField dmg, JTextField upgradePlusDmg)
-    {
-        return CardTemplateStrings.BasicAttackCard(name, cost, upgradeCost, dmg, upgradePlusDmg);
+    public String CreateBasicAttCard(JTextField name,
+                                     JTextField cost,
+                                     JTextField upgradeCost,
+                                     JTextField dmg,
+                                     JTextField upgradePlusDmg,
+                                     JComboBox rarityList,
+                                     JComboBox targetList,
+                                     JTextArea descriptionField,
+                                     JCheckBox seen) {
+        return CardTemplateStrings.BasicAttackCard(
+                name,
+                cost,
+                upgradeCost,
+                dmg,
+                upgradePlusDmg,
+                rarityList,
+                targetList,
+                descriptionField,
+                seen);
     }
 
-    private boolean isNumeric(String text)
-    {
-        if (text == null || text.trim().equals(""))
-        {
+    private boolean isNumeric(String text) {
+        if (text == null || text.trim().equals("")) {
             return false;
         }
-        for (int iCount = 0; iCount < text.length(); iCount++)
-        {
-            if (!Character.isDigit(text.charAt(iCount)))
-            {
+        for (int iCount = 0; iCount < text.length(); iCount++) {
+            if (!Character.isDigit(text.charAt(iCount))) {
                 return false;
             }
         }
         return true;
     }
 
-    private String GetModId()
-    {
+    private String GetModId() {
         return CardTemplateStrings.MODID;
     }
 
-    public void nameModifier(String filePath, String theReplaced, String theReplacer)
-    {
+    public void nameModifier(String filePath, String theReplaced, String theReplacer) {
         String content = null;
-        try
-        {
+        try {
             Path path = Paths.get(filePath);
             Charset charset = StandardCharsets.UTF_8;
             content = new String(Files.readAllBytes(path), charset);
             content = content.replaceAll("theReplaced", "theReplacer");
             Files.write(path, content.getBytes(charset));
 
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
