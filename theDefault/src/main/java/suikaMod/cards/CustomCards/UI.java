@@ -56,6 +56,7 @@ public class UI extends JFrame
                 String curDir = System.getProperty("user.dir");
                 File workingDirectory = new File(System.getProperty("user.dir") + "/src/main/java/" + GetModId() + "/cards");
                 f.setCurrentDirectory(workingDirectory);
+
                 if (!CardName.getText().isEmpty())
                 {
                     f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
