@@ -100,6 +100,7 @@ public class DefaultMod implements
     private static final String AUTHOR = "Suika"; // And pretty soon - You!
     private static final String DESCRIPTION = "A base for Slay the Spire to start your own mod from, feat. the Default.";
 
+    //public static String MODID= "suikaMod"; //IMPORTANT ID
     public static String MODID= "suikaMod"; //IMPORTANT ID
     
     // =============== INPUT TEXTURE LOCATION =================
