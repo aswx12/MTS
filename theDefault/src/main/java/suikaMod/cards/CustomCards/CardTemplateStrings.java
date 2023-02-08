@@ -25,7 +25,7 @@ public class CardTemplateStrings
                 "import basemod.AutoAdd;\n" +
                 "import basemod.BaseMod;\n" +
                 "import com.megacrit.cardcrawl.actions.AbstractGameAction;\n" +
-                "import com.megacrit.cardcrawl.actions.common.DamageAction;\n" +
+                "import com.megacrit.cardcrawl.actions.common.*;\n" +
                 "import com.megacrit.cardcrawl.cards.DamageInfo;\n" +
                 "import com.megacrit.cardcrawl.characters.AbstractPlayer;\n" +
                 "import com.megacrit.cardcrawl.core.CardCrawlGame;\n" +
@@ -48,11 +48,29 @@ public class CardTemplateStrings
         return imports;
     }
 
-    public static String Damage()
+    public static String SpaceCheck(JComboBox input)
     {
-        String dmg = "new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AbstractGameAction.AttackEffect.SLASH_HORIZONTAL));\n";
-            return dmg;
+        String targetSpaceCheck = upperCase(input);
+        if (targetSpaceCheck.matches(".*\\s+.*"))
+            return targetSpaceCheck = targetSpaceCheck.replaceAll("[\\s|\\u00A0]+", "_");
+        else
+            return targetSpaceCheck;
     }
+
+    public static String DeleteSpace(String input)
+    {
+        String targetSpaceCheck = input;
+        if (targetSpaceCheck.matches(".*\\s+.*"))
+            return targetSpaceCheck = targetSpaceCheck.replaceAll("[\\s|\\u00A0]+", "");
+        else
+            return targetSpaceCheck;
+    }
+
+/*    public void callClassByName(Class cls, String funcName) throws Exception {
+        // Ignoring any possible result
+        cls.getDeclaredMethod(funcName).invoke(null);
+    }*/
+
 
     //region Basic Attack
     public static String CardTemplate(JTextField name,
@@ -64,18 +82,27 @@ public class CardTemplateStrings
                                       JComboBox target,
                                       JComboBox cardType,
                                       JTextArea description,
-                                      JCheckBox seen)
+                                      JCheckBox seen,
+                                      DefaultListModel originActionList,
+                                      DefaultListModel selectedActionList)
     {
+        String actions="";
 
-        String targetSpaceCheck = upperCase(target);
-        if (targetSpaceCheck.matches(".*\\s+.*"))
-            targetSpaceCheck = targetSpaceCheck.replaceAll("[\\s|\\u00A0]+", "_");
+        for (int i = 0; i < selectedActionList.getSize(); i++)
+        {
+            /*if (originActionList.contains(selectedActionList.getElementAt(i))) can be deleted
+            {*/
+                actions = actions+Actions.AllActions(DeleteSpace((String)selectedActionList.getElementAt(i)));
+
+//            }
+        }
 
         String unlocked = "";
         if (seen.isSelected())
             unlocked = "Seen";
         else
             unlocked = "Notseen";
+
 
         String cardInfo = Imports() +
                 "@AutoAdd." + unlocked + "\n" +
@@ -84,7 +111,7 @@ public class CardTemplateStrings
                 "    public static final String ID = DefaultMod.makeID(" + name.getText() + ".class.getSimpleName()); \n" +
                 "    public static final String IMG = makeCardPath(\"Attack.png\"); \n" +
                 "    private static final CardRarity RARITY = CardRarity." + upperCase(rarity) + "; \n" +
-                "    private static final CardTarget TARGET = CardTarget." + targetSpaceCheck + "; \n" +
+                "    private static final CardTarget TARGET = CardTarget." + SpaceCheck(target) + "; \n" +
                 "    private static final CardType TYPE = CardType." + upperCase(cardType) + ";       //\n" +
                 "    public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;\n" +
                 "\n" +
@@ -110,8 +137,7 @@ public class CardTemplateStrings
                 "    @Override\n" +
                 "    public void use(AbstractPlayer p, AbstractMonster m)\n" +
                 "    {\n" +
-                "        AbstractDungeon.actionManager.addToBottom(\n" +
-                "                "+Damage()+
+                "        " +actions+
                 "    }\n" +
                 "\n" +
                 "    // Upgraded stats.\n" +

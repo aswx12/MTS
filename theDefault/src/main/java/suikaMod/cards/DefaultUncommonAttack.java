@@ -53,7 +53,7 @@ public class DefaultUncommonAttack extends AbstractDynamicCard {
 
         AbstractDungeon.actionManager.addToBottom(
                 new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn),
-                        AbstractGameAction.AttackEffect.BLUNT_LIGHT));
+                        AbstractGameAction.AttackEffect.SLASH_HORIZONTAL));
 
     }
 

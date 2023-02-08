@@ -199,9 +199,9 @@
                       <autoscrolls value="false"/>
                       <layoutOrientation value="0"/>
                       <model>
-                        <item value="a1"/>
-                        <item value="a2"/>
-                        <item value="b2"/>
+                        <item value="Damage"/>
+                        <item value="Block"/>
+                        <item value="Gain Energy"/>
                         <item value="c4"/>
                         <item value="n2"/>
                         <item value="n5"/>

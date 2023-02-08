@@ -65,12 +65,13 @@ public class UI extends JFrame
 
         //tests te=new tests();
 
+        DefaultListModel originActionListModel = new DefaultListModel();
         DefaultListModel actionListModel = new DefaultListModel();
         DefaultListModel selectedActionListModel = new DefaultListModel();
-
         for (int i = 0; i < actionList.getModel().getSize(); i++)
         {
             actionListModel.addElement(actionList.getModel().getElementAt(i));
+            originActionListModel.addElement(actionList.getModel().getElementAt(i));
         }
 
         actionList.setModel(actionListModel);
@@ -156,7 +157,9 @@ public class UI extends JFrame
                         targetList,
                         cardTypeList,
                         descriptionField,
-                        unlockCheck);
+                        unlockCheck,
+                        originActionListModel,
+                        selectedActionListModel);
                 try
                 {
                     // Creates a Writer using FileWriter
@@ -237,7 +240,9 @@ public class UI extends JFrame
                                      JComboBox targetList,
                                      JComboBox cardType,
                                      JTextArea descriptionField,
-                                     JCheckBox seen)
+                                     JCheckBox seen,
+                                     DefaultListModel originActionList,
+                                     DefaultListModel selectedActionList)
     {
         return CardTemplateStrings.CardTemplate(
                 name,
@@ -249,7 +254,9 @@ public class UI extends JFrame
                 targetList,
                 cardType,
                 descriptionField,
-                seen);
+                seen,
+                originActionList,
+                selectedActionList);
     }
 
     private boolean isNumeric(String text)
