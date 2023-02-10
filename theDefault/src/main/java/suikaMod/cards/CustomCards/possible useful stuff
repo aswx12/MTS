@@ -1,0 +1,2 @@
+System.out.println(gasgas.class.getResource("gasgas.class"));
+can be used to get existing card to edit it?

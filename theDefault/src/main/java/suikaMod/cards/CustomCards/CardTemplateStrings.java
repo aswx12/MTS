@@ -15,9 +15,9 @@ public class CardTemplateStrings
         return Integer.parseInt(stringToParse.getText());
     }
 
-    public static int GetActionValues(DefaultTableModel actionModel, int i)
+    public static int GetActionValues(DefaultTableModel actionModel, int i,int col)
     {
-        return Integer.parseInt(actionModel.getValueAt(i, 1).toString());
+        return Integer.parseInt(actionModel.getValueAt(i, col).toString());
     }
 
     public static String GetActionNames(DefaultTableModel actionTableModel, int i)
@@ -98,14 +98,20 @@ public class CardTemplateStrings
                                       DefaultTableModel actionTableModel)
     {
         String actions = "";
+        String upgrade ="";
 
         for (int i = 0; i < actionTableModel.getRowCount(); i++)
         {
             /*if (originActionList.contains(selectedActionList.getElementAt(i))) can be deleted
             {*/
-            actions = actions + Actions.AllActions(
+            actions = actions + ContentAdd.AllActions(
                     GetActionNames(actionTableModel, i),
-                    GetActionValues(actionTableModel, i));
+                    GetActionValues(actionTableModel, i,1));
+
+            upgrade = upgrade+ContentAdd.Upgrade(
+                    GetActionNames(actionTableModel, i),
+                    GetActionValues(actionTableModel, i,2));
+
 //            }
         }
 
@@ -158,7 +164,7 @@ public class CardTemplateStrings
                 "        if (!upgraded)\n" +
                 "        {\n" +
                 "            upgradeName();\n" +
-                "            upgradeDamage(UPGRADE_PLUS_DMG);\n" +
+                "            "+upgrade +
                 "            upgradeBaseCost(UPGRADED_COST);\n" +
                 "            initializeDescription();\n" +
                 "        }\n" +

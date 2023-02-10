@@ -24,27 +24,30 @@ import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
 @AutoAdd.Seen
-public class asfsafas extends AbstractDynamicCard
-{
-    public static final String ID = DefaultMod.makeID(asfsafas.class.getSimpleName()); 
-    public static final String IMG = makeCardPath("Attack.png"); 
-    private static final CardRarity RARITY = CardRarity.UNCOMMON; 
-    private static final CardTarget TARGET = CardTarget.ENEMY; 
+public class eafasfgsaf extends AbstractDynamicCard {
+    public static final String ID = DefaultMod.makeID(eafasfgsaf.class.getSimpleName());
+    public static final String IMG = makeCardPath("Attack.png");
+    private static final CardRarity RARITY = CardRarity.UNCOMMON;
+    private static final CardTarget TARGET = CardTarget.ENEMY;
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
-    private static final int COST = 1;  
-    private static final int UPGRADED_COST = 1; 
+    private static final int COST = 1;
+    private static final int UPGRADED_COST = 2;
 
-    public static int DAMAGE = 1; 
-    private static final int UPGRADE_PLUS_DMG = 1;  
+    public static int DAMAGE = 1212;
+
+    public static final int ENERGY=16;
+    public static final int UpENERGY=16;
+
+    private static final int UPGRADE_PLUS_DMG = 12;
 
     // /STAT DECLARATION/
 
-    public asfsafas ()
-    { 
-        super(ID, "asfsafas", IMG,"as", COST, TYPE, COLOR, RARITY, TARGET);
+    public eafasfgsaf() {
+        super(ID, "eafasfgsaf", IMG, "ad", COST, TYPE, COLOR, RARITY, TARGET);
         baseDamage = DAMAGE;
+        this.magicNumber=baseMagicNumber=ENERGY;
         //this.tags.add(CardTags.STARTER_STRIKE); 
         //this.tags.add(CardTags.STRIKE);
 
@@ -53,22 +56,21 @@ public class asfsafas extends AbstractDynamicCard
 
     // Actions the card should do.
     @Override
-    public void use(AbstractPlayer p, AbstractMonster m)
-    {
-         this.addToBot(
+    public void use(AbstractPlayer p, AbstractMonster m) {
+        this.addToBot(
                 new DamageAction(m, new DamageInfo(p, 12, damageTypeForTurn), AbstractGameAction.AttackEffect.SLASH_HORIZONTAL));
-         this.addToBot(new GainBlockAction(p, p, 123));
-         this.addToBot(new GainEnergyAction(1234));
+        this.addToBot(new GainBlockAction(p, p, 13));
+        this.addToBot(new GainEnergyAction(magicNumber));
     }
 
     // Upgraded stats.
     @Override
-    public void upgrade()
-    {
-        if (!upgraded)
-        {
+    public void upgrade() {
+        if (!upgraded) {
             upgradeName();
-            upgradeDamage(UPGRADE_PLUS_DMG);
+            upgradeDamage(15);
+            upgradeBlock(17);
+            this.upgradeMagicNumber(UpENERGY);
             upgradeBaseCost(UPGRADED_COST);
             initializeDescription();
         }

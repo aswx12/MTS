@@ -58,6 +58,7 @@ public class DefaultSecondMagicNumberSkill extends AbstractDynamicCard {
         magicNumber = baseMagicNumber = VULNERABLE;
         defaultSecondMagicNumber = defaultBaseSecondMagicNumber = POISON;
 
+
     }
 
     // Actions the card should do.

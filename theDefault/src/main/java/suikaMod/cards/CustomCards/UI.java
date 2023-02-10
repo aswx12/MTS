@@ -1,5 +1,7 @@
 package suikaMod.cards.CustomCards;
 
+import org.lwjgl.Sys;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -9,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.*;
 import java.nio.file.*;
 
@@ -101,13 +104,13 @@ public class UI extends JFrame
             public void actionPerformed(ActionEvent b)
             {
                 String curDir = System.getProperty("user.dir");
-
+                System.out.println(curDir);
                 if (curDir.contains("theDefault"))
                 {
                     workingDirectory = new File(System.getProperty("user.dir") + "/src/main/java/" + GetModId() + "/cards/CustomCards/");
                 } else
                 {
-                    workingDirectory = new File(System.getProperty("user.dir") + "theDefault/src/main/java/" + GetModId() + "/cards");
+                    workingDirectory = new File(System.getProperty("user.dir") + "/theDefault/src/main/java/" + GetModId() + "/cards");
                 }
                 f.setCurrentDirectory(workingDirectory);
 
