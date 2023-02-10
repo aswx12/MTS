@@ -2,51 +2,106 @@ package suikaMod.cards.CustomCards;
 
 public class ContentAdd {
 
-    public static String AllActions(String action, int value) {
-        return Actions(action, value);
+    //region Variable
+    public static String AllVariable(String action, int value,int valuePlusUpgade ) {
+        return Variable(action, value,valuePlusUpgade);
     }
 
-    public static String Actions(String matcher, int value) {
+    public static String Variable(String matcher, int value,int valuePlusUpgade) {
+        String variable = "";
+        switch (matcher) {
+            case "Damage":
+                variable = "    private static final int DAMAGE = "+value+";\n" +
+                        "    private static final int UPGRADE_PLUS_DMG = "+valuePlusUpgade+";\n";
+                break;
+            case "Block":
+                variable = "    private static final int BLOCK = "+value+";\n" +
+                        "    private static final int UPGRADE_PLUS_BLOCK = "+valuePlusUpgade+";\n";
+                break;
+            case "GainEnergy": //change this later to magic number
+                variable = "    private static final int ENERGY = "+value+";\n" +
+                        "    private static final int UPGRADE_PLUS_ENERGY = "+valuePlusUpgade+";\n";
+                break;
+            default:
+                variable = "";
+        }
+        return variable;
+    }
+    //endregion
+
+    //region BaseValue
+    public static String SetBase(String action) {
+        return BaseValue(action);
+    }
+
+    public static String BaseValue(String matcher) {
+        String base = "";
+        switch (matcher) {
+            case "Damage":
+                base = "baseDamage = DAMAGE;\n";
+                break;
+            case "Block":
+                base = "        baseBlock = BLOCK;\n";
+                break;
+            case "GainEnergy":
+                base = "        magicNumber = baseMagicNumber = ENERGY;\n";
+                break;
+            default:
+                base = "";
+        }
+        return base;
+    }
+    //endregion
+
+    //region Actions
+    public static String AllActions(String action) {
+        return Actions(action);
+    }
+
+    public static String Actions(String matcher) {
         String action = "";
         switch (matcher) {
             case "Damage":
-                action = " this.addToBot(\n" + "                new DamageAction(m, new DamageInfo(p, " + value + ", damageTypeForTurn), AbstractGameAction.AttackEffect.SLASH_HORIZONTAL));\n";
+                action = " this.addToBot(\n" +
+                        "                new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AbstractGameAction.AttackEffect.SLASH_HORIZONTAL));\n";
                 break;
             case "Block":
-                action = "         this.addToBot(new GainBlockAction(p, p, " + value + "));\n";
+                action = "         this.addToBot(new GainBlockAction(p, p, block));\n";
                 break;
             case "GainEnergy":
-                action = "         this.addToBot(new GainEnergyAction(" + value + "));\n";
+                action = "         this.addToBot(new GainEnergyAction(magicNumber));\n";
                 break;
             default:
                 action = "";
         }
         return action;
     }
+    //endregion
 
-    public static String AddUpgrade(String action, int value)
+    //region Upgrade
+    public static String AddUpgrade(String action)
     {
-        return Upgrade(action, value);
+        return Upgrade(action);
     }
 
-    public static String Upgrade(String matcher, int value) {
-        String action = "";
+    public static String Upgrade(String matcher) {
+        String Upgrade = "";
         switch (matcher) {
             case "Damage":
-                action = "upgradeDamage(" + value + ");\n";
+                Upgrade = "upgradeDamage(UPGRADE_PLUS_DMG);\n";
                 break;
             case "Block":
-                action = "       upgradeBlock(" + value + ");\n";
+                Upgrade = "           upgradeBlock(UPGRADE_PLUS_BLOCK);\n";
                 break;
             case "GainEnergy":
-                action = "       this.upgradeMagicNumber(" + value + ");\n";
+                Upgrade = "           this.upgradeMagicNumber(UPGRADE_PLUS_ENERGY);\n";
                 break;
             default:
-                action = "";
+                Upgrade = "";
         }
-        return action;
+        return Upgrade;
     }
-
+    //endregion
 
     //region trash
     public static String Damage(String damage) {

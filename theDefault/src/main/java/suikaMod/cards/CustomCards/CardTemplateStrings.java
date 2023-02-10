@@ -5,33 +5,27 @@ import suikaMod.DefaultMod;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class CardTemplateStrings
-{
+public class CardTemplateStrings {
     public static String MODID = DefaultMod.MODID;
 
     //region UTILITIES
-    public static int intParse(JTextField stringToParse)
-    {
+    public static int intParse(JTextField stringToParse) {
         return Integer.parseInt(stringToParse.getText());
     }
 
-    public static int GetActionValues(DefaultTableModel actionModel, int i,int col)
-    {
+    public static int GetActionValues(DefaultTableModel actionModel, int i, int col) {
         return Integer.parseInt(actionModel.getValueAt(i, col).toString());
     }
 
-    public static String GetActionNames(DefaultTableModel actionTableModel, int i)
-    {
-        return DeleteSpace((String)actionTableModel.getValueAt(i,0));
+    public static String GetActionNames(DefaultTableModel actionTableModel, int i) {
+        return DeleteSpace((String) actionTableModel.getValueAt(i, 0));
     }
 
-    public static String upperCase(JComboBox string)
-    {
+    public static String upperCase(JComboBox string) {
         return string.getSelectedItem().toString().toUpperCase();
     }
 
-    public static String Imports()
-    {
+    public static String Imports() {
         String imports = "package " + MODID + ".cards.CustomCards;\n" +
                 "\n" +
                 "import basemod.AutoAdd;\n" +
@@ -60,8 +54,7 @@ public class CardTemplateStrings
         return imports;
     }
 
-    public static String SpaceCheck(JComboBox input)
-    {
+    public static String SpaceCheck(JComboBox input) {
         String targetSpaceCheck = upperCase(input);
         if (targetSpaceCheck.matches(".*\\s+.*"))
             return targetSpaceCheck = targetSpaceCheck.replaceAll("[\\s|\\u00A0]+", "_");
@@ -69,8 +62,7 @@ public class CardTemplateStrings
             return targetSpaceCheck;
     }
 
-    public static String DeleteSpace(String input)
-    {
+    public static String DeleteSpace(String input) {
         String targetSpaceCheck = input;
         if (targetSpaceCheck.matches(".*\\s+.*"))
             return targetSpaceCheck = targetSpaceCheck.replaceAll("[\\s|\\u00A0]+", "");
@@ -88,29 +80,35 @@ public class CardTemplateStrings
     public static String CardTemplate(JTextField name,
                                       JTextField cost,
                                       JTextField upgradeCost,
-                                      JTextField dmg,
-                                      JTextField upgradePlusDmg,
                                       JComboBox rarity,
                                       JComboBox target,
                                       JComboBox cardType,
                                       JTextArea description,
                                       JCheckBox seen,
-                                      DefaultTableModel actionTableModel)
-    {
+                                      DefaultTableModel actionTableModel) {
+        String variable = "";
+        String baseValue = "";
         String actions = "";
-        String upgrade ="";
+        String upgrade = "";
 
-        for (int i = 0; i < actionTableModel.getRowCount(); i++)
-        {
+        for (int i = 0; i < actionTableModel.getRowCount(); i++) {
             /*if (originActionList.contains(selectedActionList.getElementAt(i))) can be deleted
             {*/
-            actions = actions + ContentAdd.AllActions(
-                    GetActionNames(actionTableModel, i),
-                    GetActionValues(actionTableModel, i,1));
 
-            upgrade = upgrade+ContentAdd.Upgrade(
+            variable += ContentAdd.AllVariable(
                     GetActionNames(actionTableModel, i),
-                    GetActionValues(actionTableModel, i,2));
+                    GetActionValues(actionTableModel, i, 1),
+                    GetActionValues(actionTableModel, i, 2));
+
+            baseValue += ContentAdd.BaseValue(
+                    GetActionNames(actionTableModel, i));
+
+            actions += ContentAdd.AllActions(
+                    GetActionNames(actionTableModel, i));
+
+
+            upgrade += ContentAdd.Upgrade(
+                    GetActionNames(actionTableModel, i));
 
 //            }
         }
@@ -134,16 +132,14 @@ public class CardTemplateStrings
                 "\n" +
                 "    private static final int COST = " + intParse(cost) + ";  \n" +
                 "    private static final int UPGRADED_COST = " + intParse(upgradeCost) + "; \n" +
-                "\n" +
-                "    public static int DAMAGE = " + intParse(dmg) + "; \n" +
-                "    private static final int UPGRADE_PLUS_DMG = " + intParse(upgradePlusDmg) + ";  \n" +
+                "\n" + variable +
                 "\n" +
                 "    // /STAT DECLARATION/\n" +
                 "\n" +
                 "    public " + name.getText() + " ()\n" +
                 "    { \n" +
                 "        super(ID, \"" + name.getText() + "\", IMG," + "\"" + description.getText() + "\"" + ", COST, TYPE, COLOR, RARITY, TARGET);\n" +
-                "        baseDamage = DAMAGE;\n" +
+                "        " + baseValue +
                 "        //this.tags.add(CardTags.STARTER_STRIKE); \n" + //wht if not starter?
                 "        //this.tags.add(CardTags.STRIKE);\n" +
                 "\n" +
@@ -164,7 +160,7 @@ public class CardTemplateStrings
                 "        if (!upgraded)\n" +
                 "        {\n" +
                 "            upgradeName();\n" +
-                "            "+upgrade +
+                "            " + upgrade +
                 "            upgradeBaseCost(UPGRADED_COST);\n" +
                 "            initializeDescription();\n" +
                 "        }\n" +
