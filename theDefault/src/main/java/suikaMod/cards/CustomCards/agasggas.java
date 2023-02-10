@@ -24,27 +24,29 @@ import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
 @AutoAdd.Seen
-public class gasgas extends AbstractDynamicCard
+public class agasggas extends AbstractDynamicCard
 {
-    public static final String ID = DefaultMod.makeID(gasgas.class.getSimpleName()); 
+    public static final String ID = DefaultMod.makeID(agasggas.class.getSimpleName()); 
     public static final String IMG = makeCardPath("Attack.png"); 
     private static final CardRarity RARITY = CardRarity.UNCOMMON; 
     private static final CardTarget TARGET = CardTarget.ENEMY; 
-    private static final CardType TYPE = CardType.SKILL;       //
+    private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
     private static final int COST = 1;  
     private static final int UPGRADED_COST = 1; 
 
-    public static int DAMAGE = 12; 
-    private static final int UPGRADE_PLUS_DMG = 12;  
+    public static int DAMAGE = 1; 
+    private static final int UPGRADE_PLUS_DMG = 1;  
 
     // /STAT DECLARATION/
 
-    public gasgas ()
+    public agasggas ()
     { 
-        super(ID, "gasgas", IMG,"agssga", COST, TYPE, COLOR, RARITY, TARGET);
-        baseDamage = DAMAGE;
+        super(ID, "agasggas", IMG,"!D! & !B! & !M!", COST, TYPE, COLOR, RARITY, TARGET);
+        baseDamage = 123;
+        baseBlock=124;
+        baseMagicNumber=125;
         //this.tags.add(CardTags.STARTER_STRIKE); 
         //this.tags.add(CardTags.STRIKE);
 
@@ -55,8 +57,10 @@ public class gasgas extends AbstractDynamicCard
     @Override
     public void use(AbstractPlayer p, AbstractMonster m)
     {
-         this.addToBot(new GainEnergyAction(this.damage));
-
+         this.addToBot(
+                new DamageAction(m, new DamageInfo(p, 123, damageTypeForTurn), AbstractGameAction.AttackEffect.SLASH_HORIZONTAL));
+         this.addToBot(new GainBlockAction(p, p, 124));
+         this.addToBot(new GainEnergyAction(125));
     }
 
     // Upgraded stats.
@@ -67,6 +71,7 @@ public class gasgas extends AbstractDynamicCard
         {
             upgradeName();
             upgradeDamage(UPGRADE_PLUS_DMG);
+            upgradeBlock(1);
             upgradeBaseCost(UPGRADED_COST);
             initializeDescription();
         }

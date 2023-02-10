@@ -1,6 +1,9 @@
 package suikaMod.cards.CustomCards;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -34,7 +37,6 @@ public class UI extends JFrame
     private JCheckBox unlockCheck;
     private JComboBox cardTypeList;
     private JLabel cardTypeLabel;
-    private JList selectedActionList;
     private JList actionList;
     private JButton selectActionButton;
     private JButton removeActionButton;
@@ -42,9 +44,13 @@ public class UI extends JFrame
     private JPanel StartPanel;
     private JLabel selectionLabel;
     private JLabel selectedLabel;
+    private JTable actionTable;
+    private JScrollPane tableScroll;
 
     public static int damage;
 
+    int rowIndex = 0;
+    int tableHeight = 0;
     JFileChooser f = new JFileChooser();
     File workingDirectory;
 
@@ -56,6 +62,7 @@ public class UI extends JFrame
 
     public UI()
     {
+
         setContentPane(mainPanel);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,7 +74,6 @@ public class UI extends JFrame
 
         DefaultListModel originActionListModel = new DefaultListModel();
         DefaultListModel actionListModel = new DefaultListModel();
-        DefaultListModel selectedActionListModel = new DefaultListModel();
         for (int i = 0; i < actionList.getModel().getSize(); i++)
         {
             actionListModel.addElement(actionList.getModel().getElementAt(i));
@@ -75,7 +81,18 @@ public class UI extends JFrame
         }
 
         actionList.setModel(actionListModel);
-        selectedActionList.setModel(selectedActionListModel);
+        String[] colName = {"Action", "Value", "Value Upgrade Plus"};
+        DefaultTableModel tabModel = new DefaultTableModel(null, colName)
+        {
+            @Override
+            public boolean isCellEditable(int row, int column)
+            {
+                return column != 0;
+            }
+        };
+        //tabModel.addColumn(colName);
+        tabModel.isCellEditable(0, 0);
+        actionTable.setModel(tabModel);
 
 
         CreateNewCard.addActionListener(new ActionListener()
@@ -158,8 +175,7 @@ public class UI extends JFrame
                         cardTypeList,
                         descriptionField,
                         unlockCheck,
-                        originActionListModel,
-                        selectedActionListModel);
+                        tabModel);
                 try
                 {
                     // Creates a Writer using FileWriter
@@ -180,13 +196,18 @@ public class UI extends JFrame
 
         selectActionButton.addActionListener(new ActionListener()
         {
+
+
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 actionList.getSelectedValuesList().stream().forEach((data) ->
                 {
-                    selectedActionListModel.addElement(data);
                     actionListModel.removeElement(data);
+                    tabModel.addRow(new Object[]{null, null, null});
+                    tabModel.setValueAt(data, rowIndex++, 0);
+                    tableHeight += 20;
+                    SetTableSize();
                 });
             }
         });
@@ -195,40 +216,38 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                selectedActionList.getSelectedValuesList().stream().forEach((data) ->
+/*                selectedActionList.getSelectedValuesList().stream().forEach((data) ->
                 {
                     actionListModel.addElement(data);
                     selectedActionListModel.removeElement(data);
-                });
+                });*/
+
+                RemoveSelectedActions(actionTable, actionListModel);
             }
         });
     }
 
-    public void CreateTree()
-    {/*
-        DefaultMutableTreeNode actions = new DefaultMutableTreeNode("Actions");
-        DefaultMutableTreeNode buff = new DefaultMutableTreeNode("Buff");
-        DefaultMutableTreeNode debuff = new DefaultMutableTreeNode("Debuff");
-        DefaultMutableTreeNode buff1 = new DefaultMutableTreeNode("buff1");
-        DefaultMutableTreeNode buff2 = new DefaultMutableTreeNode("buff2");
-        DefaultMutableTreeNode debuff1 = new DefaultMutableTreeNode("debuff1");
-        *//*int subcats = 2;
-        for (int i = 0; i <subcats; i++)
+
+    public void RemoveSelectedActions(JTable table, DefaultListModel actionListModel)
+    {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        int numRows = table.getSelectedRows().length;
+        for (int i = 0; i < numRows; i++)
         {
-
-        };*//*
-
-        buff.add(buff1);
-        buff.add(buff2);
-
-        debuff.add(debuff1);
-        actions.add(buff);
-        actions.add(debuff);
-        DefaultTreeModel actionModel = new DefaultTreeModel(actions);
-
-        actionTree.setModel( actionModel);*/
-
+            actionListModel.addElement(table.getValueAt(table.getSelectedRow(), 0));
+            model.removeRow(table.getSelectedRow());
+            rowIndex--;
+            tableHeight -= 20;
+        }
+        SetTableSize();
     }
+
+    public void SetTableSize()
+    {
+        Dimension increaseHeight = new Dimension(450, tableHeight);
+        actionTable.setPreferredSize(increaseHeight);
+    }
+
 
     //region Utils
     public String CreateBasicAttCard(JTextField name,
@@ -241,8 +260,7 @@ public class UI extends JFrame
                                      JComboBox cardType,
                                      JTextArea descriptionField,
                                      JCheckBox seen,
-                                     DefaultListModel originActionList,
-                                     DefaultListModel selectedActionList)
+                                     DefaultTableModel actionTableModel)
     {
         return CardTemplateStrings.CardTemplate(
                 name,
@@ -255,8 +273,7 @@ public class UI extends JFrame
                 cardType,
                 descriptionField,
                 seen,
-                originActionList,
-                selectedActionList);
+                actionTableModel);
     }
 
     private boolean isNumeric(String text)
@@ -296,6 +313,7 @@ public class UI extends JFrame
             throw new RuntimeException(e);
         }
     }
+
     //endregion
 
 }

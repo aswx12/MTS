@@ -3,14 +3,26 @@ package suikaMod.cards.CustomCards;
 import suikaMod.DefaultMod;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class CardTemplateStrings
 {
     public static String MODID = DefaultMod.MODID;
 
+    //region UTILITIES
     public static int intParse(JTextField stringToParse)
     {
         return Integer.parseInt(stringToParse.getText());
+    }
+
+    public static int GetActionValues(DefaultTableModel actionModel, int i)
+    {
+        return Integer.parseInt(actionModel.getValueAt(i, 1).toString());
+    }
+
+    public static String GetActionNames(DefaultTableModel actionTableModel, int i)
+    {
+        return DeleteSpace((String)actionTableModel.getValueAt(i,0));
     }
 
     public static String upperCase(JComboBox string)
@@ -65,12 +77,12 @@ public class CardTemplateStrings
         else
             return targetSpaceCheck;
     }
+    //endregion
 
 /*    public void callClassByName(Class cls, String funcName) throws Exception {
         // Ignoring any possible result
         cls.getDeclaredMethod(funcName).invoke(null);
     }*/
-
 
     //region Basic Attack
     public static String CardTemplate(JTextField name,
@@ -83,17 +95,17 @@ public class CardTemplateStrings
                                       JComboBox cardType,
                                       JTextArea description,
                                       JCheckBox seen,
-                                      DefaultListModel originActionList,
-                                      DefaultListModel selectedActionList)
+                                      DefaultTableModel actionTableModel)
     {
-        String actions="";
+        String actions = "";
 
-        for (int i = 0; i < selectedActionList.getSize(); i++)
+        for (int i = 0; i < actionTableModel.getRowCount(); i++)
         {
             /*if (originActionList.contains(selectedActionList.getElementAt(i))) can be deleted
             {*/
-                actions = actions+Actions.AllActions(DeleteSpace((String)selectedActionList.getElementAt(i)));
-
+            actions = actions + Actions.AllActions(
+                    GetActionNames(actionTableModel, i),
+                    GetActionValues(actionTableModel, i));
 //            }
         }
 
@@ -102,7 +114,6 @@ public class CardTemplateStrings
             unlocked = "Seen";
         else
             unlocked = "Notseen";
-
 
         String cardInfo = Imports() +
                 "@AutoAdd." + unlocked + "\n" +
@@ -137,7 +148,7 @@ public class CardTemplateStrings
                 "    @Override\n" +
                 "    public void use(AbstractPlayer p, AbstractMonster m)\n" +
                 "    {\n" +
-                "        " +actions+
+                "        " + actions +
                 "    }\n" +
                 "\n" +
                 "    // Upgraded stats.\n" +
