@@ -55,8 +55,8 @@ public class DefaultSecondMagicNumberSkill extends AbstractDynamicCard {
     public DefaultSecondMagicNumberSkill() {
         super(ID, IMG, COST, TYPE, COLOR, RARITY, TARGET);
 
-        magicNumber = baseMagicNumber = VULNERABLE;
-        defaultSecondMagicNumber = defaultBaseSecondMagicNumber = POISON;
+        aVulnerableValue = aBaseVulnerableValue = VULNERABLE;
+        aPoisonValue = aBasePoisonValue = POISON;
 
 
     }
@@ -68,7 +68,7 @@ public class DefaultSecondMagicNumberSkill extends AbstractDynamicCard {
                 new ApplyPowerAction(m, p, new VulnerablePower(m, magicNumber, false), this.magicNumber));
 
         AbstractDungeon.actionManager.addToBottom(
-                new ApplyPowerAction(m, p, new PoisonPower(m, p, this.defaultSecondMagicNumber), this.defaultSecondMagicNumber));
+                new ApplyPowerAction(m, p, new PoisonPower(m, p, this.aVulnerableValue), this.aVulnerableValue));
 
     }
 
@@ -77,8 +77,8 @@ public class DefaultSecondMagicNumberSkill extends AbstractDynamicCard {
     public void upgrade() {
         if (!this.upgraded) {
             this.upgradeName();
-            this.upgradeMagicNumber(UPGRADE_PLUS_VULNERABLE);
-            this.upgradeDefaultSecondMagicNumber(UPGRADE_PLUS_POISON);
+            this.upgradeAVulnerableValue(UPGRADE_PLUS_VULNERABLE);
+            this.upgradeAPoisonValue(UPGRADE_PLUS_POISON);
             this.initializeDescription();
         }
     }

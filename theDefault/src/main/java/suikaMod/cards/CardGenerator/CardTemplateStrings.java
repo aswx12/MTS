@@ -1,41 +1,52 @@
-package suikaMod.cards.CustomCards;
+package suikaMod.cards.CardGenerator;
 
 import suikaMod.DefaultMod;
+import suikaMod.cards.CustomCards.UI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class CardTemplateStrings {
+public class CardTemplateStrings
+{
     public static String MODID = DefaultMod.MODID;
 
+    static boolean repeat;
+
     //region UTILITIES
-    public static int intParse(JTextField stringToParse) {
+    public static int intParse(JTextField stringToParse)
+    {
         return Integer.parseInt(stringToParse.getText());
     }
 
-    public static int GetActionValues(DefaultTableModel actionModel, int i, int col) {
-        return Integer.parseInt(actionModel.getValueAt(i, col).toString());
+    public static int GetActionValues(DefaultTableModel actionModel, int row, int col)
+    {
+
+        return Integer.parseInt(actionModel.getValueAt(row, col).toString());
     }
 
-    public static String GetActionNames(DefaultTableModel actionTableModel, int i) {
-        return DeleteSpace((String) actionTableModel.getValueAt(i, 0));
+    public static String GetActionNames(DefaultTableModel actionTableModel, int row)
+    {
+        return DeleteSpace((String) actionTableModel.getValueAt(row, 0));
     }
 
-    public static String upperCase(JComboBox string) {
+    public static String upperCase(JComboBox string)
+    {
         return string.getSelectedItem().toString().toUpperCase();
     }
 
-    public static String Imports() {
+    public static String Imports()
+    {
         String imports = "package " + MODID + ".cards.CustomCards;\n" +
                 "\n" +
                 "import basemod.AutoAdd;\n" +
                 "import basemod.BaseMod;\n" +
-                "import com.megacrit.cardcrawl.actions.AbstractGameAction;\n" +
+                "import com.megacrit.cardcrawl.actions.AbstractGameAction.*;\n" +
                 "import com.megacrit.cardcrawl.actions.common.*;\n" +
                 "import com.megacrit.cardcrawl.cards.DamageInfo;\n" +
                 "import com.megacrit.cardcrawl.characters.AbstractPlayer;\n" +
                 "import com.megacrit.cardcrawl.core.CardCrawlGame;\n" +
                 "import com.megacrit.cardcrawl.dungeons.AbstractDungeon;\n" +
+                "import com.megacrit.cardcrawl.powers.*;\n" +
                 "import com.megacrit.cardcrawl.localization.CardStrings;\n" +
                 "import com.megacrit.cardcrawl.localization.LocalizedStrings;\n" +
                 "import com.megacrit.cardcrawl.monsters.AbstractMonster;\n" +
@@ -54,7 +65,8 @@ public class CardTemplateStrings {
         return imports;
     }
 
-    public static String SpaceCheck(JComboBox input) {
+    public static String SpaceCheck(JComboBox input)
+    {
         String targetSpaceCheck = upperCase(input);
         if (targetSpaceCheck.matches(".*\\s+.*"))
             return targetSpaceCheck = targetSpaceCheck.replaceAll("[\\s|\\u00A0]+", "_");
@@ -62,13 +74,44 @@ public class CardTemplateStrings {
             return targetSpaceCheck;
     }
 
-    public static String DeleteSpace(String input) {
+    public static String DeleteSpace(String input)
+    {
         String targetSpaceCheck = input;
         if (targetSpaceCheck.matches(".*\\s+.*"))
             return targetSpaceCheck = targetSpaceCheck.replaceAll("[\\s|\\u00A0]+", "");
         else
             return targetSpaceCheck;
     }
+
+    public static String CardState(JCheckBox retainCheck, JCheckBox exhaustCheck, JCheckBox etherealCheck)
+    {
+        String states = "";
+        if (retainCheck.isSelected())
+        {
+            states += "this.retain=true; \n";
+        }
+        if (exhaustCheck.isSelected())
+        {
+            states += "        this.exhaust=true; \n";
+        }
+        if (etherealCheck.isSelected())
+        {
+            states += "        this.isEthereal=true; \n";
+        }
+        return states;
+    }
+
+    public static String LoopInsert(boolean repeat, String actions)
+    {
+        String loop = "";
+        if (repeat)
+        {
+            return loop = "for (int i = 0; i < TIME; i++) {\n" +
+                    "           " + actions + "        }\n";
+        }
+        return actions;
+    }
+
     //endregion
 
 /*    public void callClassByName(Class cls, String funcName) throws Exception {
@@ -85,20 +128,31 @@ public class CardTemplateStrings {
                                       JComboBox cardType,
                                       JTextArea description,
                                       JCheckBox seen,
-                                      DefaultTableModel actionTableModel) {
+                                      DefaultTableModel actionTableModel,
+                                      JCheckBox retainCheck,
+                                      JCheckBox exhaustCheck,
+                                      JCheckBox etherealCheck)
+    {
+
+        String DESCRIPTION = description.getText().replaceAll("(?!\\r)\\n", " NL ");
+
         String variable = "";
         String baseValue = "";
         String actions = "";
         String upgrade = "";
 
-        for (int i = 0; i < actionTableModel.getRowCount(); i++) {
+        for (int i = 0; i < actionTableModel.getRowCount(); i++)
+        {
             /*if (originActionList.contains(selectedActionList.getElementAt(i))) can be deleted
+            {*/
+           /* if (actionTableModel.getValueAt(i, 2) != null)
             {*/
 
             variable += ContentAdd.AllVariable(
                     GetActionNames(actionTableModel, i),
                     GetActionValues(actionTableModel, i, 1),
                     GetActionValues(actionTableModel, i, 2));
+            //}
 
             baseValue += ContentAdd.BaseValue(
                     GetActionNames(actionTableModel, i));
@@ -110,7 +164,10 @@ public class CardTemplateStrings {
             upgrade += ContentAdd.Upgrade(
                     GetActionNames(actionTableModel, i));
 
-//            }
+            if (GetActionNames(actionTableModel, i).equals("Repeat"))
+            {
+                repeat = true;
+            }
         }
 
         String unlocked = "";
@@ -138,8 +195,9 @@ public class CardTemplateStrings {
                 "\n" +
                 "    public " + name.getText() + " ()\n" +
                 "    { \n" +
-                "        super(ID, \"" + name.getText() + "\", IMG," + "\"" + description.getText() + "\"" + ", COST, TYPE, COLOR, RARITY, TARGET);\n" +
-                "        " + baseValue +
+                "        super(ID, \"" + name.getText() + "\", IMG," + "\"" + DESCRIPTION + "\"" + ", COST, TYPE, COLOR, RARITY, TARGET);\n" +
+                "        " + baseValue + "\n" +
+                "        " + CardState(retainCheck, exhaustCheck, etherealCheck) +
                 "        //this.tags.add(CardTags.STARTER_STRIKE); \n" + //wht if not starter?
                 "        //this.tags.add(CardTags.STRIKE);\n" +
                 "\n" +
@@ -150,7 +208,7 @@ public class CardTemplateStrings {
                 "    @Override\n" +
                 "    public void use(AbstractPlayer p, AbstractMonster m)\n" +
                 "    {\n" +
-                "        " + actions +
+                "        " + LoopInsert(repeat, actions) +
                 "    }\n" +
                 "\n" +
                 "    // Upgraded stats.\n" +
