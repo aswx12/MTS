@@ -42,6 +42,8 @@ public class CardTemplateStrings
                 "import basemod.BaseMod;\n" +
                 "import com.megacrit.cardcrawl.actions.AbstractGameAction.*;\n" +
                 "import com.megacrit.cardcrawl.actions.common.*;\n" +
+                "import com.megacrit.cardcrawl.actions.unique.*;\n" +
+                "import com.megacrit.cardcrawl.cards.AbstractCard;\n"+
                 "import com.megacrit.cardcrawl.cards.DamageInfo;\n" +
                 "import com.megacrit.cardcrawl.characters.AbstractPlayer;\n" +
                 "import com.megacrit.cardcrawl.core.CardCrawlGame;\n" +

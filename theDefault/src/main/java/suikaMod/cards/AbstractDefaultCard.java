@@ -1,6 +1,9 @@
 package suikaMod.cards;
 
 import basemod.abstracts.CustomCard;
+import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 
 public abstract class AbstractDefaultCard extends CustomCard
 {
@@ -49,7 +52,7 @@ public abstract class AbstractDefaultCard extends CustomCard
     public boolean gIsPoisonValueModified;
     //endregion
 
-    //region poison
+    //region str
     public int aStrValue;
     public int aBaseStrValue;
     public boolean aUpgradedStrValue;
@@ -60,6 +63,7 @@ public abstract class AbstractDefaultCard extends CustomCard
     public boolean gUpgradedStrValue;
     public boolean gIsStrValueModified;
     //endregion
+
 
     public AbstractDefaultCard(final String id,
                                final String name,
@@ -88,10 +92,10 @@ public abstract class AbstractDefaultCard extends CustomCard
         aIsPoisonValueModified = false;
         aIsStrValueModified = false;
 
-        gIsVulnerableValueModified=false;
-        gIsWeakValueModified=false;
-        gIsPoisonValueModified= false;
-        gIsStrValueModified=false;
+        gIsVulnerableValueModified = false;
+        gIsWeakValueModified = false;
+        gIsPoisonValueModified = false;
+        gIsStrValueModified = false;
     }
 
     public void displayUpgrades()
@@ -179,9 +183,9 @@ public abstract class AbstractDefaultCard extends CustomCard
 
     public void upgradeAValues(int amount, int baseValue, int value, boolean upgradeBool)
     {
-        baseValue=amount;
-        value=baseValue;
-        upgradeBool=true;
+        baseValue = amount;
+        value = baseValue;
+        upgradeBool = true;
     }
 
     public void upgradeAWeakValue(int amount)
@@ -234,6 +238,15 @@ public abstract class AbstractDefaultCard extends CustomCard
         gBaseStrValue = amount;
         gStrValue = gBaseStrValue;
         gUpgradedStrValue = true;
+    }
+
+    public void AddRandomCard(int time,CardType type)
+    {
+        for (int i = 0; i < time; i++)
+        {
+            AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
+            this.addToBot(new MakeTempCardInHandAction(c, true));
+        }
     }
     //endregion
 }

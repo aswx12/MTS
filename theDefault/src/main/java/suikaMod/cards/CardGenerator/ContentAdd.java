@@ -1,8 +1,5 @@
 package suikaMod.cards.CardGenerator;
 
-import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
-import com.megacrit.cardcrawl.powers.StrengthPower;
-
 public class ContentAdd
 {
 
@@ -10,21 +7,42 @@ public class ContentAdd
     static final String damage = "Damage";
     static final String block = "Block";
     static final String gainEnergy = "GainEnergy";
+    static final String repeat = "Repeat";
 
+    //region Apply
     static final String applyVulnerable = "ApplyVulnerable";
 
     static final String applyWeak = "ApplyWeak";
 
     static final String applyPoison = "ApplyPoison";
 
-    static final String repeat = "Repeat";
-
     static final String applyStr = "ApplyStrength";
+    //endregion
 
+    //region Gain
     static final String gainVulnerable = "GainVulnerable";
     static final String gainWeak = "GainWeak";
     static final String gainPoison = "GainPoison";
     static final String gainStr = "GainStrength";
+
+    //endregion
+
+    //region Add Card
+    static final String addCopy2Discard = "AddCopy(Discard)";
+    static final String addCopy2Hand = "AddCopy(Hand)";
+
+    static final String addRandomAttack = "AddRandomAttack(Hand)";
+    static final String addRandomSkill = "AddRandomSkill(Hand)";
+    static final String addRandomPower = "AddRandomPower(Hand)";
+
+    static final String chooseToDraw = "ChooseToDraw";
+    static final String chooseToDrawAttack = "ChooseToDraw(Attack)";
+    static final String chooseToDrawSkill = "ChooseToDraw(Skill)";
+
+    static final String drawCard = "Draw Card";
+
+
+    //endregion
 
     //endregion
     //region Variable
@@ -40,59 +58,100 @@ public class ContentAdd
         {
             case damage:
                 variable = "    private static final int DAMAGE = " + value + ";\n" +
-                        "    private static final int UPGRADE_PLUS_DMG = " + upgradeValue + ";\n";
+                        "    private static final int UPGRADE_DMG = " + upgradeValue + ";\n";
                 break;
             case block:
                 variable = "    private static final int BLOCK = " + value + ";\n" +
-                        "    private static final int UPGRADE_PLUS_BLOCK = " + upgradeValue + ";\n";
+                        "    private static final int UPGRADE_BLOCK = " + upgradeValue + ";\n";
                 break;
             case gainEnergy: //change this later to magic number
                 variable = "    private static final int ENERGY = " + value + ";\n" +
-                        "    private static final int UPGRADE_PLUS_ENERGY = " + upgradeValue + ";\n";
+                        "    private static final int UPGRADE_ENERGY = " + upgradeValue + ";\n";
                 break;
             case repeat:
                 variable = "    private int TIME = " + value + ";\n" +
-                        "    private final int UPGRADE_PLUS_TIME = " + upgradeValue + ";\n";
+                        "    private final int UPGRADE_TIME = " + upgradeValue + ";\n";
                 break;
 
-                //region Apply
+            //region Apply
             case applyVulnerable: //change this later to magic number
                 variable = "    private static final int aVULNERABLE = " + value + ";\n" +
-                        "    private static final int UPGRADE_PLUS_aVULNERABLE = " + upgradeValue + ";\n";
+                        "    private static final int UPGRADE_aVULNERABLE = " + upgradeValue + ";\n";
                 break;
             case applyWeak: //change this later to magic number
                 variable = "    private static final int aWEAK = " + value + ";\n" +
-                        "    private static final int UPGRADE_PLUS_aWEAK = " + upgradeValue + ";\n";
+                        "    private static final int UPGRADE_aWEAK = " + upgradeValue + ";\n";
                 break;
             case applyPoison: //change this later to magic number
                 variable = "    private static final int aPOISON = " + value + ";\n" +
-                        "    private static final int UPGRADE_PLUS_aPOISON = " + upgradeValue + ";\n";
+                        "    private static final int UPGRADE_aPOISON = " + upgradeValue + ";\n";
                 break;
 
             case applyStr:
                 variable = "    private static final int aSTR = " + value + ";\n" +
-                        "    private static final int UPGRADE_PLUS_aSTR = " + upgradeValue + ";\n";
+                        "    private static final int UPGRADE_aSTR = " + upgradeValue + ";\n";
                 break;
-                //endregion
+            //endregion
 
-                //region Gain
+            //region Gain
             case gainVulnerable:
                 variable = "    private static final int gVULNERABLE = " + value + ";\n" +
-                        "    private static final int UPGRADE_PLUS_gVULNERABLE = " + upgradeValue + ";\n";
+                        "    private static final int UPGRADE_gVULNERABLE = " + upgradeValue + ";\n";
                 break;
             case gainWeak:
                 variable = "    private static final int gWEAK = " + value + ";\n" +
-                        "    private static final int UPGRADE_PLUS_gWEAK = " + upgradeValue + ";\n";
+                        "    private static final int UPGRADE_gWEAK = " + upgradeValue + ";\n";
                 break;
             case gainPoison:
                 variable = "    private static final int gPOISON = " + value + ";\n" +
-                        "    private static final int UPGRADE_PLUS_gPOISON = " + upgradeValue + ";\n";
+                        "    private static final int UPGRADE_gPOISON = " + upgradeValue + ";\n";
                 break;
             case gainStr:
                 variable = "    private static final int gSTR = " + value + ";\n" +
-                        "    private static final int UPGRADE_PLUS_gSTR = " + upgradeValue + ";\n";
+                        "    private static final int UPGRADE_gSTR = " + upgradeValue + ";\n";
                 break;
-                //endregion
+            //endregion
+
+            //region Add Card
+            case addCopy2Discard:
+                variable = "    private int dCOPY_AMOUNT = " + value + ";\n" +
+                        "    private final int UPGRADE_dCOPY_AMOUNT = " + upgradeValue + ";\n";
+                break;
+            case addCopy2Hand:
+                variable = "    private int hCOPY_AMOUNT = " + value + ";\n" +
+                        "    private final int UPGRADE_hCOPY_AMOUNT = " + upgradeValue + ";\n";
+                break;
+
+            case addRandomAttack:
+                variable = "    private int ADD_AMOUNT_RANDOM_ATTACK = " + value + ";\n" +
+                        "    private final int UPGRADE_AMOUNT_RANDOM_ATTACK = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkill:
+                variable = "    private int ADD_AMOUNT_RANDOM_SKILL = " + value + ";\n" +
+                        "    private final int UPGRADE_AMOUNT_RANDOM_SKILL = " + upgradeValue + ";\n";
+                break;
+            case addRandomPower:
+                variable = "    private int ADD_AMOUNT_RANDOM_POWER = " + value + ";\n" +
+                        "    private final int UPGRADE_AMOUNT_RANDOM_POWER = " + upgradeValue + ";\n";
+                break;
+
+            case chooseToDraw:
+                variable = "    private int CHOOSE_AMOUNT = " + value + ";\n" +
+                        "    private final int UPGRADE_CHOOSE_AMOUNT = " + upgradeValue + ";\n";
+                break;
+            case chooseToDrawAttack:
+                variable = "    private int CHOOSE_AMOUNT_ATTACK = " + value + ";\n" +
+                        "    private final int UPGRADE_CHOOSE_AMOUNT_ATTACK = " + upgradeValue + ";\n";
+                break;
+            case chooseToDrawSkill:
+                variable = "    private int CHOOSE_AMOUNT_SKILL = " + value + ";\n" +
+                        "    private final int UPGRADE_CHOOSE_AMOUNT_SKILL = " + upgradeValue + ";\n";
+                break;
+            case drawCard:
+                variable = "    private int DRAW_AMOUNT = " + value + ";\n" +
+                        "    private final int UPGRADE_DRAW_AMOUNT = " + upgradeValue + ";\n";
+                break;
+            //endregion
             default:
                 variable = "";
         }
@@ -120,7 +179,7 @@ public class ContentAdd
             case gainEnergy:
                 base = "        magicNumber = baseMagicNumber = ENERGY;\n";
                 break;
-                //region Apply
+            //region Apply
             case applyVulnerable:
                 base = "        aVulnerableValue = aBaseVulnerableValue = aVULNERABLE;\n";
                 break;
@@ -133,9 +192,9 @@ public class ContentAdd
             case applyStr:
                 base = "        aStrValue = aBaseStrValue= aSTR;\n";
                 break;
-                //endregion
+            //endregion
 
-                //region Gain
+            //region Gain
             case gainVulnerable:
                 base = "        gVulnerableValue = gBaseVulnerableValue = gVULNERABLE;\n";
                 break;
@@ -148,7 +207,7 @@ public class ContentAdd
             case gainStr:
                 base = "        gStrValue = gBaseStrValue= gSTR;\n";
                 break;
-                //endregion
+            //endregion
             default:
                 base = "";
         }
@@ -177,7 +236,7 @@ public class ContentAdd
             case gainEnergy:
                 action = "         this.addToBot(new GainEnergyAction(magicNumber));\n";
                 break;
-                //region apply
+            //region apply
             case applyVulnerable:
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new VulnerablePower(m, this.aVulnerableValue, false), this.aVulnerableValue));\n";
                 break;
@@ -190,26 +249,54 @@ public class ContentAdd
             case applyStr:
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new StrengthPower(m, this.aStrValue), this.aStrValue));\n";
                 break;
-                //endregion
+            //endregion
 
-                //region gains
+            //region gains
             case gainVulnerable:
                 action = "         this.addToBot(new ApplyPowerAction(p, p, new VulnerablePower(p, this.gVulnerableValue, false), this.gVulnerableValue));\n";
-
                 break;
             case gainWeak:
                 action = "         this.addToBot(new ApplyPowerAction(p, p, new WeakPower(p, this.gWeakValue, false), this.gWeakValue));\n";
-
                 break;
             case gainPoison:
                 action = "         this.addToBot(new ApplyPowerAction(p, p, new PoisonPower(p, p, this.gPoisonValue), this.gPoisonValue, AttackEffect.POISON));\n";
-
                 break;
             case gainStr:
                 action = "         this.addToBot(new ApplyPowerAction(p, p, new StrengthPower(p, this.gStrValue), this.gStrValue));\n";
-
                 break;
-                //endregion
+
+            //region Add Card
+            case addCopy2Discard:
+                action = "         this.addToBot(new MakeTempCardInDiscardAction(this.makeStatEquivalentCopy(), dCOPY_AMOUNT));\n";
+                break;
+            case addCopy2Hand:
+                action = "         this.addToBot(new MakeTempCardInHandAction(this.makeStatEquivalentCopy(),hCOPY_AMOUNT));\n";
+                break;
+
+            case addRandomAttack:
+                action = "         AddRandomCard(ADD_AMOUNT_RANDOM_ATTACK,CardType.ATTACK);\n";
+                break;
+            case addRandomSkill:
+                action = "         AddRandomCard(ADD_AMOUNT_RANDOM_SKILL,CardType.SKILL);\n";
+                break;
+            case addRandomPower:
+                action = "         AddRandomCard(ADD_AMOUNT_RANDOM_POWER,CardType.POWER);\n";
+                break;
+
+            case chooseToDraw:
+                action = "         this.addToBot(new BetterDrawPileToHandAction(CHOOSE_AMOUNT));\n";
+                break;
+            case chooseToDrawAttack:
+                action = "         this.addToBot(new AttackFromDeckToHandAction(CHOOSE_AMOUNT_ATTACK));\n";
+                break;
+            case chooseToDrawSkill:
+                action = "         this.addToBot(new SkillFromDeckToHandAction(CHOOSE_AMOUNT_SKILL));\n";
+                break;
+            case drawCard:
+                action = "         this.addToBot(new DrawCardAction(p, DRAW_AMOUNT));\n";
+                break;
+            //endregion
+            //endregion
             default:
                 action = "";
         }
@@ -229,46 +316,77 @@ public class ContentAdd
         switch (matcher)
         {
             case damage:
-                Upgrade = "upgradeDamage(UPGRADE_PLUS_DMG);\n";
+                Upgrade = "upgradeDamage(UPGRADE_DMG);\n";
                 break;
             case block:
-                Upgrade = "            upgradeBlock(UPGRADE_PLUS_BLOCK);\n";
+                Upgrade = "            upgradeBlock(UPGRADE_BLOCK);\n";
                 break;
             case gainEnergy:
-                Upgrade = "            this.upgradeMagicNumber(UPGRADE_PLUS_ENERGY);\n";
+                Upgrade = "            this.upgradeMagicNumber(UPGRADE_ENERGY);\n";
                 //region Apply
                 break;
             case repeat:
-                Upgrade = "            TIME = UPGRADE_PLUS_TIME;\n";
+                Upgrade = "            TIME = UPGRADE_TIME;\n";
                 break;
             case applyVulnerable:
-                Upgrade = "            this.upgradeAVulnerableValue(UPGRADE_PLUS_aVULNERABLE);\n";
+                Upgrade = "            this.upgradeAVulnerableValue(UPGRADE_aVULNERABLE);\n";
                 break;
             case applyWeak:
-                Upgrade = "            this.upgradeAWeakValue(UPGRADE_PLUS_aWEAK);\n";
+                Upgrade = "            this.upgradeAWeakValue(UPGRADE_aWEAK);\n";
                 break;
             case applyPoison:
-                Upgrade = "            this.upgradeAPoisonValue(UPGRADE_PLUS_aPOISON);\n";
+                Upgrade = "            this.upgradeAPoisonValue(UPGRADE_aPOISON);\n";
                 break;
             case applyStr:
-                Upgrade = "            this.upgradeAStrValue(UPGRADE_PLUS_gSTR);\n";
+                Upgrade = "            this.upgradeAStrValue(UPGRADE_gSTR);\n";
                 break;
-                //endregion
+            //endregion
 
-                //region Gain
+            //region Gain
             case gainVulnerable:
-                Upgrade = "            this.upgradeGVulnerableValue(UPGRADE_PLUS_gVULNERABLE);\n";
+                Upgrade = "            this.upgradeGVulnerableValue(UPGRADE_gVULNERABLE);\n";
                 break;
             case gainWeak:
-                Upgrade = "            this.upgradeGWeakValue(UPGRADE_PLUS_gWEAK);\n";
+                Upgrade = "            this.upgradeGWeakValue(UPGRADE_gWEAK);\n";
                 break;
             case gainPoison:
-                Upgrade = "            this.upgradeGPoisonValue(UPGRADE_PLUS_gPOISON);\n";
+                Upgrade = "            this.upgradeGPoisonValue(UPGRADE_gPOISON);\n";
                 break;
             case gainStr:
-                Upgrade = "            this.upgradeGStrValue(UPGRADE_PLUS_gSTR);\n";
+                Upgrade = "            this.upgradeGStrValue(UPGRADE_gSTR);\n";
                 break;
-                //endregion
+            //endregion
+            //region Add cards
+            case addCopy2Discard:
+                Upgrade = "            dCOPY_AMOUNT=UPGRADE_dCOPY_AMOUNT;\n";
+                break;
+            case addCopy2Hand:
+                Upgrade = "            hCOPY_AMOUNT=UPGRADE_hCOPY_AMOUNT;\n";
+                break;
+
+            case addRandomAttack:
+                Upgrade = "            ADD_AMOUNT_RANDOM_ATTACK=UPGRADE_AMOUNT_RANDOM_ATTACK;\n";
+                break;
+            case addRandomSkill:
+                Upgrade = "            ADD_AMOUNT_RANDOM_SKILL=UPGRADE_AMOUNT_RANDOM_SKILL;\n";
+                break;
+            case addRandomPower:
+                Upgrade = "            ADD_AMOUNT_RANDOM_POWER=UPGRADE_AMOUNT_RANDOM_POWER;\n";
+                break;
+
+            case chooseToDraw:
+                Upgrade = "            CHOOSE_AMOUNT=UPGRADE_CHOOSE_AMOUNT;\n";
+                break;
+            case chooseToDrawAttack:
+                Upgrade = "            CHOOSE_AMOUNT_ATTACK=UPGRADE_CHOOSE_AMOUNT_ATTACK;\n";
+                break;
+            case chooseToDrawSkill:
+                Upgrade = "            CHOOSE_AMOUNT_SKILL=UPGRADE_CHOOSE_AMOUNT_SKILL;\n";
+                break;
+            case drawCard:
+                Upgrade = "            DRAW_AMOUNT=UPGRADE_DRAW_AMOUNT;\n";
+                break;
+            //endregion
             default:
                 Upgrade = "";
         }

@@ -209,6 +209,15 @@
                         <item value="Gain Weak"/>
                         <item value="Gain Poison"/>
                         <item value="Gain Strength"/>
+                        <item value="Add Copy(Discard)"/>
+                        <item value="Add Copy(Hand)"/>
+                        <item value="Add Random Attack(Hand)"/>
+                        <item value="Add Random Skill(Hand)"/>
+                        <item value="Add Random Power(Hand)"/>
+                        <item value="Choose To Draw"/>
+                        <item value="Choose To Draw(Attack)"/>
+                        <item value="Choose To Draw(Skill)"/>
+                        <item value="Draw Card"/>
                       </model>
                       <visible value="true"/>
                       <visibleRowCount value="5"/>

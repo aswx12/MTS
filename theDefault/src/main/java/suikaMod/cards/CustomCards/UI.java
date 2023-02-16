@@ -71,8 +71,6 @@ public class UI extends JFrame
         this.pack();
         setResizable(false);
 
-        //tests te=new tests();
-
         DefaultListModel originActionListModel = new DefaultListModel();
         DefaultListModel actionListModel = new DefaultListModel();
         for (int i = 0; i < actionList.getModel().getSize(); i++)
