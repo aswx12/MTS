@@ -31,9 +31,15 @@ public class ContentAdd
     static final String addCopy2Discard = "AddCopy(Discard)";
     static final String addCopy2Hand = "AddCopy(Hand)";
 
-    static final String addRandomAttack = "AddRandomAttack(Hand)";
-    static final String addRandomSkill = "AddRandomSkill(Hand)";
-    static final String addRandomPower = "AddRandomPower(Hand)";
+    static final String addRandomAttackHand = "AddRandomAttack(Hand)";
+    static final String addRandomSkillHand = "AddRandomSkill(Hand)";
+    static final String addRandomPowerHand = "AddRandomPower(Hand)";
+    static final String addRandomColorlessHand = "AddRandomColorless(Hand)";
+
+    static final String addRandomAttackDiscard = "AddRandomAttack(Discard)";
+    static final String addRandomSkillDiscard = "AddRandomSkill(Discard)";
+    static final String addRandomPowerDiscard = "AddRandomPower(Discard)";
+    static final String addRandomColorlessDiscard = "AddRandomColorless(Discard)";
 
     static final String chooseToDraw = "ChooseToDraw";
     static final String chooseToDrawAttack = "ChooseToDraw(Attack)";
@@ -122,17 +128,38 @@ public class ContentAdd
                         "    private final int UPGRADE_hCOPY_AMOUNT = " + upgradeValue + ";\n";
                 break;
 
-            case addRandomAttack:
-                variable = "    private int ADD_AMOUNT_RANDOM_ATTACK = " + value + ";\n" +
-                        "    private final int UPGRADE_AMOUNT_RANDOM_ATTACK = " + upgradeValue + ";\n";
+            case addRandomAttackHand:
+                variable = "    private int hADD_AMOUNT_RANDOM_ATTACK = " + value + ";\n" +
+                        "    private final int UPGRADE_hAMOUNT_RANDOM_ATTACK = " + upgradeValue + ";\n";
                 break;
-            case addRandomSkill:
-                variable = "    private int ADD_AMOUNT_RANDOM_SKILL = " + value + ";\n" +
-                        "    private final int UPGRADE_AMOUNT_RANDOM_SKILL = " + upgradeValue + ";\n";
+            case addRandomSkillHand:
+                variable = "    private int hADD_AMOUNT_RANDOM_SKILL = " + value + ";\n" +
+                        "    private final int UPGRADE_hAMOUNT_RANDOM_SKILL = " + upgradeValue + ";\n";
                 break;
-            case addRandomPower:
-                variable = "    private int ADD_AMOUNT_RANDOM_POWER = " + value + ";\n" +
-                        "    private final int UPGRADE_AMOUNT_RANDOM_POWER = " + upgradeValue + ";\n";
+            case addRandomPowerHand:
+                variable = "    private int hADD_AMOUNT_RANDOM_POWER = " + value + ";\n" +
+                        "    private final int UPGRADE_hAMOUNT_RANDOM_POWER = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessHand:
+                variable = "    private int hADD_AMOUNT_RANDOM_COLORLESS = " + value + ";\n" +
+                        "    private final int UPGRADE_hAMOUNT_RANDOM_COLORLESS = " + upgradeValue + ";\n";
+                break;
+
+            case addRandomAttackDiscard:
+                variable = "    private int dADD_AMOUNT_RANDOM_ATTACK = " + value + ";\n" +
+                        "    private final int UPGRADE_dAMOUNT_RANDOM_ATTACK = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillDiscard:
+                variable = "    private int dADD_AMOUNT_RANDOM_SKILL = " + value + ";\n" +
+                        "    private final int UPGRADE_dAMOUNT_RANDOM_SKILL = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerDiscard:
+                variable = "    private int dADD_AMOUNT_RANDOM_POWER = " + value + ";\n" +
+                        "    private final int UPGRADE_dAMOUNT_RANDOM_POWER = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessDiscard:
+                variable = "    private int dADD_AMOUNT_RANDOM_COLORLESS = " + value + ";\n" +
+                        "    private final int UPGRADE_dAMOUNT_RANDOM_COLORLESS = " + upgradeValue + ";\n";
                 break;
 
             case chooseToDraw:
@@ -264,6 +291,7 @@ public class ContentAdd
             case gainStr:
                 action = "         this.addToBot(new ApplyPowerAction(p, p, new StrengthPower(p, this.gStrValue), this.gStrValue));\n";
                 break;
+            //endregion
 
             //region Add Card
             case addCopy2Discard:
@@ -273,14 +301,30 @@ public class ContentAdd
                 action = "         this.addToBot(new MakeTempCardInHandAction(this.makeStatEquivalentCopy(),hCOPY_AMOUNT));\n";
                 break;
 
-            case addRandomAttack:
-                action = "         AddRandomCard(ADD_AMOUNT_RANDOM_ATTACK,CardType.ATTACK);\n";
+            case addRandomAttackHand:
+                action = "         AddRandomCardHand(hADD_AMOUNT_RANDOM_ATTACK,CardType.ATTACK);\n";
                 break;
-            case addRandomSkill:
-                action = "         AddRandomCard(ADD_AMOUNT_RANDOM_SKILL,CardType.SKILL);\n";
+            case addRandomSkillHand:
+                action = "         AddRandomCardHand(hADD_AMOUNT_RANDOM_SKILL,CardType.SKILL);\n";
                 break;
-            case addRandomPower:
-                action = "         AddRandomCard(ADD_AMOUNT_RANDOM_POWER,CardType.POWER);\n";
+            case addRandomPowerHand:
+                action = "         AddRandomCardHand(hADD_AMOUNT_RANDOM_POWER,CardType.POWER);\n";
+                break;
+            case addRandomColorlessHand:
+                action = "         AddRandomColorless(hADD_AMOUNT_RANDOM_COLORLESS,\"Hand\");\n";
+                break;
+
+            case addRandomAttackDiscard:
+                action = "         AddRandomCardDiscard(dADD_AMOUNT_RANDOM_ATTACK,CardType.ATTACK);\n";
+                break;
+            case addRandomSkillDiscard:
+                action = "         AddRandomCardDiscard(dADD_AMOUNT_RANDOM_SKILL,CardType.SKILL);\n";
+                break;
+            case addRandomPowerDiscard:
+                action = "         AddRandomCardDiscard(dADD_AMOUNT_RANDOM_POWER,CardType.POWER);\n";
+                break;
+            case addRandomColorlessDiscard:
+                action = "         AddRandomColorless(dADD_AMOUNT_RANDOM_COLORLESS,\"Discard\");\n";
                 break;
 
             case chooseToDraw:
@@ -296,7 +340,7 @@ public class ContentAdd
                 action = "         this.addToBot(new DrawCardAction(p, DRAW_AMOUNT));\n";
                 break;
             //endregion
-            //endregion
+
             default:
                 action = "";
         }
@@ -323,6 +367,7 @@ public class ContentAdd
                 break;
             case gainEnergy:
                 Upgrade = "            this.upgradeMagicNumber(UPGRADE_ENERGY);\n";
+
                 //region Apply
                 break;
             case repeat:
@@ -342,7 +387,7 @@ public class ContentAdd
                 break;
             //endregion
 
-            //region Gain
+                //region Gain
             case gainVulnerable:
                 Upgrade = "            this.upgradeGVulnerableValue(UPGRADE_gVULNERABLE);\n";
                 break;
@@ -356,6 +401,7 @@ public class ContentAdd
                 Upgrade = "            this.upgradeGStrValue(UPGRADE_gSTR);\n";
                 break;
             //endregion
+
             //region Add cards
             case addCopy2Discard:
                 Upgrade = "            dCOPY_AMOUNT=UPGRADE_dCOPY_AMOUNT;\n";
@@ -364,16 +410,31 @@ public class ContentAdd
                 Upgrade = "            hCOPY_AMOUNT=UPGRADE_hCOPY_AMOUNT;\n";
                 break;
 
-            case addRandomAttack:
-                Upgrade = "            ADD_AMOUNT_RANDOM_ATTACK=UPGRADE_AMOUNT_RANDOM_ATTACK;\n";
+            case addRandomAttackHand:
+                Upgrade = "            hADD_AMOUNT_RANDOM_ATTACK=UPGRADE_hAMOUNT_RANDOM_ATTACK;\n";
                 break;
-            case addRandomSkill:
-                Upgrade = "            ADD_AMOUNT_RANDOM_SKILL=UPGRADE_AMOUNT_RANDOM_SKILL;\n";
+            case addRandomSkillHand:
+                Upgrade = "            hADD_AMOUNT_RANDOM_SKILL=UPGRADE_hAMOUNT_RANDOM_SKILL;\n";
                 break;
-            case addRandomPower:
-                Upgrade = "            ADD_AMOUNT_RANDOM_POWER=UPGRADE_AMOUNT_RANDOM_POWER;\n";
+            case addRandomPowerHand:
+                Upgrade = "            hADD_AMOUNT_RANDOM_POWER=UPGRADE_hAMOUNT_RANDOM_POWER;\n";
+                break;
+            case addRandomColorlessHand:
+                Upgrade = "            hADD_AMOUNT_RANDOM_COLORLESS=UPGRADE_hAMOUNT_RANDOM_COLORLESS;\n";
                 break;
 
+            case addRandomAttackDiscard:
+                Upgrade = "            dADD_AMOUNT_RANDOM_ATTACK=UPGRADE_dAMOUNT_RANDOM_ATTACK;\n";
+                break;
+            case addRandomSkillDiscard:
+                Upgrade = "            dADD_AMOUNT_RANDOM_SKILL=UPGRADE_dAMOUNT_RANDOM_SKILL;\n";
+                break;
+            case addRandomPowerDiscard:
+                Upgrade = "            dADD_AMOUNT_RANDOM_POWER=UPGRADE_dAMOUNT_RANDOM_POWER;\n";
+                break;
+            case addRandomColorlessDiscard:
+                Upgrade = "            dADD_AMOUNT_RANDOM_COLORLESS=UPGRADE_dAMOUNT_RANDOM_COLORLESS;\n";
+                break;
             case chooseToDraw:
                 Upgrade = "            CHOOSE_AMOUNT=UPGRADE_CHOOSE_AMOUNT;\n";
                 break;

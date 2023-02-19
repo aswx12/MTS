@@ -1,6 +1,7 @@
 package suikaMod.cards;
 
 import basemod.abstracts.CustomCard;
+import com.megacrit.cardcrawl.actions.common.MakeTempCardInDiscardAction;
 import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -240,12 +241,41 @@ public abstract class AbstractDefaultCard extends CustomCard
         gUpgradedStrValue = true;
     }
 
-    public void AddRandomCard(int time,CardType type)
+    public void AddRandomCardHand(int time, CardType type)
     {
         for (int i = 0; i < time; i++)
         {
             AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
             this.addToBot(new MakeTempCardInHandAction(c, true));
+        }
+    }
+
+    public void AddRandomCardDiscard(int time, CardType type)
+    {
+        for (int i = 0; i < time; i++)
+        {
+            AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
+            this.addToBot(new MakeTempCardInDiscardAction(c, true));
+        }
+    }
+
+    public void AddRandomColorless(int time, String where)
+    {
+
+        if (where == "Hand")
+        {
+            for (int i = 0; i < time; i++)
+            {
+                AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
+                this.addToBot(new MakeTempCardInHandAction(c, true));
+            }
+        } else if (where == "Discard")
+        {
+            for (int i = 0; i < time; i++)
+            {
+                AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
+                this.addToBot(new MakeTempCardInDiscardAction(c, true));
+            }
         }
     }
     //endregion

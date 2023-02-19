@@ -136,6 +136,7 @@ public class UI extends JFrame
                             CreateNewCard.setVisible(false);
                             cardTypeLabel.setVisible(false);
                             cardTypeList.setVisible(false);
+                            mainPanel.setPreferredSize(new Dimension(800,getPreferredSize().height));
                             pack();
 
                         } else

@@ -214,6 +214,11 @@
                         <item value="Add Random Attack(Hand)"/>
                         <item value="Add Random Skill(Hand)"/>
                         <item value="Add Random Power(Hand)"/>
+                        <item value="Add Random Colorless(Hand)"/>
+                        <item value="Add Random Attack(Discard)"/>
+                        <item value="Add Random Skill(Discard)"/>
+                        <item value="Add Random Power(Discard)"/>
+                        <item value="Add Random Colorless(Discard)"/>
                         <item value="Choose To Draw"/>
                         <item value="Choose To Draw(Attack)"/>
                         <item value="Choose To Draw(Skill)"/>
