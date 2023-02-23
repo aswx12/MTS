@@ -85,9 +85,13 @@ public class CardTemplateStrings
             return targetSpaceCheck;
     }
 
-    public static String CardState(JCheckBox retainCheck, JCheckBox exhaustCheck, JCheckBox etherealCheck)
+    public static String CardState(JCheckBox innateCheck,JCheckBox retainCheck, JCheckBox exhaustCheck, JCheckBox etherealCheck)
     {
         String states = "";
+        if(innateCheck.isSelected())
+        {
+            states += "this.isInnate=true; \n";
+        }
         if (retainCheck.isSelected())
         {
             states += "this.retain=true; \n";
@@ -131,6 +135,7 @@ public class CardTemplateStrings
                                       JTextArea description,
                                       JCheckBox seen,
                                       DefaultTableModel actionTableModel,
+                                      JCheckBox innateCheck,
                                       JCheckBox retainCheck,
                                       JCheckBox exhaustCheck,
                                       JCheckBox etherealCheck)
@@ -199,7 +204,7 @@ public class CardTemplateStrings
                 "    { \n" +
                 "        super(ID, \"" + name.getText() + "\", IMG," + "\"" + DESCRIPTION + "\"" + ", COST, TYPE, COLOR, RARITY, TARGET);\n" +
                 "        " + baseValue + "\n" +
-                "        " + CardState(retainCheck, exhaustCheck, etherealCheck) +
+                "        " + CardState(innateCheck, retainCheck, exhaustCheck, etherealCheck) +
                 "        //this.tags.add(CardTags.STARTER_STRIKE); \n" + //wht if not starter?
                 "        //this.tags.add(CardTags.STRIKE);\n" +
                 "\n" +

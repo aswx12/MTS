@@ -46,6 +46,7 @@ public class UI extends JFrame
     public JCheckBox ExhaustCheck;
     private JCheckBox EtherealCheck;
     private JCheckBox RetainCheck;
+    private JCheckBox innateCheck;
 
     boolean test = false;
     int rowIndex = 0;
@@ -210,6 +211,7 @@ public class UI extends JFrame
                         descriptionField,
                         unlockCheck,
                         tabModel,
+                        innateCheck,
                         RetainCheck,
                         ExhaustCheck,
                         EtherealCheck);
@@ -294,6 +296,7 @@ public class UI extends JFrame
                              JTextArea descriptionField,
                              JCheckBox seen,
                              DefaultTableModel actionTableModel,
+                             JCheckBox innateCheck,
                              JCheckBox retainCheck,
                              JCheckBox exhaustCheck,
                              JCheckBox etherealCheck)
@@ -308,6 +311,7 @@ public class UI extends JFrame
                 descriptionField,
                 seen,
                 actionTableModel,
+                innateCheck,
                 retainCheck,
                 exhaustCheck,
                 etherealCheck);

@@ -69,7 +69,9 @@ public class b extends AbstractDynamicCard
          AddRandomColorless(hADD_AMOUNT_RANDOM_COLORLESS,"Hand");
          AddRandomColorless(dADD_AMOUNT_RANDOM_COLORLESS,"Discard");
     }
-
+    public boolean canUse(AbstractPlayer p, AbstractMonster m) { //unplayable
+        return false;
+    }
     // Upgraded stats.
     @Override
     public void upgrade()

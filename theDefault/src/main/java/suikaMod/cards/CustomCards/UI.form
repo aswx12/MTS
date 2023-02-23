@@ -86,32 +86,6 @@
               </model>
             </properties>
           </component>
-          <component id="a1234" class="javax.swing.JComboBox" binding="targetList">
-            <constraints>
-              <grid row="5" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <model>
-                <item value="Enemy"/>
-                <item value="All"/>
-                <item value="All Enemy"/>
-                <item value="None"/>
-                <item value="Self"/>
-                <item value="Self and Enemy"/>
-              </model>
-            </properties>
-          </component>
-          <component id="391f6" class="javax.swing.JLabel" binding="targetLabel">
-            <constraints>
-              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <labelFor value="a1234"/>
-              <text value="  Target:"/>
-            </properties>
-          </component>
           <grid id="93eac" binding="ActionsPanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
@@ -255,7 +229,7 @@
           </component>
           <component id="bf37f" class="javax.swing.JCheckBox" binding="RetainCheck">
             <constraints>
-              <grid row="6" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Retain"/>
@@ -295,6 +269,40 @@
             <properties>
               <selected value="true"/>
               <text value="Seen"/>
+            </properties>
+          </component>
+          <component id="44734" class="javax.swing.JCheckBox" binding="innateCheck">
+            <constraints>
+              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Innate"/>
+            </properties>
+          </component>
+          <component id="391f6" class="javax.swing.JLabel" binding="targetLabel">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="a1234"/>
+              <text value="  Target:"/>
+            </properties>
+          </component>
+          <component id="a1234" class="javax.swing.JComboBox" binding="targetList">
+            <constraints>
+              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <model>
+                <item value="Enemy"/>
+                <item value="All"/>
+                <item value="All Enemy"/>
+                <item value="None"/>
+                <item value="Self"/>
+                <item value="Self and Enemy"/>
+              </model>
             </properties>
           </component>
         </children>
