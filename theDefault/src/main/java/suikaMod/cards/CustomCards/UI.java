@@ -140,6 +140,7 @@ public class UI extends JFrame
                             mainPanel.setPreferredSize(new Dimension(1000,getPreferredSize().height));
                             pack();
 
+
                         } else
                         {
                             JOptionPane.showMessageDialog(CreateNewCard, "Card Exists, switching to edit mode");

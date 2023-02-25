@@ -2,6 +2,7 @@ package suikaMod.cards;
 
 import basemod.abstracts.CustomCard;
 import com.megacrit.cardcrawl.actions.common.MakeTempCardInDiscardAction;
+import com.megacrit.cardcrawl.actions.common.MakeTempCardInDrawPileAction;
 import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -253,12 +254,6 @@ public abstract class AbstractDefaultCard extends CustomCard
         }
     }
 
-    public void AddRandomCardHandCopy(int time, CardType type)
-    {
-        AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
-        this.addToBot(new MakeTempCardInHandAction(c.makeStatEquivalentCopy(), time, true));
-    }
-
     public void AddRandomCardDiscard(int time, CardType type)
     {
         for (int i = 0; i < time; i++)
@@ -267,6 +262,90 @@ public abstract class AbstractDefaultCard extends CustomCard
             this.addToBot(new MakeTempCardInDiscardAction(c, true));
         }
     }
+
+    public void AddRandomColorless(int time, String where)
+    {
+        switch (where)
+        {
+            case "Hand":
+                for (int i = 0; i < time; i++)
+                {
+                    AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
+                    this.addToBot(new MakeTempCardInHandAction(c, true));
+                }
+                break;
+            case "Discard":
+                for (int i = 0; i < time; i++)
+                {
+                    AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
+                    this.addToBot(new MakeTempCardInDiscardAction(c, true));
+                }
+                break;
+            case "DrawPile":
+                for (int i = 0; i < time; i++)
+                {
+                    AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
+
+                    this.addToBot(new MakeTempCardInDrawPileAction(c, 1, true, true));
+                }
+                break;
+            case "TopDrawPile":
+                for (int i = 0; i < time; i++)
+                {
+                    AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
+
+                    this.addToBot(new MakeTempCardInDrawPileAction(c, 1, false, false, false));
+                }
+                break;
+            case "BotDrawPile":
+                for (int i = 0; i < time; i++)
+                {
+                    AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
+
+                    this.addToBot(new MakeTempCardInDrawPileAction(c, 1, false, false, true));
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void AddRandomCardDrawP(int time, CardType type, String position)
+    {
+        if (position.equals("Random"))
+        {
+            for (int i = 0; i < time; i++)
+            {
+                AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
+
+                this.addToBot(new MakeTempCardInDrawPileAction(c, 1, true, true));
+            }
+        } else if (position.equals("Top"))
+        {
+            for (int i = 0; i < time; i++)
+            {
+                AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
+
+                this.addToBot(new MakeTempCardInDrawPileAction(c, 1, false, false, false));
+            }
+        } else if (position.equals("Bot"))
+        {
+            for (int i = 0; i < time; i++)
+            {
+                AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
+
+                this.addToBot(new MakeTempCardInDrawPileAction(c, 1, false, false, true));
+            }
+        }
+    }
+
+
+    public void AddRandomCardHandCopy(int time, CardType type)
+    {
+        AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
+        this.addToBot(new MakeTempCardInHandAction(c.makeStatEquivalentCopy(), time, true));
+    }
+
 
     public void AddRandomCardDiscardCopy(int time, CardType type)
     {
@@ -279,42 +358,51 @@ public abstract class AbstractDefaultCard extends CustomCard
 
     }
 
-    public void AddRandomColorless(int time, String where)
+    public void AddRandomCardDrawPCopy(int time, CardType type, String position)
     {
+        AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
 
-        if (where == "Hand")
+        if (position.equals("Random"))
         {
-            for (int i = 0; i < time; i++)
-            {
-                AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
-                this.addToBot(new MakeTempCardInHandAction(c, true));
-            }
-        } else if (where == "Discard")
+            this.addToBot(new MakeTempCardInDrawPileAction(c.makeStatEquivalentCopy(), time, true, true));
+
+        } else if (position.equals("Top"))
         {
-            for (int i = 0; i < time; i++)
-            {
-                AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
-                this.addToBot(new MakeTempCardInDiscardAction(c, true));
-            }
+            this.addToBot(new MakeTempCardInDrawPileAction(c.makeStatEquivalentCopy(), time, false, false, false));
+
+        } else if (position.equals("Bot"))
+        {
+            this.addToBot(new MakeTempCardInDrawPileAction(c.makeStatEquivalentCopy(), time, false, false, true));
+
         }
     }
 
     public void AddRandomColorlessCopy(int time, String where)
     {
+        AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
 
-        if (where == "Hand")
+        switch (where)
         {
-
-            AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
-            this.addToBot(new MakeTempCardInHandAction(c.makeStatEquivalentCopy(), time, true));
-        } else if (where == "Discard")
-        {
-            AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
-
-            for (int i = 0; i < time; i++)
-            {
-                this.addToBot(new MakeTempCardInDiscardAction(c.makeStatEquivalentCopy(), true));
-            }
+            case "Hand":
+                this.addToBot(new MakeTempCardInHandAction(c.makeStatEquivalentCopy(), time, true));
+                break;
+            case "Discard":
+                for (int i = 0; i < time; i++)
+                {
+                    this.addToBot(new MakeTempCardInDiscardAction(c.makeStatEquivalentCopy(), true));
+                }
+                break;
+            case "DrawPile":
+                this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), time, true, true));
+                break;
+            case "TopDrawPile":
+                this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), time, false, false, false));
+                break;
+            case "BotDrawPile":
+                this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), time, false, false, true));
+                break;
+            default:
+                break;
         }
     }
     //endregion

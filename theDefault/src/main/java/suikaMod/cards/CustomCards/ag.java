@@ -27,26 +27,29 @@ import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
 @AutoAdd.Seen
-public class ActionTestFile extends AbstractDynamicCard
+public class ag extends AbstractDynamicCard
 {
-    public static final String ID = DefaultMod.makeID(ActionTestFile.class.getSimpleName());
-    public static final String IMG = makeCardPath("Attack.png");
-    private static final CardRarity RARITY = CardRarity.UNCOMMON;
-    private static final CardTarget TARGET = CardTarget.ENEMY;
+    public static final String ID = DefaultMod.makeID(ag.class.getSimpleName()); 
+    public static final String IMG = makeCardPath("Attack.png"); 
+    private static final CardRarity RARITY = CardRarity.UNCOMMON; 
+    private static final CardTarget TARGET = CardTarget.ENEMY; 
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
-    private static final int COST = 1;
-    private static final int UPGRADED_COST = 1;
+    private static final int COST = 1;  
+    private static final int UPGRADED_COST = 1; 
 
+    private static final int DAMAGE = 1;
+    private static final int UPGRADE_DAMAGE= 1;
 
     // /STAT DECLARATION/
 
-    public ActionTestFile()
-    {
-        super(ID, "ActionTestFile", IMG, "a", COST, TYPE, COLOR, RARITY, TARGET);
+    public ag ()
+    { 
+        super(ID, "ag", IMG,"a", COST, TYPE, COLOR, RARITY, TARGET);
+        baseDamage = DAMAGE;
 
-        //this.tags.add(CardTags.STARTER_STRIKE);
+                //this.tags.add(CardTags.STARTER_STRIKE); 
         //this.tags.add(CardTags.STRIKE);
 
     }
@@ -56,17 +59,8 @@ public class ActionTestFile extends AbstractDynamicCard
     @Override
     public void use(AbstractPlayer p, AbstractMonster m)
     {
-
-        this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), 2,true,true));
-
-        this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), 2,false,false,false));
-
-        this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), 2,false,false,true));
-
-      /*  AddRandomCardDrawPCopy(,CardType.ATTACK,"Random");
-        AddRandomCardDrawPCopy(,CardType.SKILL,"Random");
-        AddRandomCardDrawPCopy(,CardType.POWER,"Random");
-        AddRandomColorlessCopy(,"DrawPile");*/
+         this.addToBot(
+                new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));
     }
 
     // Upgraded stats.
@@ -76,6 +70,7 @@ public class ActionTestFile extends AbstractDynamicCard
         if (!upgraded)
         {
             upgradeName();
+            upgradeDamage(UPGRADE_DAMAGE);
             upgradeBaseCost(UPGRADED_COST);
             initializeDescription();
         }

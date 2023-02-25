@@ -1,5 +1,8 @@
 package suikaMod.cards.CardGenerator;
 
+import static suikaMod.cards.CardGenerator.ActionVar.*;
+
+
 public class ContentAdd
 {
 
@@ -32,16 +35,37 @@ public class ContentAdd
     //region Add Copy
     static final String addCopy2Discard = "AddCopy(Discard)";
     static final String addCopy2Hand = "AddCopy(Hand)";
+
+    static final String addCopy2DrawPile = "AddCopy(DrawPile)";
+    static final String addCopy2TopDrawPile = "AddCopy(TopDrawPile)";
+    static final String addCopy2BotDrawPile = "AddCopy(BotDrawPile)";
+
     static final String addRandomAttackHandCopy = "AddRandomAttackCopy(Hand)";
     static final String addRandomSkillHandCopy = "AddRandomSkillCopy(Hand)";
     static final String addRandomPowerHandCopy = "AddRandomPowerCopy(Hand)";
     static final String addRandomColorlessHandCopy = "AddRandomColorlessCopy(Hand)";
 
     static final String addRandomAttackDiscardCopy = "AddRandomAttackCopy(Discard)";
-    static final String addRandomSkillHandDiscardCopy = "AddRandomSkillCopy(Discard)";
-    static final String addRandomPowerHandDiscardCopy = "AddRandomPowerCopy(Discard)";
-    static final String addRandomColorlessHandDiscardCopy = "AddRandomColorlessCopy(Discard)";
+    static final String addRandomSkillDiscardCopy = "AddRandomSkillCopy(Discard)";
+    static final String addRandomPowerDiscardCopy = "AddRandomPowerCopy(Discard)";
+    static final String addRandomColorlessDiscardCopy = "AddRandomColorlessCopy(Discard)";
+
+    static final String addRandomAttackDrawPileCopy = "AddRandomAttackCopy(DrawPile)";
+    static final String addRandomSkillDrawPileCopy = "AddRandomSkillCopy(DrawPile)";
+    static final String addRandomPowerDrawPileCopy = "AddRandomPowerCopy(DrawPile)";
+    static final String addRandomColorlessDrawPileCopy = "AddRandomColorlessCopy(DrawPile)";
+
+    static final String addRandomAttackTopDrawPileCopy = "AddRandomAttackCopy(TopDrawPile)";
+    static final String addRandomSkillTopDrawPileCopy = "AddRandomSkillCopy(TopDrawPile)";
+    static final String addRandomPowerTopDrawPileCopy = "AddRandomPowerCopy(TopDrawPile)";
+    static final String addRandomColorlessTopDrawPileCopy = "AddRandomColorlessCopy(TopDrawPile)";
+
+    static final String addRandomAttackBotDrawPileCopy = "AddRandomAttackCopy(BotDrawPile)";
+    static final String addRandomSkillBotDrawPileCopy = "AddRandomSkillCopy(BotDrawPile)";
+    static final String addRandomPowerBotDrawPileCopy = "AddRandomPowerCopy(BotDrawPile)";
+    static final String addRandomColorlessBotDrawPileCopy = "AddRandomColorlessCopy(BotDrawPile)";
     //endregion
+
     //region Add Random
     static final String addRandomAttackHand = "AddRandomAttack(Hand)";
     static final String addRandomSkillHand = "AddRandomSkill(Hand)";
@@ -52,7 +76,25 @@ public class ContentAdd
     static final String addRandomSkillDiscard = "AddRandomSkill(Discard)";
     static final String addRandomPowerDiscard = "AddRandomPower(Discard)";
     static final String addRandomColorlessDiscard = "AddRandomColorless(Discard)";
+
+    static final String addRandomAttackDrawPile = "AddRandomAttack(DrawPile)";
+    static final String addRandomSkillDrawPile = "AddRandomSkill(DrawPile)";
+    static final String addRandomPowerDrawPile = "AddRandomPower(DrawPile)";
+    static final String addRandomColorlessDrawPile = "AddRandomColorless(DrawPile)";
+
+    static final String addRandomAttackTopDrawPile = "AddRandomAttack(TopDrawPile)";
+    static final String addRandomSkillTopDrawPile = "AddRandomSkill(TopDrawPile)";
+    static final String addRandomPowerTopDrawPile = "AddRandomPower(TopDrawPile)";
+    static final String addRandomColorlessTopDrawPile = "AddRandomColorless(TopDrawPile)";
+
+    static final String addRandomAttackBotDrawPile = "AddRandomAttack(BotDrawPile)";
+    static final String addRandomSkillBotDrawPile = "AddRandomSkill(BotDrawPile)";
+    static final String addRandomPowerBotDrawPile = "AddRandomPower(BotDrawPile)";
+    static final String addRandomColorlessBotDrawPile = "AddRandomColorless(BotDrawPile)";
+
+
     //endregion
+    
     //region Draw
     static final String chooseToDraw = "ChooseToDraw";
     static final String chooseToDrawAttack = "ChooseToDraw(Attack)";
@@ -77,58 +119,58 @@ public class ContentAdd
         switch (matcher)
         {
             case damage:
-                variable = "    private static final int DAMAGE = " + value + ";\n" +
-                        "    private static final int UPGRADE_DMG = " + upgradeValue + ";\n";
+                variable = "    private static final int " + dmg + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + dmg + "= " + upgradeValue + ";\n";
                 break;
             case block:
-                variable = "    private static final int BLOCK = " + value + ";\n" +
-                        "    private static final int UPGRADE_BLOCK = " + upgradeValue + ";\n";
+                variable = "    private static final int " + blc + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + blc + " = " + upgradeValue + ";\n";
                 break;
             case gainEnergy: //change this later to magic number
-                variable = "    private static final int ENERGY = " + value + ";\n" +
-                        "    private static final int UPGRADE_ENERGY = " + upgradeValue + ";\n";
+                variable = "    private static final int " + gEnergy + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + gEnergy + " = " + upgradeValue + ";\n";
                 break;
             case repeat:
-                variable = "    private int TIME = " + value + ";\n" +
-                        "    private final int UPGRADE_TIME = " + upgradeValue + ";\n";
+                variable = "    private int " + rpt + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rpt + " = " + upgradeValue + ";\n";
                 break;
 
             //region Apply
             case applyVulnerable: //change this later to magic number
-                variable = "    private static final int aVULNERABLE = " + value + ";\n" +
-                        "    private static final int UPGRADE_aVULNERABLE = " + upgradeValue + ";\n";
+                variable = "    private static final int " + aVul + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + aVul + " = " + upgradeValue + ";\n";
                 break;
             case applyWeak: //change this later to magic number
-                variable = "    private static final int aWEAK = " + value + ";\n" +
-                        "    private static final int UPGRADE_aWEAK = " + upgradeValue + ";\n";
+                variable = "    private static final int " + aWk + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + aWk + " = " + upgradeValue + ";\n";
                 break;
             case applyPoison: //change this later to magic number
-                variable = "    private static final int aPOISON = " + value + ";\n" +
-                        "    private static final int UPGRADE_aPOISON = " + upgradeValue + ";\n";
+                variable = "    private static final int " + aPsn + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + aPsn + " = " + upgradeValue + ";\n";
                 break;
 
             case applyStr:
-                variable = "    private static final int aSTR = " + value + ";\n" +
-                        "    private static final int UPGRADE_aSTR = " + upgradeValue + ";\n";
+                variable = "    private static final int " + aStr + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + aStr + " = " + upgradeValue + ";\n";
                 break;
             //endregion
 
             //region Gain
             case gainVulnerable:
-                variable = "    private static final int gVULNERABLE = " + value + ";\n" +
-                        "    private static final int UPGRADE_gVULNERABLE = " + upgradeValue + ";\n";
+                variable = "    private static final int " + gVul + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + gVul + " = " + upgradeValue + ";\n";
                 break;
             case gainWeak:
-                variable = "    private static final int gWEAK = " + value + ";\n" +
-                        "    private static final int UPGRADE_gWEAK = " + upgradeValue + ";\n";
+                variable = "    private static final int " + gWk + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + gWk + " = " + upgradeValue + ";\n";
                 break;
             case gainPoison:
-                variable = "    private static final int gPOISON = " + value + ";\n" +
-                        "    private static final int UPGRADE_gPOISON = " + upgradeValue + ";\n";
+                variable = "    private static final int " + gPsn + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + gPsn + " = " + upgradeValue + ";\n";
                 break;
             case gainStr:
-                variable = "    private static final int gSTR = " + value + ";\n" +
-                        "    private static final int UPGRADE_gSTR = " + upgradeValue + ";\n";
+                variable = "    private static final int " + gStr + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + gStr + " = " + upgradeValue + ";\n";
                 break;
             //endregion
 
@@ -136,97 +178,221 @@ public class ContentAdd
 
             //region Copy
             case addCopy2Discard:
-                variable = "    private int dCOPY_AMOUNT = " + value + ";\n" +
-                        "    private final int UPGRADE_dCOPY_AMOUNT = " + upgradeValue + ";\n";
+                variable = "    private int " + copy2Disc + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + copy2Disc + " = " + upgradeValue + ";\n";
                 break;
             case addCopy2Hand:
-                variable = "    private int hCOPY_AMOUNT = " + value + ";\n" +
-                        "    private final int UPGRADE_hCOPY_AMOUNT = " + upgradeValue + ";\n";
+                variable = "    private int " + copy2Hand + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + copy2Hand + " = " + upgradeValue + ";\n";
                 break;
+            case addCopy2DrawPile:
+                variable = "    private int " + copy2DrawP + " = " + value + ";\n" +
+                        "    private final int " + copy2DrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addCopy2TopDrawPile:
+                variable = "    private int " + copy2TopDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + copy2TopDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addCopy2BotDrawPile:
+                variable = "    private int " + copy2BotDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + copy2BotDrawP + " = " + upgradeValue + ";\n";
+                break;
+
             case addRandomAttackHandCopy:
-                variable = "    private int hADD_AMOUNT_RANDOM_ATTACKc = " + value + ";\n" +
-                        "    private final int UPGRADE_hAMOUNT_RANDOM_ATTACKc = " + upgradeValue + ";\n";
+                variable = "    private int " + rAttackHandCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackHandCopy + " = " + upgradeValue + ";\n";
                 break;
             case addRandomSkillHandCopy:
-                variable = "    private int hADD_AMOUNT_RANDOM_SKILLc = " + value + ";\n" +
-                        "    private final int UPGRADE_hAMOUNT_RANDOM_SKILLc = " + upgradeValue + ";\n";
+                variable = "    private int " + rSkillHandCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillHandCopy + " = " + upgradeValue + ";\n";
                 break;
             case addRandomPowerHandCopy:
-                variable = "    private int hADD_AMOUNT_RANDOM_POWERc = " + value + ";\n" +
-                        "    private final int UPGRADE_hAMOUNT_RANDOM_POWERc = " + upgradeValue + ";\n";
+                variable = "    private int " + rPowerHandCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerHandCopy + " = " + upgradeValue + ";\n";
                 break;
             case addRandomColorlessHandCopy:
-                variable = "    private int hADD_AMOUNT_RANDOM_COLORLESSc = " + value + ";\n" +
-                        "    private final int UPGRADE_hAMOUNT_RANDOM_COLORLESSc = " + upgradeValue + ";\n";
+                variable = "    private int " + rColorlessHandCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessHandCopy + " = " + upgradeValue + ";\n";
                 break;
+
             case addRandomAttackDiscardCopy:
-                variable = "    private int dADD_AMOUNT_RANDOM_ATTACKc = " + value + ";\n" +
-                        "    private final int UPGRADE_dAMOUNT_RANDOM_ATTACKc = " + upgradeValue + ";\n";
+                variable = "    private int " + rAttackDiscCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackDiscCopy + " = " + upgradeValue + ";\n";
                 break;
-            case addRandomSkillHandDiscardCopy:
-                variable = "    private int dADD_AMOUNT_RANDOM_SKILLc = " + value + ";\n" +
-                        "    private final int UPGRADE_dAMOUNT_RANDOM_SKILLc = " + upgradeValue + ";\n";
+            case addRandomSkillDiscardCopy:
+                variable = "    private int " + rSkillDiscCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillDiscCopy + " = " + upgradeValue + ";\n";
                 break;
-            case addRandomPowerHandDiscardCopy:
-                variable = "    private int dADD_AMOUNT_RANDOM_POWERc = " + value + ";\n" +
-                        "    private final int UPGRADE_dAMOUNT_RANDOM_POWERc = " + upgradeValue + ";\n";
+            case addRandomPowerDiscardCopy:
+                variable = "    private int " + rPowerDiscCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerDiscCopy + " = " + upgradeValue + ";\n";
                 break;
-            case addRandomColorlessHandDiscardCopy:
-                variable = "    private int dADD_AMOUNT_RANDOM_COLORLESSc = " + value + ";\n" +
-                        "    private final int UPGRADE_dAMOUNT_RANDOM_COLORLESSc = " + upgradeValue + ";\n";
+            case addRandomColorlessDiscardCopy:
+                variable = "    private int " + rColorlessDiscCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessDiscCopy + " = " + upgradeValue + ";\n";
                 break;
+            //------------------------------------------------------------------------
+            case addRandomAttackDrawPileCopy:
+                variable = "    private int " + rAttackDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillDrawPileCopy:
+                variable = "    private int " + rSkillDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerDrawPileCopy:
+                variable = "    private int " + rPowerDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessDrawPileCopy:
+                variable = "    private int " + rColorlessDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+
+            case addRandomAttackTopDrawPileCopy:
+                variable = "    private int " + rAttackTopDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackTopDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillTopDrawPileCopy:
+                variable = "    private int " + rSkillTopDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillTopDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerTopDrawPileCopy:
+                variable = "    private int " + rPowerTopDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerTopDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessTopDrawPileCopy:
+                variable = "    private int " + rColorlessTopDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessTopDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+
+            case addRandomAttackBotDrawPileCopy:
+                variable = "    private int " + rAttackBotDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackBotDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillBotDrawPileCopy:
+                variable = "    private int " + rSkillBotDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillBotDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerBotDrawPileCopy:
+                variable = "    private int " + rPowerBotDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerBotDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessBotDrawPileCopy:
+                variable = "    private int " + rColorlessBotDrawPCopy + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessBotDrawPCopy + " = " + upgradeValue + ";\n";
+                break;
+
             //endregion
+            //-------------------------------------------------------------
             //region Add Random
             case addRandomAttackHand:
-                variable = "    private int hADD_AMOUNT_RANDOM_ATTACK = " + value + ";\n" +
-                        "    private final int UPGRADE_hAMOUNT_RANDOM_ATTACK = " + upgradeValue + ";\n";
+                variable = "    private int " + rAttackHand + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackHand + " = " + upgradeValue + ";\n";
                 break;
             case addRandomSkillHand:
-                variable = "    private int hADD_AMOUNT_RANDOM_SKILL = " + value + ";\n" +
-                        "    private final int UPGRADE_hAMOUNT_RANDOM_SKILL = " + upgradeValue + ";\n";
+                variable = "    private int " + rSkillHand + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillHand + " = " + upgradeValue + ";\n";
                 break;
             case addRandomPowerHand:
-                variable = "    private int hADD_AMOUNT_RANDOM_POWER = " + value + ";\n" +
-                        "    private final int UPGRADE_hAMOUNT_RANDOM_POWER = " + upgradeValue + ";\n";
+                variable = "    private int " + rPowerHand + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerHand + " = " + upgradeValue + ";\n";
                 break;
             case addRandomColorlessHand:
-                variable = "    private int hADD_AMOUNT_RANDOM_COLORLESS = " + value + ";\n" +
-                        "    private final int UPGRADE_hAMOUNT_RANDOM_COLORLESS = " + upgradeValue + ";\n";
+                variable = "    private int " + rColorlessHand + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessHand + " = " + upgradeValue + ";\n";
                 break;
 
             case addRandomAttackDiscard:
-                variable = "    private int dADD_AMOUNT_RANDOM_ATTACK = " + value + ";\n" +
-                        "    private final int UPGRADE_dAMOUNT_RANDOM_ATTACK = " + upgradeValue + ";\n";
+                variable = "    private int " + rAttackDisc + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackDisc + " = " + upgradeValue + ";\n";
                 break;
             case addRandomSkillDiscard:
-                variable = "    private int dADD_AMOUNT_RANDOM_SKILL = " + value + ";\n" +
-                        "    private final int UPGRADE_dAMOUNT_RANDOM_SKILL = " + upgradeValue + ";\n";
+                variable = "    private int " + rSkillDisc + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillDisc + " = " + upgradeValue + ";\n";
                 break;
             case addRandomPowerDiscard:
-                variable = "    private int dADD_AMOUNT_RANDOM_POWER = " + value + ";\n" +
-                        "    private final int UPGRADE_dAMOUNT_RANDOM_POWER = " + upgradeValue + ";\n";
+                variable = "    private int " + rPowerDisc + " = " + value + ";\n" +
+                        "    private final int UPGRADE_d" + rPowerDisc + " = " + upgradeValue + ";\n";
                 break;
             case addRandomColorlessDiscard:
-                variable = "    private int dADD_AMOUNT_RANDOM_COLORLESS = " + value + ";\n" +
-                        "    private final int UPGRADE_dAMOUNT_RANDOM_COLORLESS = " + upgradeValue + ";\n";
+                variable = "    private int " + rColorlessDisc + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessDisc + " = " + upgradeValue + ";\n";
                 break;
+            //--------------------------------------------------
+            case addRandomAttackDrawPile:
+                variable = "    private int " + rAttackDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillDrawPile:
+                variable = "    private int " + rSkillDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerDrawPile:
+                variable = "    private int " + rPowerDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessDrawPile:
+                variable = "    private int " + rColorlessDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessDrawP + " = " + upgradeValue + ";\n";
+                break;
+
+            case addRandomAttackTopDrawPile:
+                variable = "    private int " + rAttackTopDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackTopDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillTopDrawPile:
+                variable = "    private int " + rSkillTopDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillTopDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerTopDrawPile:
+                variable = "    private int " + rPowerTopDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerTopDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessTopDrawPile:
+                variable = "    private int " + rColorlessTopDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessTopDrawP + " = " + upgradeValue + ";\n";
+                break;
+
+            case addRandomAttackBotDrawPile:
+                variable = "    private int " + rAttackBotDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackBotDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillBotDrawPile:
+                variable = "    private int " + rSkillBotDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillBotDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerBotDrawPile:
+                variable = "    private int " + rPowerBotDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerBotDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessBotDrawPile:
+                variable = "    private int " + rColorlessBotDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessBotDrawP + " = " + upgradeValue + ";\n";
+                break;
+
+
+            //---------------------------------------------------
+
+
             //endregion
+
             //region Draw
             case chooseToDraw:
-                variable = "    private int CHOOSE_AMOUNT = " + value + ";\n" +
-                        "    private final int UPGRADE_CHOOSE_AMOUNT = " + upgradeValue + ";\n";
+                variable = "    private int " + choose2Draw + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + choose2Draw + " = " + upgradeValue + ";\n";
                 break;
             case chooseToDrawAttack:
-                variable = "    private int CHOOSE_AMOUNT_ATTACK = " + value + ";\n" +
-                        "    private final int UPGRADE_CHOOSE_AMOUNT_ATTACK = " + upgradeValue + ";\n";
+                variable = "    private int " + choose2DrawAttack + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + choose2DrawAttack + " = " + upgradeValue + ";\n";
                 break;
             case chooseToDrawSkill:
-                variable = "    private int CHOOSE_AMOUNT_SKILL = " + value + ";\n" +
-                        "    private final int UPGRADE_CHOOSE_AMOUNT_SKILL = " + upgradeValue + ";\n";
+                variable = "    private int " + choose2DrawSkill + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + choose2DrawSkill + " = " + upgradeValue + ";\n";
                 break;
             case drawCard:
-                variable = "    private int DRAW_AMOUNT = " + value + ";\n" +
-                        "    private final int UPGRADE_DRAW_AMOUNT = " + upgradeValue + ";\n";
+                variable = "    private int " + draw + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + draw + " = " + upgradeValue + ";\n";
                 break;
             //endregion
             //endregion
@@ -249,41 +415,41 @@ public class ContentAdd
         switch (matcher)
         {
             case damage:
-                base = "baseDamage = DAMAGE;\n";
+                base = "baseDamage = " + dmg + ";\n";
                 break;
             case block:
-                base = "        baseBlock = BLOCK;\n";
+                base = "        baseBlock = " + blc + ";\n";
                 break;
             case gainEnergy:
-                base = "        magicNumber = baseMagicNumber = ENERGY;\n";
+                base = "        magicNumber = baseMagicNumber = " + gEnergy + ";\n";
                 break;
             //region Apply
             case applyVulnerable:
-                base = "        aVulnerableValue = aBaseVulnerableValue = aVULNERABLE;\n";
+                base = "        aVulnerableValue = aBaseVulnerableValue = " + aVul + ";\n";
                 break;
             case applyWeak:
-                base = "        aWeakValue = aBaseWeakValue= aWEAK;\n";
+                base = "        aWeakValue = aBaseWeakValue= " + aWk + ";\n";
                 break;
             case applyPoison:
-                base = "        aPoisonValue = aBasePoisonValue= aPOISON;\n";
+                base = "        aPoisonValue = aBasePoisonValue= " + aPsn + ";\n";
                 break;
             case applyStr:
-                base = "        aStrValue = aBaseStrValue= aSTR;\n";
+                base = "        aStrValue = aBaseStrValue= " + aStr + ";\n";
                 break;
             //endregion
 
             //region Gain
             case gainVulnerable:
-                base = "        gVulnerableValue = gBaseVulnerableValue = gVULNERABLE;\n";
+                base = "        gVulnerableValue = gBaseVulnerableValue = " + gVul + ";\n";
                 break;
             case gainWeak:
-                base = "        gWeakValue = gBaseWeakValue= gWEAK;\n";
+                base = "        gWeakValue = gBaseWeakValue= " + gWk + ";\n";
                 break;
             case gainPoison:
-                base = "        gPoisonValue = gBasePoisonValue= gPOISON;\n";
+                base = "        gPoisonValue = gBasePoisonValue= " + gPsn + ";\n";
                 break;
             case gainStr:
-                base = "        gStrValue = gBaseStrValue= gSTR;\n";
+                base = "        gStrValue = gBaseStrValue= " + gStr + ";\n";
                 break;
             //endregion
             default:
@@ -346,79 +512,170 @@ public class ContentAdd
 
             //region Add Card
 
-            //Region Add Copy
+            //region Add Copy
             case addCopy2Discard:
-                action = "         this.addToBot(new MakeTempCardInDiscardAction(this.makeStatEquivalentCopy(), dCOPY_AMOUNT));\n";
+                action = "         this.addToBot(new MakeTempCardInDiscardAction(this.makeStatEquivalentCopy(), " + copy2Disc + "));\n";
                 break;
             case addCopy2Hand:
-                action = "         this.addToBot(new MakeTempCardInHandAction(this.makeStatEquivalentCopy(),hCOPY_AMOUNT));\n";
+                action = "         this.addToBot(new MakeTempCardInHandAction(this.makeStatEquivalentCopy()," + copy2Hand + "));\n";
+                break;
+            case addCopy2DrawPile:
+                action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy()," + copy2DrawP + " ,true,true));\n";
+                break;
+            case addCopy2TopDrawPile:
+                action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + copy2TopDrawP + ",false,false,false));\n";
+                break;
+            case addCopy2BotDrawPile:
+                action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + copy2BotDrawP + ",false,false,true));\n";
                 break;
 
             case addRandomAttackHandCopy:
-                action = "         AddRandomCardHandCopy(hADD_AMOUNT_RANDOM_ATTACKc,CardType.ATTACK);\n";
+                action = "         AddRandomCardHandCopy(" + rAttackHandCopy + ",CardType.ATTACK);\n";
                 break;
             case addRandomSkillHandCopy:
-                action = "         AddRandomCardHandCopy(hADD_AMOUNT_RANDOM_SKILLc,CardType.SKILL);\n";
+                action = "         AddRandomCardHandCopy(" + rSkillHandCopy + ",CardType.SKILL);\n";
                 break;
             case addRandomPowerHandCopy:
-                action = "         AddRandomCardHandCopy(hADD_AMOUNT_RANDOM_POWERc,CardType.POWER);\n";
+                action = "         AddRandomCardHandCopy(" + rPowerHandCopy + ",CardType.POWER);\n";
                 break;
             case addRandomColorlessHandCopy:
-                action = "         AddRandomColorlessCopy(hADD_AMOUNT_RANDOM_COLORLESSc,\"Hand\");\n";
+                action = "         AddRandomColorlessCopy(" + rColorlessHandCopy + ",\"Hand\");\n";
                 break;
 
             case addRandomAttackDiscardCopy:
-                action = "         AddRandomCardDiscardCopy(dADD_AMOUNT_RANDOM_ATTACKc,CardType.ATTACK);\n";
+                action = "         AddRandomCardDiscardCopy(" + rAttackDiscCopy + ",CardType.ATTACK);\n";
                 break;
-            case addRandomSkillHandDiscardCopy:
-                action = "         AddRandomCardDiscardCopy(dADD_AMOUNT_RANDOM_SKILLc,CardType.SKILL);\n";
+            case addRandomSkillDiscardCopy:
+                action = "         AddRandomCardDiscardCopy(" + rSkillDiscCopy + ",CardType.SKILL);\n";
                 break;
-            case addRandomPowerHandDiscardCopy:
-                action = "         AddRandomCardDiscardCopy(dADD_AMOUNT_RANDOM_POWERc,CardType.POWER);\n";
+            case addRandomPowerDiscardCopy:
+                action = "         AddRandomCardDiscardCopy(" + rPowerDiscCopy + ",CardType.POWER);\n";
                 break;
-            case addRandomColorlessHandDiscardCopy:
-                action = "         AddRandomColorlessCopy(dADD_AMOUNT_RANDOM_COLORLESSc,\"Discard\");\n";
+            case addRandomColorlessDiscardCopy:
+                action = "         AddRandomColorlessCopy(" + rColorlessDiscCopy + ",\"Discard\");\n";
+                break;
+
+            case addRandomAttackDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rAttackDrawPCopy + ",CardType.ATTACK,\"Random\");\n";
+                break;
+            case addRandomSkillDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rSkillDrawPCopy + ",CardType.SKILL,\"Random\");\n";
+                break;
+            case addRandomPowerDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rPowerDrawPCopy + ",CardType.POWER,\"Random\");\n";
+                break;
+            case addRandomColorlessDrawPileCopy:
+                action = "         AddRandomColorlessCopy(" + rColorlessDrawPCopy + ",\"DrawPile\");\n";
+                break;
+
+            case addRandomAttackTopDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rAttackTopDrawPCopy + ",CardType.ATTACK,\"Top\");\n";
+                break;
+            case addRandomSkillTopDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rSkillTopDrawPCopy + ",CardType.SKILL,\"Top\");\n";
+                break;
+            case addRandomPowerTopDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rPowerTopDrawPCopy + ",CardType.POWER,\"Top\");\n";
+                break;
+            case addRandomColorlessTopDrawPileCopy:
+                action = "         AddRandomColorlessCopy(" + rColorlessTopDrawPCopy + ",\"TopDrawPile\");\n";
+                break;
+
+            case addRandomAttackBotDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rAttackBotDrawPCopy + ",CardType.ATTACK,\"Bot\");\n";
+                break;
+            case addRandomSkillBotDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rSkillBotDrawPCopy + ",CardType.SKILL,\"Bot\");\n";
+                break;
+            case addRandomPowerBotDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rPowerBotDrawPCopy + ",CardType.POWER,\"Bot\");\n";
+                break;
+            case addRandomColorlessBotDrawPileCopy:
+                action = "         AddRandomColorlessCopy(" + rColorlessBotDrawPCopy + ",\"BotDrawPile\");\n";
                 break;
             //endregion
+
             //region Add Random
             case addRandomAttackHand:
-                action = "         AddRandomCardHand(hADD_AMOUNT_RANDOM_ATTACK,CardType.ATTACK);\n";
+                action = "         AddRandomCardHand(" + rAttackHand + ",CardType.ATTACK);\n";
                 break;
             case addRandomSkillHand:
-                action = "         AddRandomCardHand(hADD_AMOUNT_RANDOM_SKILL,CardType.SKILL);\n";
+                action = "         AddRandomCardHand(" + rSkillHand + ",CardType.SKILL);\n";
                 break;
             case addRandomPowerHand:
-                action = "         AddRandomCardHand(hADD_AMOUNT_RANDOM_POWER,CardType.POWER);\n";
+                action = "         AddRandomCardHand(" + rPowerHand + ",CardType.POWER);\n";
                 break;
             case addRandomColorlessHand:
-                action = "         AddRandomColorless(hADD_AMOUNT_RANDOM_COLORLESS,\"Hand\");\n";
+                action = "         AddRandomColorless(" + rColorlessHand + ",\"Hand\");\n";
                 break;
 
             case addRandomAttackDiscard:
-                action = "         AddRandomCardDiscard(dADD_AMOUNT_RANDOM_ATTACK,CardType.ATTACK);\n";
+                action = "         AddRandomCardDiscard(" + rAttackDisc + ",CardType.ATTACK);\n";
                 break;
             case addRandomSkillDiscard:
-                action = "         AddRandomCardDiscard(dADD_AMOUNT_RANDOM_SKILL,CardType.SKILL);\n";
+                action = "         AddRandomCardDiscard(" + rSkillDisc + ",CardType.SKILL);\n";
                 break;
             case addRandomPowerDiscard:
-                action = "         AddRandomCardDiscard(dADD_AMOUNT_RANDOM_POWER,CardType.POWER);\n";
+                action = "         AddRandomCardDiscard(" + rPowerDisc + ",CardType.POWER);\n";
                 break;
             case addRandomColorlessDiscard:
-                action = "         AddRandomColorless(dADD_AMOUNT_RANDOM_COLORLESS,\"Discard\");\n";
+                action = "         AddRandomColorless(" + rColorlessDisc + ",\"Discard\");\n";
                 break;
-//endregion
+
+            //-----------------------------------
+            case addRandomAttackDrawPile:
+                action = "         AddRandomCardDrawP(" + rAttackDrawP + ",CardType.ATTACK,\"Random\");\n";
+                break;
+            case addRandomSkillDrawPile:
+                action = "         AddRandomCardDrawP(" + rSkillDrawP + ",CardType.SKILL,\"Random\");\n";
+                break;
+            case addRandomPowerDrawPile:
+                action = "         AddRandomCardDrawP(" + rPowerDrawP + ",CardType.POWER,\"Random\");\n";
+                break;
+            case addRandomColorlessDrawPile:
+                action = "         AddRandomColorless(" + rColorlessDrawP + ",\"DrawPile\");\n";
+                break;
+
+            case addRandomAttackTopDrawPile:
+                action = "         AddRandomCardDrawP(" + rAttackTopDrawP + ",CardType.ATTACK,\"Top\");\n";
+                break;
+            case addRandomSkillTopDrawPile:
+                action = "         AddRandomCardDrawP(" + rSkillTopDrawP + ",CardType.SKILL,\"Top\");\n";
+                break;
+            case addRandomPowerTopDrawPile:
+                action = "         AddRandomCardDrawP(" + rPowerTopDrawP + ",CardType.POWER,\"Top\");\n";
+                break;
+            case addRandomColorlessTopDrawPile:
+                action = "         AddRandomColorless(" + rColorlessTopDrawP + ",\"TopDrawPile\");\n";
+                break;
+
+            case addRandomAttackBotDrawPile:
+                action = "         AddRandomCardDrawP(" + rAttackBotDrawP + ",CardType.ATTACK,\"Bot\");\n";
+                break;
+            case addRandomSkillBotDrawPile:
+                action = "         AddRandomCardDrawP(" + rSkillBotDrawP + ",CardType.SKILL,\"Bot\");\n";
+                break;
+            case addRandomPowerBotDrawPile:
+                action = "         AddRandomCardDrawP(" + rPowerBotDrawP + ",CardType.POWER,\"Bot\");\n";
+                break;
+            case addRandomColorlessBotDrawPile:
+                action = "         AddRandomColorless(" + rColorlessBotDrawP + ",\"BotDrawPile\");\n";
+                break;
+            //-----------------------------------
+            //endregion
+
             //region Draw
             case chooseToDraw:
-                action = "         this.addToBot(new BetterDrawPileToHandAction(CHOOSE_AMOUNT));\n";
+                action = "         this.addToBot(new BetterDrawPileToHandAction(" + choose2Draw + "));\n";
                 break;
             case chooseToDrawAttack:
-                action = "         this.addToBot(new AttackFromDeckToHandAction(CHOOSE_AMOUNT_ATTACK));\n";
+                action = "         this.addToBot(new AttackFromDeckToHandAction(" + choose2DrawAttack + "));\n";
                 break;
             case chooseToDrawSkill:
-                action = "         this.addToBot(new SkillFromDeckToHandAction(CHOOSE_AMOUNT_SKILL));\n";
+                action = "         this.addToBot(new SkillFromDeckToHandAction(" + choose2DrawSkill + "));\n";
                 break;
             case drawCard:
-                action = "         this.addToBot(new DrawCardAction(p, DRAW_AMOUNT));\n";
+                action = "         this.addToBot(new DrawCardAction(p, " + draw + "));\n";
                 break;
             //endregion
             //endregion
@@ -442,45 +699,45 @@ public class ContentAdd
         switch (matcher)
         {
             case damage:
-                Upgrade = "upgradeDamage(UPGRADE_DMG);\n";
+                Upgrade = "upgradeDamage(UPGRADE_" + dmg + ");\n";
                 break;
             case block:
-                Upgrade = "            upgradeBlock(UPGRADE_BLOCK);\n";
+                Upgrade = "            upgradeBlock(UPGRADE_" + blc + ");\n";
                 break;
             case gainEnergy:
-                Upgrade = "            this.upgradeMagicNumber(UPGRADE_ENERGY);\n";
+                Upgrade = "            this.upgradeMagicNumber(UPGRADE_" + gEnergy + ");\n";
 
                 //region Apply
                 break;
             case repeat:
-                Upgrade = "            TIME = UPGRADE_TIME;\n";
+                Upgrade = "            " + rpt + " = UPGRADE_" + rpt + ";\n";
                 break;
             case applyVulnerable:
-                Upgrade = "            this.upgradeAVulnerableValue(UPGRADE_aVULNERABLE);\n";
+                Upgrade = "            this.upgradeAVulnerableValue(UPGRADE_" + aVul + ");\n";
                 break;
             case applyWeak:
-                Upgrade = "            this.upgradeAWeakValue(UPGRADE_aWEAK);\n";
+                Upgrade = "            this.upgradeAWeakValue(UPGRADE_" + aWk + ");\n";
                 break;
             case applyPoison:
-                Upgrade = "            this.upgradeAPoisonValue(UPGRADE_aPOISON);\n";
+                Upgrade = "            this.upgradeAPoisonValue(UPGRADE_" + aPsn + ");\n";
                 break;
             case applyStr:
-                Upgrade = "            this.upgradeAStrValue(UPGRADE_gSTR);\n";
+                Upgrade = "            this.upgradeAStrValue(UPGRADE_" + aStr + ");\n";
                 break;
             //endregion
 
             //region Gain
             case gainVulnerable:
-                Upgrade = "            this.upgradeGVulnerableValue(UPGRADE_gVULNERABLE);\n";
+                Upgrade = "            this.upgradeGVulnerableValue(UPGRADE_" + gVul + ");\n";
                 break;
             case gainWeak:
-                Upgrade = "            this.upgradeGWeakValue(UPGRADE_gWEAK);\n";
+                Upgrade = "            this.upgradeGWeakValue(UPGRADE_" + gWk + ");\n";
                 break;
             case gainPoison:
-                Upgrade = "            this.upgradeGPoisonValue(UPGRADE_gPOISON);\n";
+                Upgrade = "            this.upgradeGPoisonValue(UPGRADE_" + gPsn + ");\n";
                 break;
             case gainStr:
-                Upgrade = "            this.upgradeGStrValue(UPGRADE_gSTR);\n";
+                Upgrade = "            this.upgradeGStrValue(UPGRADE_" + gStr + ");\n";
                 break;
             //endregion
 
@@ -488,77 +745,163 @@ public class ContentAdd
 
             //region Add Copy
             case addCopy2Discard:
-                Upgrade = "            dCOPY_AMOUNT=UPGRADE_dCOPY_AMOUNT;\n";
+                Upgrade = "            " + copy2Disc + "=UPGRADE_" + copy2Disc + ";\n";
                 break;
             case addCopy2Hand:
-                Upgrade = "            hCOPY_AMOUNT=UPGRADE_hCOPY_AMOUNT;\n";
+                Upgrade = "            " + copy2Hand + "=UPGRADE_" + copy2Hand + ";\n";
+                break;
+            case addCopy2TopDrawPile:
+                Upgrade = "            " + copy2TopDrawP + "=UPGRADE_" + copy2TopDrawP + ";\n";
+                break;
+            case addCopy2BotDrawPile:
+                Upgrade = "            " + copy2BotDrawP + "=UPGRADE_" + copy2BotDrawP + ";\n";
                 break;
 
             case addRandomAttackHandCopy:
-                Upgrade = "            hADD_AMOUNT_RANDOM_ATTACKc=UPGRADE_hAMOUNT_RANDOM_ATTACKc;\n";
+                Upgrade = "            " + rAttackHandCopy + "=UPGRADE_" + rAttackHandCopy + ";\n";
                 break;
             case addRandomSkillHandCopy:
-                Upgrade = "            hADD_AMOUNT_RANDOM_SKILLc=UPGRADE_hAMOUNT_RANDOM_SKILLc;\n";
+                Upgrade = "            " + rSkillHandCopy + "=UPGRADE_" + rSkillHandCopy + ";\n";
                 break;
             case addRandomPowerHandCopy:
-                Upgrade = "            hADD_AMOUNT_RANDOM_POWERc=UPGRADE_hAMOUNT_RANDOM_POWERc;\n";
+                Upgrade = "            " + rPowerHandCopy + "=UPGRADE_" + rPowerHandCopy + ";\n";
                 break;
             case addRandomColorlessHandCopy:
-                Upgrade = "            hADD_AMOUNT_RANDOM_COLORLESSc=UPGRADE_hAMOUNT_RANDOM_COLORLESSc;\n";
+                Upgrade = "            " + rColorlessHandCopy + "=UPGRADE_" + rColorlessHandCopy + ";\n";
                 break;
 
             case addRandomAttackDiscardCopy:
-                Upgrade = "            dADD_AMOUNT_RANDOM_ATTACKc=UPGRADE_dAMOUNT_RANDOM_ATTACKc;\n";
+                Upgrade = "            " + rAttackDiscCopy + "=UPGRADE_" + rAttackDiscCopy + ";\n";
                 break;
-            case addRandomSkillHandDiscardCopy:
-                Upgrade = "            dADD_AMOUNT_RANDOM_SKILLc=UPGRADE_dAMOUNT_RANDOM_SKILLc;\n";
+            case addRandomSkillDiscardCopy:
+                Upgrade = "            " + rSkillDiscCopy + "=UPGRADE_" + rSkillDiscCopy + ";\n";
                 break;
-            case addRandomPowerHandDiscardCopy:
-                Upgrade = "            dADD_AMOUNT_RANDOM_POWERc=UPGRADE_dAMOUNT_RANDOM_POWERc;\n";
+            case addRandomPowerDiscardCopy:
+                Upgrade = "            " + rPowerDiscCopy + "=UPGRADE_" + rPowerDiscCopy + ";\n";
                 break;
-            case addRandomColorlessHandDiscardCopy:
-                Upgrade = "            dADD_AMOUNT_RANDOM_COLORLESSc=UPGRADE_dAMOUNT_RANDOM_COLORLESSc;\n";
+            case addRandomColorlessDiscardCopy:
+                Upgrade = "            " + rColorlessDiscCopy + "=UPGRADE_" + rColorlessDiscCopy + ";\n";
+                break;
+
+            case addRandomAttackDrawPileCopy:
+                Upgrade = "            " + rAttackDrawPCopy + "=UPGRADE_" + rAttackDrawPCopy + ";\n";
+                break;
+            case addRandomSkillDrawPileCopy:
+                Upgrade = "            " + rSkillDrawPCopy + "=UPGRADE_" + rSkillDrawPCopy + ";\n";
+                break;
+            case addRandomPowerDrawPileCopy:
+                Upgrade = "            " + rPowerDrawPCopy + "=UPGRADE_" + rPowerDrawPCopy + ";\n";
+                break;
+            case addRandomColorlessDrawPileCopy:
+                Upgrade = "            " + rColorlessDrawPCopy + "=UPGRADE_" + rColorlessDrawPCopy + ";\n";
+                break;
+
+            case addRandomAttackTopDrawPileCopy:
+                Upgrade = "            " + rAttackTopDrawPCopy + "=UPGRADE_" + rAttackTopDrawPCopy + ";\n";
+                break;
+            case addRandomSkillTopDrawPileCopy:
+                Upgrade = "            " + rSkillTopDrawPCopy + "=UPGRADE_" + rSkillTopDrawPCopy + ";\n";
+                break;
+            case addRandomPowerTopDrawPileCopy:
+                Upgrade = "            " + rPowerTopDrawPCopy + "=UPGRADE_" + rPowerTopDrawPCopy + ";\n";
+                break;
+            case addRandomColorlessTopDrawPileCopy:
+                Upgrade = "            " + rColorlessTopDrawPCopy + "=UPGRADE_" + rColorlessTopDrawPCopy + ";\n";
+                break;
+
+            case addRandomAttackBotDrawPileCopy:
+                Upgrade = "            " + rAttackBotDrawPCopy + "=UPGRADE_" + rAttackBotDrawPCopy + ";\n";
+                break;
+            case addRandomSkillBotDrawPileCopy:
+                Upgrade = "            " + rSkillBotDrawPCopy + "=UPGRADE_" + rSkillBotDrawPCopy + ";\n";
+                break;
+            case addRandomPowerBotDrawPileCopy:
+                Upgrade = "            " + rPowerBotDrawPCopy + "=UPGRADE_" + rPowerBotDrawPCopy + ";\n";
+                break;
+            case addRandomColorlessBotDrawPileCopy:
+                Upgrade = "            " + rColorlessBotDrawPCopy + "=UPGRADE_" + rColorlessBotDrawPCopy + ";\n";
                 break;
             //endregion
             //region Add Random
             case addRandomAttackHand:
-                Upgrade = "            hADD_AMOUNT_RANDOM_ATTACK=UPGRADE_hAMOUNT_RANDOM_ATTACK;\n";
+                Upgrade = "            " + rAttackHand + "=UPGRADE_" + rAttackHand + ";\n";
                 break;
             case addRandomSkillHand:
-                Upgrade = "            hADD_AMOUNT_RANDOM_SKILL=UPGRADE_hAMOUNT_RANDOM_SKILL;\n";
+                Upgrade = "            " + rSkillHand + "=UPGRADE_" + rSkillHand + ";\n";
                 break;
             case addRandomPowerHand:
-                Upgrade = "            hADD_AMOUNT_RANDOM_POWER=UPGRADE_hAMOUNT_RANDOM_POWER;\n";
+                Upgrade = "            " + rPowerHand + "=UPGRADE_" + rPowerHand + ";\n";
                 break;
             case addRandomColorlessHand:
-                Upgrade = "            hADD_AMOUNT_RANDOM_COLORLESS=UPGRADE_hAMOUNT_RANDOM_COLORLESS;\n";
+                Upgrade = "            " + rColorlessHand + "=UPGRADE_" + rColorlessHand + ";\n";
                 break;
 
             case addRandomAttackDiscard:
-                Upgrade = "            dADD_AMOUNT_RANDOM_ATTACK=UPGRADE_dAMOUNT_RANDOM_ATTACK;\n";
+                Upgrade = "            " + rAttackDisc + "=UPGRADE_" + rAttackDisc + ";\n";
                 break;
             case addRandomSkillDiscard:
-                Upgrade = "            dADD_AMOUNT_RANDOM_SKILL=UPGRADE_dAMOUNT_RANDOM_SKILL;\n";
+                Upgrade = "            " + rSkillDisc + "=UPGRADE_" + rSkillDisc + ";\n";
                 break;
             case addRandomPowerDiscard:
-                Upgrade = "            dADD_AMOUNT_RANDOM_POWER=UPGRADE_dAMOUNT_RANDOM_POWER;\n";
+                Upgrade = "            " + rPowerDisc + "=UPGRADE_d" + rPowerDisc + ";\n";
                 break;
             case addRandomColorlessDiscard:
-                Upgrade = "            dADD_AMOUNT_RANDOM_COLORLESS=UPGRADE_dAMOUNT_RANDOM_COLORLESS;\n";
+                Upgrade = "            " + rColorlessDisc + "=UPGRADE_" + rColorlessDisc + ";\n";
                 break;
+
+            //------------------------------
+            case addRandomAttackDrawPile:
+                Upgrade = "            " + rAttackDrawP + "=UPGRADE_" + rAttackDrawP + ";\n";
+                break;
+            case addRandomSkillDrawPile:
+                Upgrade = "            " + rSkillDrawP + "=UPGRADE_" + rSkillDrawP + ";\n";
+                break;
+            case addRandomPowerDrawPile:
+                Upgrade = "            " + rPowerDrawP + "=UPGRADE_" + rPowerDrawP + ";\n";
+                break;
+            case addRandomColorlessDrawPile:
+                Upgrade = "            " + rColorlessDrawP + "=UPGRADE_" + rColorlessDrawP+ ";\n";
+                break;
+
+            case addRandomAttackTopDrawPile:
+                Upgrade = "            " + rAttackTopDrawP + "=UPGRADE_" + rAttackTopDrawP + ";\n";
+                break;
+            case addRandomSkillTopDrawPile:
+                Upgrade = "            " + rSkillTopDrawP + "=UPGRADE_" + rSkillTopDrawP + ";\n";
+                break;
+            case addRandomPowerTopDrawPile:
+                Upgrade = "            " + rPowerTopDrawP+ "=UPGRADE_" + rPowerTopDrawP+ ";\n";
+                break;
+            case addRandomColorlessTopDrawPile:
+                Upgrade = "            " + rColorlessTopDrawP+ "=UPGRADE_" + rColorlessTopDrawP+ ";\n";
+                break;
+
+            case addRandomAttackBotDrawPile:
+                Upgrade = "            " + rAttackBotDrawP + "=UPGRADE_" + rAttackBotDrawP+ ";\n";
+                break;
+            case addRandomSkillBotDrawPile:
+                Upgrade = "            " + rSkillBotDrawP + "=UPGRADE_" + rSkillBotDrawP + ";\n";
+                break;
+            case addRandomPowerBotDrawPile:
+                Upgrade = "            " + rPowerBotDrawP + "=UPGRADE_" + rPowerBotDrawP + ";\n";
+                break;
+            case addRandomColorlessBotDrawPile:
+                Upgrade = "            " + rColorlessBotDrawP + "=UPGRADE_" + rColorlessBotDrawP + ";\n";
+                break;
+            //------------------------------
             //endregion
             //region Draw
             case chooseToDraw:
-                Upgrade = "            CHOOSE_AMOUNT=UPGRADE_CHOOSE_AMOUNT;\n";
+                Upgrade = "            " + choose2Draw + "=UPGRADE_" + choose2Draw + ";\n";
                 break;
             case chooseToDrawAttack:
-                Upgrade = "            CHOOSE_AMOUNT_ATTACK=UPGRADE_CHOOSE_AMOUNT_ATTACK;\n";
+                Upgrade = "            " + choose2DrawAttack + "=UPGRADE_" + choose2DrawAttack + ";\n";
                 break;
             case chooseToDrawSkill:
-                Upgrade = "            CHOOSE_AMOUNT_SKILL=UPGRADE_CHOOSE_AMOUNT_SKILL;\n";
+                Upgrade = "            " + choose2DrawSkill + "=UPGRADE_" + choose2DrawSkill + ";\n";
                 break;
             case drawCard:
-                Upgrade = "            DRAW_AMOUNT=UPGRADE_DRAW_AMOUNT;\n";
+                Upgrade = "            " + draw + "=UPGRADE_" + draw + ";\n";
                 break;
             //endregion
             //endregion
