@@ -174,7 +174,7 @@ public abstract class AbstractDefaultCard extends CustomCard
         this.upgradedMagicNumber = true;
     }
 
-    //region apply
+    //region Apply
     public void upgradeAVulnerableValue(int amount)
     { // If we're upgrading (read: changing) the number. Note "upgrade" and NOT "upgraded" - 2 different things. One is a boolean, and then this one is what you will usually use - change the integer by how much you want to upgrade.
         aBaseVulnerableValue = amount; // Upgrade the number by the amount you provide in your card.
@@ -182,12 +182,12 @@ public abstract class AbstractDefaultCard extends CustomCard
         aUpgradedVulnerableValue = true; // Upgraded = true - which does what the above method does.
     }
 
-    public void upgradeAValues(int amount, int baseValue, int value, boolean upgradeBool)
+/*    public void upgradeAValues(int amount, int baseValue, int value, boolean upgradeBool)
     {
         baseValue = amount;
         value = baseValue;
         upgradeBool = true;
-    }
+    }*/
 
     public void upgradeAWeakValue(int amount)
     {
@@ -241,6 +241,9 @@ public abstract class AbstractDefaultCard extends CustomCard
         gUpgradedStrValue = true;
     }
 
+    //endregion
+
+    //region Add Cards
     public void AddRandomCardHand(int time, CardType type)
     {
         for (int i = 0; i < time; i++)
@@ -250,6 +253,12 @@ public abstract class AbstractDefaultCard extends CustomCard
         }
     }
 
+    public void AddRandomCardHandCopy(int time, CardType type)
+    {
+        AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
+        this.addToBot(new MakeTempCardInHandAction(c.makeStatEquivalentCopy(), time, true));
+    }
+
     public void AddRandomCardDiscard(int time, CardType type)
     {
         for (int i = 0; i < time; i++)
@@ -257,6 +266,17 @@ public abstract class AbstractDefaultCard extends CustomCard
             AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
             this.addToBot(new MakeTempCardInDiscardAction(c, true));
         }
+    }
+
+    public void AddRandomCardDiscardCopy(int time, CardType type)
+    {
+
+        AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(type).makeCopy();
+        for (int i = 0; i < time; i++)
+        {
+            this.addToBot(new MakeTempCardInDiscardAction(c.makeStatEquivalentCopy(), true));
+        }
+
     }
 
     public void AddRandomColorless(int time, String where)
@@ -275,6 +295,25 @@ public abstract class AbstractDefaultCard extends CustomCard
             {
                 AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
                 this.addToBot(new MakeTempCardInDiscardAction(c, true));
+            }
+        }
+    }
+
+    public void AddRandomColorlessCopy(int time, String where)
+    {
+
+        if (where == "Hand")
+        {
+
+            AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
+            this.addToBot(new MakeTempCardInHandAction(c.makeStatEquivalentCopy(), time, true));
+        } else if (where == "Discard")
+        {
+            AbstractCard c = AbstractDungeon.returnTrulyRandomColorlessCardInCombat(AbstractDungeon.cardRandomRng).makeCopy();
+
+            for (int i = 0; i < time; i++)
+            {
+                this.addToBot(new MakeTempCardInDiscardAction(c.makeStatEquivalentCopy(), true));
             }
         }
     }

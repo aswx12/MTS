@@ -58,7 +58,7 @@ public class ActionTestFile extends AbstractDynamicCard
     {
         AbstractCard c = AbstractDungeon.returnTrulyRandomCardInCombat(CardType.ATTACK).makeCopy();
         c.setCostForTurn(0);
-        this.addToBot(new MakeTempCardInDiscardAction(c, true));
+        this.addToBot(new MakeTempCardInDiscardAction(c.makeStatEquivalentCopy(), true));
     }
 
     // Upgraded stats.

@@ -185,6 +185,14 @@
                         <item value="Gain Strength"/>
                         <item value="Add Copy(Discard)"/>
                         <item value="Add Copy(Hand)"/>
+                        <item value="Add Random Attack Copy(Hand)"/>
+                        <item value="Add Random Skill Copy(Hand)"/>
+                        <item value="Add Random Power Copy(Hand)"/>
+                        <item value="Add Random Colorless Copy(Hand)"/>
+                        <item value="Add Random Attack Copy(Discard)"/>
+                        <item value="Add Random Skill Copy(Discard)"/>
+                        <item value="Add Random Power Copy(Discard)"/>
+                        <item value="Add Random Colorless Copy(Discard)"/>
                         <item value="Add Random Attack(Hand)"/>
                         <item value="Add Random Skill(Hand)"/>
                         <item value="Add Random Power(Hand)"/>
@@ -273,9 +281,11 @@
           </component>
           <component id="44734" class="javax.swing.JCheckBox" binding="innateCheck">
             <constraints>
-              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <horizontalAlignment value="2"/>
+              <horizontalTextPosition value="4"/>
               <text value="Innate"/>
             </properties>
           </component>
