@@ -5,6 +5,7 @@ import basemod.BaseMod;
 import com.megacrit.cardcrawl.actions.AbstractGameAction.*;
 import com.megacrit.cardcrawl.actions.common.*;
 import com.megacrit.cardcrawl.actions.unique.*;
+import com.megacrit.cardcrawl.actions.defect.*;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -27,9 +28,9 @@ import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
 @AutoAdd.Seen
-public class ag extends AbstractDynamicCard
+public class a extends AbstractDynamicCard
 {
-    public static final String ID = DefaultMod.makeID(ag.class.getSimpleName()); 
+    public static final String ID = DefaultMod.makeID(a.class.getSimpleName()); 
     public static final String IMG = makeCardPath("Attack.png"); 
     private static final CardRarity RARITY = CardRarity.UNCOMMON; 
     private static final CardTarget TARGET = CardTarget.ENEMY; 
@@ -39,17 +40,16 @@ public class ag extends AbstractDynamicCard
     private static final int COST = 1;  
     private static final int UPGRADED_COST = 1; 
 
-    private static final int DAMAGE = 1;
-    private static final int UPGRADE_DAMAGE= 1;
+    private int drawPerExhQty = 1;
+    private final int UPGRADE_drawPerExhQty = 1;
 
     // /STAT DECLARATION/
 
-    public ag ()
+    public a ()
     { 
-        super(ID, "ag", IMG,"a", COST, TYPE, COLOR, RARITY, TARGET);
-        baseDamage = DAMAGE;
+        super(ID, "a", IMG,"a", COST, TYPE, COLOR, RARITY, TARGET);
 
-                //this.tags.add(CardTags.STARTER_STRIKE); 
+        //this.tags.add(CardTags.STARTER_STRIKE); 
         //this.tags.add(CardTags.STRIKE);
 
     }
@@ -59,9 +59,9 @@ public class ag extends AbstractDynamicCard
     @Override
     public void use(AbstractPlayer p, AbstractMonster m)
     {
-         this.addToBot(
-                new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));
+         this.addToBot(new ApplyPowerAction(p, p, new DarkEmbracePower(p, drawPerExhQty), drawPerExhQty));
     }
+
 
     // Upgraded stats.
     @Override
@@ -70,7 +70,7 @@ public class ag extends AbstractDynamicCard
         if (!upgraded)
         {
             upgradeName();
-            upgradeDamage(UPGRADE_DAMAGE);
+            drawPerExhQty=UPGRADE_drawPerExhQty;
             upgradeBaseCost(UPGRADED_COST);
             initializeDescription();
         }

@@ -2,6 +2,7 @@ package suikaMod.cards.CustomCards;
 
 import basemod.AutoAdd;
 import basemod.BaseMod;
+import basemod.patches.com.megacrit.cardcrawl.cards.AbstractCard.DamageHooks;
 import com.megacrit.cardcrawl.actions.AbstractGameAction.*;
 import com.megacrit.cardcrawl.actions.common.*;
 import com.megacrit.cardcrawl.actions.unique.*;
@@ -22,6 +23,7 @@ import static suikaMod.DefaultMod.makeCardPath;
 
 import java.io.File;  // Import the File class
 import java.io.IOException;
+import java.util.Iterator;
 
 import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
@@ -45,7 +47,7 @@ public class ActionTestFile extends AbstractDynamicCard
     public ActionTestFile()
     {
         super(ID, "ActionTestFile", IMG, "a", COST, TYPE, COLOR, RARITY, TARGET);
-
+        isMultiDamage = true;
         //this.tags.add(CardTags.STARTER_STRIKE);
         //this.tags.add(CardTags.STRIKE);
 
@@ -56,18 +58,39 @@ public class ActionTestFile extends AbstractDynamicCard
     @Override
     public void use(AbstractPlayer p, AbstractMonster m)
     {
+        AbstractMonster mo;
+        Iterator var3;
 
-        this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), 2,true,true));
+        var3 = AbstractDungeon.getCurrRoom().monsters.monsters.iterator();
+        while(var3.hasNext()) {
+            mo = (AbstractMonster)var3.next();
+            this.addToBot(new ApplyPowerAction(mo, p, new VulnerablePower(mo, 1, false), 1, true, AttackEffect.NONE));
+        }
 
-        this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), 2,false,false,false));
+        var3 = AbstractDungeon.getCurrRoom().monsters.monsters.iterator();
+        while(var3.hasNext()) {
+            mo = (AbstractMonster)var3.next();
+            this.addToBot(new ApplyPowerAction(mo, p, new WeakPower(mo, 2, false), this.magicNumber, true, AttackEffect.NONE));
+        }
 
-        this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), 2,false,false,true));
+        // this.addToBot(new ApplyPowerAction(p, p, new DarkEmbracePower(p, 1), 1));
+        //this.addToBot(new ApplyPowerAction(p, p, new LoseStrengthPower(p, this.magicNumber), this.magicNumber));
+        //addToBot(new SwordBoomerangAction(new DamageInfo(p, 5, damageTypeForTurn), 2));
+       /* if (this.target != null && m.hasPower("Vulnerable"))
+        {
+            this.addToTop(new DrawCardAction(AbstractDungeon.player, 1));
+            this.addToTop(new GainEnergyAction(1));
+        }*/
 
-      /*  AddRandomCardDrawPCopy(,CardType.ATTACK,"Random");
-        AddRandomCardDrawPCopy(,CardType.SKILL,"Random");
-        AddRandomCardDrawPCopy(,CardType.POWER,"Random");
-        AddRandomColorlessCopy(,"DrawPile");*/
+        //this.addToBot(new ExpertiseAction(p, this.magicNumber));
+
     }
+
+    public void triggerOnManualDiscard()
+    {
+        this.addToBot(new DrawCardAction(AbstractDungeon.player, 2));
+    }
+
 
     // Upgraded stats.
     @Override

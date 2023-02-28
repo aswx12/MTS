@@ -245,7 +245,15 @@
                         <item value="Choose To Draw"/>
                         <item value="Choose To Draw(Attack)"/>
                         <item value="Choose To Draw(Skill)"/>
+                        <item value=""/>
                         <item value="Draw Card"/>
+                        <item value="Draw Until x Card On Hand"/>
+                        <item value="Draw Extra Next Turn"/>
+                        <item value="Draw Extra At Turn Start"/>
+                        <item value="Draw When Discard"/>
+                        <item value="Draw Per Exhaust"/>
+                        <item value="Draw Per Unique Orb"/>
+                        <item value="Draw On Power Play"/>
                       </model>
                       <visible value="true"/>
                       <visibleRowCount value="5"/>

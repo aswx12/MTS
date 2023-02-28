@@ -9,13 +9,21 @@ import javax.swing.table.DefaultTableModel;
 public class CardTemplateStrings
 {
     public static String MODID = DefaultMod.MODID;
-
+    static StringBuilder sbVariable = new StringBuilder();
+    static StringBuilder sbBaseValue = new StringBuilder();
+    static StringBuilder sbActions = new StringBuilder();
+    static StringBuilder sbDiscActions = new StringBuilder();
+    static StringBuilder sbUpgrade = new StringBuilder();
     static boolean repeat;
 
     //region UTILITIES
     public static int intParse(JTextField stringToParse)
     {
         return Integer.parseInt(stringToParse.getText());
+    }
+    public static String stringParse(JComboBox thingToParse)
+    {
+        return thingToParse.getSelectedItem().toString();
     }
 
     public static int GetActionValues(DefaultTableModel actionModel, int row, int col)
@@ -43,7 +51,8 @@ public class CardTemplateStrings
                 "import com.megacrit.cardcrawl.actions.AbstractGameAction.*;\n" +
                 "import com.megacrit.cardcrawl.actions.common.*;\n" +
                 "import com.megacrit.cardcrawl.actions.unique.*;\n" +
-                "import com.megacrit.cardcrawl.cards.AbstractCard;\n"+
+                "import com.megacrit.cardcrawl.actions.defect.*;\n" +
+                "import com.megacrit.cardcrawl.cards.AbstractCard;\n" +
                 "import com.megacrit.cardcrawl.cards.DamageInfo;\n" +
                 "import com.megacrit.cardcrawl.characters.AbstractPlayer;\n" +
                 "import com.megacrit.cardcrawl.core.CardCrawlGame;\n" +
@@ -60,6 +69,7 @@ public class CardTemplateStrings
                 "\n" +
                 "import java.io.File;  // Import the File class\n" +
                 "import java.io.IOException;\n" +
+                "import java.util.Iterator;\n"+
                 "\n" +
                 "import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;\n" +
                 "\n" +
@@ -85,10 +95,10 @@ public class CardTemplateStrings
             return targetSpaceCheck;
     }
 
-    public static String CardState(JCheckBox innateCheck,JCheckBox retainCheck, JCheckBox exhaustCheck, JCheckBox etherealCheck)
+    public static String CardState(JCheckBox innateCheck, JCheckBox retainCheck, JCheckBox exhaustCheck, JCheckBox etherealCheck)
     {
         String states = "";
-        if(innateCheck.isSelected())
+        if (innateCheck.isSelected())
         {
             states += "this.isInnate=true; \n";
         }
@@ -143,38 +153,56 @@ public class CardTemplateStrings
 
         String DESCRIPTION = description.getText().replaceAll("(?!\\r)\\n", " NL ");
 
+
         String variable = "";
         String baseValue = "";
         String actions = "";
+        String actionsWhenDiscard = "";
         String upgrade = "";
+
+        String isMulti = "";
+        if (target.getSelectedItem().toString().equals("All Enemy"))
+        {
+            isMulti = "isMultiDamage = true;\n";
+        }
 
         for (int i = 0; i < actionTableModel.getRowCount(); i++)
         {
-            /*if (originActionList.contains(selectedActionList.getElementAt(i))) can be deleted
-            {*/
-           /* if (actionTableModel.getValueAt(i, 2) != null)
-            {*/
 
-            variable += ContentAdd.AllVariable(
+            sbVariable.append(ContentAdd.AllVariable(
                     GetActionNames(actionTableModel, i),
                     GetActionValues(actionTableModel, i, 1),
-                    GetActionValues(actionTableModel, i, 2));
-            //}
+                    GetActionValues(actionTableModel, i, 2)));
 
-            baseValue += ContentAdd.BaseValue(
-                    GetActionNames(actionTableModel, i));
+            sbBaseValue.append(ContentAdd.BaseValue(
+                    GetActionNames(actionTableModel, i)));
 
-            actions += ContentAdd.AllActions(
-                    GetActionNames(actionTableModel, i));
+            sbActions.append(ContentAdd.AllActions(
+                    GetActionNames(actionTableModel, i),
+                    stringParse(target)));
+
+            sbDiscActions.append(ContentAdd.ActionsWhenDiscard(
+                    GetActionNames(actionTableModel, i)));
 
 
-            upgrade += ContentAdd.Upgrade(
-                    GetActionNames(actionTableModel, i));
+            sbUpgrade.append(ContentAdd.Upgrade(
+                    GetActionNames(actionTableModel, i)));
 
             if (GetActionNames(actionTableModel, i).equals("Repeat"))
             {
                 repeat = true;
             }
+        }
+        variable=sbVariable.toString();
+        baseValue=sbBaseValue.toString();
+        actions=sbActions.toString();
+        actionsWhenDiscard=sbDiscActions.toString();
+        upgrade=sbUpgrade.toString();
+
+        String closeDiscAction = "";
+        if (!actionsWhenDiscard.isEmpty())
+        {
+            closeDiscAction = "\n   }";
         }
 
         String unlocked = "";
@@ -203,8 +231,10 @@ public class CardTemplateStrings
                 "    public " + name.getText() + " ()\n" +
                 "    { \n" +
                 "        super(ID, \"" + name.getText() + "\", IMG," + "\"" + DESCRIPTION + "\"" + ", COST, TYPE, COLOR, RARITY, TARGET);\n" +
-                "        " + baseValue + "\n" +
-                "        " + CardState(innateCheck, retainCheck, exhaustCheck, etherealCheck) +
+                "\n"+
+                "" + baseValue + "\n" +
+                "" + CardState(innateCheck, retainCheck, exhaustCheck, etherealCheck) +
+                "       " + isMulti +
                 "        //this.tags.add(CardTags.STARTER_STRIKE); \n" + //wht if not starter?
                 "        //this.tags.add(CardTags.STRIKE);\n" +
                 "\n" +
@@ -215,8 +245,10 @@ public class CardTemplateStrings
                 "    @Override\n" +
                 "    public void use(AbstractPlayer p, AbstractMonster m)\n" +
                 "    {\n" +
-                "        " + LoopInsert(repeat, actions) +
+                "" + LoopInsert(repeat, actions) +
                 "    }\n" +
+                "\n" +
+                "" + actionsWhenDiscard + closeDiscAction +
                 "\n" +
                 "    // Upgraded stats.\n" +
                 "    @Override\n" +
@@ -225,7 +257,7 @@ public class CardTemplateStrings
                 "        if (!upgraded)\n" +
                 "        {\n" +
                 "            upgradeName();\n" +
-                "            " + upgrade +
+                "" + upgrade +
                 "            upgradeBaseCost(UPGRADED_COST);\n" +
                 "            initializeDescription();\n" +
                 "        }\n" +

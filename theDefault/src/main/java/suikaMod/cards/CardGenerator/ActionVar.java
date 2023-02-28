@@ -90,12 +90,23 @@ public class ActionVar
 
     //endregion
 
-    //region Draw
+   //region Choose2Draw
 
     public static String choose2Draw = "chooseDrawQty";
     public static String choose2DrawAttack= "chooseAttackDrawQty";
     public static String choose2DrawSkill = "chooseSkillDrawQty";
+
+    //endregion
+    //region Draw
     public static String draw = "drawQty";
+    public static String drawUntilxHand = "drawUntilxHandQty"; //not needed
+    public static String drawXtrNxtTurn = "drawXtraNextTurnQty";
+    public static String drawXtrAtStart = "drawXtraAtTurnStartQty";
+    public static String drawWhenDisc = "drawWhenDiscQty";
+    public static String drawPerExh = "drawPerExhQty";
+    public static String drawPerUOrb = "drawPerUniqOrbQty";
+    public static String drawOnPowPlay = "drawPowerPlayQty";
+
 
     //endregion
 }

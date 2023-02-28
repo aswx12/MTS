@@ -1,5 +1,7 @@
 package suikaMod.cards.CardGenerator;
 
+import java.lang.annotation.Target;
+
 import static suikaMod.cards.CardGenerator.ActionVar.*;
 
 
@@ -94,19 +96,29 @@ public class ContentAdd
 
 
     //endregion
-    
-    //region Draw
+
+    //region choose2Draw
     static final String chooseToDraw = "ChooseToDraw";
     static final String chooseToDrawAttack = "ChooseToDraw(Attack)";
     static final String chooseToDrawSkill = "ChooseToDraw(Skill)";
+    //endregion
+    //region Draw
+    static final String drawCard = "DrawCard";
+    static final String drawUntilxCardOnHand = "DrawUntilxCardOnHand\n";
+    static final String drawXtraNextTurn = "DrawExtraNextTurn";
+    static final String drawXtraAtTurnStart = "DrawExtraAtTurnStart";
+    static final String drawWhenDiscard = "DrawWhenDiscard";
+    static final String drawPerExhaust = "DrawPerExhaust";
+    static final String drawPerUniqueOrb = "DrawPerUniqueOrb";
+    static final String drawOnPowerPlay = "DrawOnPowerPlay";
 
-    static final String drawCard = "Draw Card";
     //endregion
 
 
     //endregion
 
     //endregion
+
     //region Variable
     public static String AllVariable(String action, int value, int upgradeValue)
     {
@@ -377,7 +389,7 @@ public class ContentAdd
 
             //endregion
 
-            //region Draw
+            //region Choose2Draw
             case chooseToDraw:
                 variable = "    private int " + choose2Draw + " = " + value + ";\n" +
                         "    private final int UPGRADE_" + choose2Draw + " = " + upgradeValue + ";\n";
@@ -390,9 +402,41 @@ public class ContentAdd
                 variable = "    private int " + choose2DrawSkill + " = " + value + ";\n" +
                         "    private final int UPGRADE_" + choose2DrawSkill + " = " + upgradeValue + ";\n";
                 break;
+            //endregion
+
+            //region Draw
+
             case drawCard:
                 variable = "    private int " + draw + " = " + value + ";\n" +
                         "    private final int UPGRADE_" + draw + " = " + upgradeValue + ";\n";
+                break;
+            case drawUntilxCardOnHand:
+                variable = "    private int " + drawUntilxHand + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + drawUntilxHand + " = " + upgradeValue + ";\n";
+                break;
+            case drawXtraNextTurn:
+                variable = "    private int " + drawXtrNxtTurn + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + drawXtrNxtTurn + " = " + upgradeValue + ";\n";
+                break;
+            case drawXtraAtTurnStart:
+                variable = "    private int " + drawXtrAtStart + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + drawXtrAtStart + " = " + upgradeValue + ";\n";
+                break;
+            case drawWhenDiscard:
+                variable = "    private int " + drawWhenDisc + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + drawWhenDisc + " = " + upgradeValue + ";\n";
+                break;
+            case drawPerExhaust:
+                variable = "    private int " + drawPerExh + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + drawPerExh + " = " + upgradeValue + ";\n";
+                break;
+            case drawPerUniqueOrb:
+                variable = "    private int " + drawPerUOrb + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + drawPerUOrb + " = " + upgradeValue + ";\n";
+                break;
+            case drawOnPowerPlay:
+                variable = "    private int " + drawOnPowPlay + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + drawOnPowPlay + " = " + upgradeValue + ";\n";
                 break;
             //endregion
             //endregion
@@ -415,7 +459,7 @@ public class ContentAdd
         switch (matcher)
         {
             case damage:
-                base = "baseDamage = " + dmg + ";\n";
+                base = "        baseDamage = " + dmg + ";\n";
                 break;
             case block:
                 base = "        baseBlock = " + blc + ";\n";
@@ -460,18 +504,24 @@ public class ContentAdd
     //endregion
 
     //region Actions
-    public static String AllActions(String action)
+    public static String AllActions(String action, String target)
     {
-        return Actions(action);
+        return Actions(action, target);
     }
 
-    public static String Actions(String matcher)
+    public static String Actions(String matcher, String target)
     {
         String action = "";
         switch (matcher)
         {
             case damage:
-                action = " this.addToBot(\n" +
+                if (target.equals("All Enemy"))
+                {
+                    action = "         this.addToBot(\n" +
+                            "                new DamageAllEnemiesAction(p, this.multiDamage, this.damageTypeForTurn, AttackEffect.SLASH_HORIZONTAL));\n";
+                    break;
+                }
+                action = "         this.addToBot(\n" +
                         "                new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));\n";
                 break;
             case block:
@@ -482,16 +532,52 @@ public class ContentAdd
                 break;
             //region apply
             case applyVulnerable:
+
+                if (target.equals("All Enemy"))
+                {
+                    action = targetAllEnemy +
+                            "            this.addToBot(new ApplyPowerAction(mo, p, new VulnerablePower(mo, this.aVulnerableValue, false), this.aVulnerableValue));\n" +
+                            "        }\n";
+                    action = MultiDebuff(target) + action;
+                    break;
+                }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new VulnerablePower(m, this.aVulnerableValue, false), this.aVulnerableValue));\n";
                 break;
             case applyWeak:
+                if (target.equals("All Enemy"))
+                {
+                    action = targetAllEnemy +
+                            "            this.addToBot(new ApplyPowerAction(mo, p, new WeakPower(mo, this.aWeakValue, false), this.aWeakValue));\n" +
+                            "        }\n";
+                    action = MultiDebuff(target) + action;
+                    break;
+                }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new WeakPower(m, this.aWeakValue, false), this.aWeakValue));\n";
+
                 break;
             case applyPoison:
+                if (target.equals("All Enemy"))
+                {
+                    action = targetAllEnemy +
+                            "            this.addToBot(new ApplyPowerAction(mo, p, new PoisonPower(mo, p, this.aPoisonValue), this.aPoisonValue, AttackEffect.POISON));\n" +
+                            "        }\n";
+                    action = MultiDebuff(target) + action;
+                    break;
+                }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new PoisonPower(m, p, this.aPoisonValue), this.aPoisonValue, AttackEffect.POISON));\n";
+
                 break;
             case applyStr:
+                if (target.equals("All Enemy"))
+                {
+                    action = targetAllEnemy +
+                            "            this.addToBot(new ApplyPowerAction(mo, p, new StrengthPower(mo, this.aStrValue), this.aStrValue));\n" +
+                            "        }\n";
+                    action = MultiDebuff(target) + action;
+                    break;
+                }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new StrengthPower(m, this.aStrValue), this.aStrValue));\n";
+
                 break;
             //endregion
 
@@ -664,7 +750,7 @@ public class ContentAdd
             //-----------------------------------
             //endregion
 
-            //region Draw
+            //region choose2Draw
             case chooseToDraw:
                 action = "         this.addToBot(new BetterDrawPileToHandAction(" + choose2Draw + "));\n";
                 break;
@@ -674,8 +760,32 @@ public class ContentAdd
             case chooseToDrawSkill:
                 action = "         this.addToBot(new SkillFromDeckToHandAction(" + choose2DrawSkill + "));\n";
                 break;
+            //endregion
+
+            //region Draw
             case drawCard:
                 action = "         this.addToBot(new DrawCardAction(p, " + draw + "));\n";
+                break;
+            case drawUntilxCardOnHand:
+                action = "         this.addToBot(new ExpertiseAction(p, " + drawUntilxHand + "));\n";
+                break;
+            case drawXtraNextTurn:
+                action = "         this.addToBot(new ApplyPowerAction(p, p, new DrawCardNextTurnPower(p, " + drawXtrNxtTurn + "), " + drawXtrNxtTurn + "));\n";
+                break;
+            case drawXtraAtTurnStart:
+                action = "         this.addToBot(new ApplyPowerAction(p, p, new DrawPower(p, " + drawXtrAtStart + "), " + drawXtrAtStart + "));\n";
+                break;
+/*            case drawWhenDiscard:
+                action = "         this.addToBot(new DrawCardAction(AbstractDungeon.player, "+drawWhenDisc+"));\n";
+                break;*/
+            case drawPerExhaust:
+                action = "         this.addToBot(new ApplyPowerAction(p, p, new DarkEmbracePower(p, " + drawPerExh + "), " + drawPerExh + "));\n";
+                break;
+            case drawPerUniqueOrb:
+                action = "         this.addToBot(new CompileDriverAction(p, " + drawPerUOrb + "));\n";
+                break;
+            case drawOnPowerPlay:
+                action = "         this.addToBot(new ApplyPowerAction(p, p, new HeatsinkPower(p, " + drawOnPowPlay + "), " + drawOnPowPlay + "));\n";
                 break;
             //endregion
             //endregion
@@ -684,6 +794,38 @@ public class ContentAdd
                 action = "";
         }
         return action;
+    }
+
+    //endregion
+
+    //region Actions On Discard
+    public static String AllActionsWhenDiscard(String action)
+    {
+        return ActionsWhenDiscard(action);
+    }
+
+    public static String ActionsWhenDiscard(String matcher)
+    {
+        String discMethod = "public void triggerOnManualDiscard() {\n";
+        String actionWhenDisc = "";
+
+        switch (matcher)
+        {
+            case drawWhenDiscard:
+                actionWhenDisc = "         this.addToBot(new DrawCardAction(AbstractDungeon.player, " + drawWhenDisc + "));\n";
+                break;
+            default:
+                break;
+        }
+
+        if (!actionWhenDisc.isEmpty())
+        {
+            if (!actionWhenDisc.contains(discMethod))
+            {
+                actionWhenDisc = discMethod + actionWhenDisc;
+            }
+        }
+        return actionWhenDisc;
     }
     //endregion
 
@@ -699,7 +841,7 @@ public class ContentAdd
         switch (matcher)
         {
             case damage:
-                Upgrade = "upgradeDamage(UPGRADE_" + dmg + ");\n";
+                Upgrade = "            upgradeDamage(UPGRADE_" + dmg + ");\n";
                 break;
             case block:
                 Upgrade = "            upgradeBlock(UPGRADE_" + blc + ");\n";
@@ -860,7 +1002,7 @@ public class ContentAdd
                 Upgrade = "            " + rPowerDrawP + "=UPGRADE_" + rPowerDrawP + ";\n";
                 break;
             case addRandomColorlessDrawPile:
-                Upgrade = "            " + rColorlessDrawP + "=UPGRADE_" + rColorlessDrawP+ ";\n";
+                Upgrade = "            " + rColorlessDrawP + "=UPGRADE_" + rColorlessDrawP + ";\n";
                 break;
 
             case addRandomAttackTopDrawPile:
@@ -870,14 +1012,14 @@ public class ContentAdd
                 Upgrade = "            " + rSkillTopDrawP + "=UPGRADE_" + rSkillTopDrawP + ";\n";
                 break;
             case addRandomPowerTopDrawPile:
-                Upgrade = "            " + rPowerTopDrawP+ "=UPGRADE_" + rPowerTopDrawP+ ";\n";
+                Upgrade = "            " + rPowerTopDrawP + "=UPGRADE_" + rPowerTopDrawP + ";\n";
                 break;
             case addRandomColorlessTopDrawPile:
-                Upgrade = "            " + rColorlessTopDrawP+ "=UPGRADE_" + rColorlessTopDrawP+ ";\n";
+                Upgrade = "            " + rColorlessTopDrawP + "=UPGRADE_" + rColorlessTopDrawP + ";\n";
                 break;
 
             case addRandomAttackBotDrawPile:
-                Upgrade = "            " + rAttackBotDrawP + "=UPGRADE_" + rAttackBotDrawP+ ";\n";
+                Upgrade = "            " + rAttackBotDrawP + "=UPGRADE_" + rAttackBotDrawP + ";\n";
                 break;
             case addRandomSkillBotDrawPile:
                 Upgrade = "            " + rSkillBotDrawP + "=UPGRADE_" + rSkillBotDrawP + ";\n";
@@ -890,7 +1032,7 @@ public class ContentAdd
                 break;
             //------------------------------
             //endregion
-            //region Draw
+            //region choose2Draw
             case chooseToDraw:
                 Upgrade = "            " + choose2Draw + "=UPGRADE_" + choose2Draw + ";\n";
                 break;
@@ -900,8 +1042,31 @@ public class ContentAdd
             case chooseToDrawSkill:
                 Upgrade = "            " + choose2DrawSkill + "=UPGRADE_" + choose2DrawSkill + ";\n";
                 break;
+            //endregion
+            //region Draw
             case drawCard:
                 Upgrade = "            " + draw + "=UPGRADE_" + draw + ";\n";
+                break;
+            case drawUntilxCardOnHand:
+                Upgrade = "            " + drawUntilxHand + "=UPGRADE_" + drawUntilxHand + ";\n";
+                break;
+            case drawXtraNextTurn:
+                Upgrade = "            " + drawXtrNxtTurn + "=UPGRADE_" + drawXtrNxtTurn + ";\n";
+                break;
+            case drawXtraAtTurnStart:
+                Upgrade = "            " + drawXtrAtStart + "=UPGRADE_" + drawXtrAtStart + ";\n";
+                break;
+            case drawWhenDiscard:
+                Upgrade = "            " + drawWhenDisc + "=UPGRADE_" + drawWhenDisc + ";\n";
+                break;
+            case drawPerExhaust:
+                Upgrade = "            " + drawPerExh + "=UPGRADE_" + drawPerExh + ";\n";
+                break;
+            case drawPerUniqueOrb:
+                Upgrade = "            " + drawPerUOrb + "=UPGRADE_" + drawPerUOrb + ";\n";
+                break;
+            case drawOnPowerPlay:
+                Upgrade = "            " + drawOnPowPlay + "=UPGRADE_" + drawOnPowPlay + ";\n";
                 break;
             //endregion
             //endregion
@@ -911,6 +1076,28 @@ public class ContentAdd
         return Upgrade;
     }
     //endregion
+
+    //region multi target
+    static String var = "";
+    static String targetAllEnemy = "        var3 = AbstractDungeon.getCurrRoom().monsters.monsters.iterator();\n" +
+            "        while(var3.hasNext()) {\n" +
+            "            mo = (AbstractMonster)var3.next();\n";
+
+    public static String MultiDebuff(String target)
+    {
+        if (!target.equals("All Enemy") || !var.isEmpty())
+            return "";
+
+        if (var.isEmpty())
+        {
+            var = "        AbstractMonster mo;\n" +
+                    "        Iterator var3;\n";
+        }
+        return var;
+    }
+    //endregion
+
+
 
     //region trash
 
