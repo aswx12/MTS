@@ -172,6 +172,10 @@
                       <layoutOrientation value="0"/>
                       <model>
                         <item value="Damage"/>
+                        <item value="Modify Damage On Use"/>
+                        <item value="Damage Per Energy Used"/>
+                        <item value="Vampire Damage"/>
+                        <item value=""/>
                         <item value="Block"/>
                         <item value="Gain Energy"/>
                         <item value="Repeat"/>

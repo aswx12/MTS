@@ -80,7 +80,7 @@ public class DefaultCommonAttack extends CustomCard {
     // in your main class, in the receiveEditCards() method
 
     public DefaultCommonAttack() {
-        super(ID, NAME, IMG, COST, DESCRIPTION, TYPE, COLOR, RARITY, TARGET);
+        super(ID, NAME, IMG, COST, "!D!", TYPE, COLOR, RARITY, TARGET);
 
         // Aside from baseDamage/MagicNumber/Block there's also a few more.
         // Just type this.base and let intelliJ auto complete for you, or, go read up AbstractCard

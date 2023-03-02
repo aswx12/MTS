@@ -3,6 +3,8 @@ package suikaMod.cards.CustomCards;
 import suikaMod.cards.CardGenerator.CardTemplateStrings;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -81,7 +83,7 @@ public class UI extends JFrame
         }
 
         actionList.setModel(actionListModel);
-        String[] colName = {"Action", "Base Value", "Upgraded Value"}; 
+        String[] colName = {"Action", "Base Value", "Upgraded Value"};
         DefaultTableModel tabModel = new DefaultTableModel(null, colName)
         {
             @Override
@@ -90,15 +92,17 @@ public class UI extends JFrame
                 return column != 0;
             }
 
+
        /*     @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return Integer.class;
             }*/
         };
+
+
         tabModel.isCellEditable(0, 0);
         //tabModel.getColumnClass(1);
         actionTable.setModel(tabModel);
-
 
         CreateNewCard.addActionListener(new ActionListener()
         {
@@ -137,7 +141,7 @@ public class UI extends JFrame
                             CreateNewCard.setVisible(false);
                             cardTypeLabel.setVisible(false);
                             cardTypeList.setVisible(false);
-                            mainPanel.setPreferredSize(new Dimension(1000,getPreferredSize().height));
+                            mainPanel.setPreferredSize(new Dimension(1000, getPreferredSize().height));
                             pack();
 
 
@@ -324,6 +328,8 @@ public class UI extends JFrame
         {
             return false;
         }
+        if(text.equals("-1") || text.equals("-2"))
+            return true;
         for (int iCount = 0; iCount < text.length(); iCount++)
         {
             if (!Character.isDigit(text.charAt(iCount)))

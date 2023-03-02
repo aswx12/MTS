@@ -7,9 +7,16 @@ import static suikaMod.cards.CardGenerator.ActionVar.*;
 
 public class ContentAdd
 {
+    //region Action variables
 
-    //region Actions
+    //region dmg
     static final String damage = "Damage";
+
+    static final String DPE = "DamagePerEnergyUsed";
+
+    static final String vampireDmg = "VampireDamage";
+
+    //endregion
     static final String block = "Block";
     static final String gainEnergy = "GainEnergy";
     static final String repeat = "Repeat";
@@ -130,10 +137,21 @@ public class ContentAdd
         String variable = "";
         switch (matcher)
         {
+            //region Damage
             case damage:
                 variable = "    private static final int " + dmg + " = " + value + ";\n" +
                         "    private static final int UPGRADE_" + dmg + "= " + upgradeValue + ";\n";
                 break;
+            case DPE:
+                variable = "    private static final int " + dmgPerEnergy + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + dmgPerEnergy + "= " + upgradeValue + ";\n";
+                break;
+            case vampireDmg:
+                variable = "    private static final int " + vampDmg + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + vampDmg + "= " + upgradeValue + ";\n";
+                break;
+
+            //endregion
             case block:
                 variable = "    private static final int " + blc + " = " + value + ";\n" +
                         "    private static final int UPGRADE_" + blc + " = " + upgradeValue + ";\n";
@@ -458,9 +476,20 @@ public class ContentAdd
         String base = "";
         switch (matcher)
         {
+            //region Dmg
             case damage:
                 base = "        baseDamage = " + dmg + ";\n";
                 break;
+
+            case DPE:
+                base = "        baseDmgPerEnergy = " + dmgPerEnergy + ";\n";
+                break;
+
+            case vampireDmg:
+                base = "        baseVampDmg = " + vampDmg + ";\n";
+                break;
+
+            //endregion
             case block:
                 base = "        baseBlock = " + blc + ";\n";
                 break;
@@ -514,6 +543,7 @@ public class ContentAdd
         String action = "";
         switch (matcher)
         {
+            //region Dmg
             case damage:
                 if (target.equals("All Enemy"))
                 {
@@ -524,6 +554,29 @@ public class ContentAdd
                 action = "         this.addToBot(\n" +
                         "                new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));\n";
                 break;
+
+            case DPE:
+                if (target.equals("All Enemy"))
+                {
+                    action = "         this.addToBot(\n" +
+                            "                new WhirlwindAction(p, this.multiDPE, this.damageTypeForTurn, this.freeToPlayOnce, this.energyOnUse));\n";
+                    break;
+                }
+                action = "         this.addToBot(\n" +
+                        "                new SkewerAction(p, m, dmgPerEnergy, this.damageTypeForTurn, this.freeToPlayOnce, this.energyOnUse));\n";
+                break;
+            case vampireDmg:
+                if (target.equals("All Enemy"))
+                {
+                    action = "         this.addToBot(\n" +
+                            "                new VampireDamageAllEnemiesAction(p, this.multiVampDmg, this.damageTypeForTurn, AttackEffect.NONE));\n";
+                    break;
+                }
+                action = "         this.addToBot(\n" +
+                        "                new VampireDamageAction(m, new DamageInfo(p, vampDmg, damageTypeForTurn), AttackEffect.NONE));\n";
+                break;
+
+            //endregion
             case block:
                 action = "         this.addToBot(new GainBlockAction(p, p, block));\n";
                 break;
@@ -535,9 +588,9 @@ public class ContentAdd
 
                 if (target.equals("All Enemy"))
                 {
-                    action = targetAllEnemy +
-                            "            this.addToBot(new ApplyPowerAction(mo, p, new VulnerablePower(mo, this.aVulnerableValue, false), this.aVulnerableValue));\n" +
-                            "        }\n";
+                    action = TargetAllEnemy(
+                            "this.addToBot(new ApplyPowerAction(mo, p, new VulnerablePower(mo, this.aVulnerableValue, false), this.aVulnerableValue));");
+
                     action = MultiDebuff(target) + action;
                     break;
                 }
@@ -546,9 +599,9 @@ public class ContentAdd
             case applyWeak:
                 if (target.equals("All Enemy"))
                 {
-                    action = targetAllEnemy +
-                            "            this.addToBot(new ApplyPowerAction(mo, p, new WeakPower(mo, this.aWeakValue, false), this.aWeakValue));\n" +
-                            "        }\n";
+                    action = TargetAllEnemy(
+                            "this.addToBot(new ApplyPowerAction(mo, p, new WeakPower(mo, this.aWeakValue, false), this.aWeakValue));");
+
                     action = MultiDebuff(target) + action;
                     break;
                 }
@@ -558,9 +611,9 @@ public class ContentAdd
             case applyPoison:
                 if (target.equals("All Enemy"))
                 {
-                    action = targetAllEnemy +
-                            "            this.addToBot(new ApplyPowerAction(mo, p, new PoisonPower(mo, p, this.aPoisonValue), this.aPoisonValue, AttackEffect.POISON));\n" +
-                            "        }\n";
+                    action = TargetAllEnemy(
+                            "this.addToBot(new ApplyPowerAction(mo, p, new PoisonPower(mo, p, this.aPoisonValue), this.aPoisonValue, AttackEffect.POISON));");
+
                     action = MultiDebuff(target) + action;
                     break;
                 }
@@ -840,9 +893,18 @@ public class ContentAdd
         String Upgrade = "";
         switch (matcher)
         {
+            //region dmg
             case damage:
                 Upgrade = "            upgradeDamage(UPGRADE_" + dmg + ");\n";
                 break;
+            case DPE:
+                Upgrade = "            upgradeDPE(UPGRADE_" + dmgPerEnergy + ");\n";
+                break;
+            case vampireDmg:
+                Upgrade = "            upgradeVampDmg(UPGRADE_" + vampDmg + ");\n";
+                break;
+
+            //endregion
             case block:
                 Upgrade = "            upgradeBlock(UPGRADE_" + blc + ");\n";
                 break;
@@ -1095,8 +1157,15 @@ public class ContentAdd
         }
         return var;
     }
-    //endregion
 
+    public static String TargetAllEnemy(String action)
+    {
+        String var = targetAllEnemy +
+                "            " + action + "\n" +
+                "        }\n";
+        return var;
+    }
+    //endregion
 
 
     //region trash

@@ -1,7 +1,6 @@
 package suikaMod.cards.CardGenerator;
 
 import suikaMod.DefaultMod;
-import suikaMod.cards.CustomCards.UI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -77,7 +76,7 @@ public class CardTemplateStrings
         return imports;
     }
 
-    public static String SpaceCheck(JComboBox input)
+    public static String ReplaceSpace(JComboBox input)
     {
         String targetSpaceCheck = upperCase(input);
         if (targetSpaceCheck.matches(".*\\s+.*"))
@@ -213,12 +212,12 @@ public class CardTemplateStrings
 
         String cardInfo = Imports() +
                 "@AutoAdd." + unlocked + "\n" +
-                "public class " + name.getText() + " extends AbstractDynamicCard\n" +
+                "public class " + DeleteSpace(name.getText()) + " extends AbstractDynamicCard\n" +
                 "{\n" +
                 "    public static final String ID = DefaultMod.makeID(" + name.getText() + ".class.getSimpleName()); \n" +
                 "    public static final String IMG = makeCardPath(\"Attack.png\"); \n" +
                 "    private static final CardRarity RARITY = CardRarity." + upperCase(rarity) + "; \n" +
-                "    private static final CardTarget TARGET = CardTarget." + SpaceCheck(target) + "; \n" +
+                "    private static final CardTarget TARGET = CardTarget." + ReplaceSpace(target) + "; \n" +
                 "    private static final CardType TYPE = CardType." + upperCase(cardType) + ";       //\n" +
                 "    public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;\n" +
                 "\n" +

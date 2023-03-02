@@ -32,21 +32,12 @@ import suikaMod.relics.PlaceholderRelic;
 import suikaMod.relics.PlaceholderRelic2;
 import suikaMod.util.IDCheckDontTouchPls;
 import suikaMod.util.TextureLoader;
-import suikaMod.variables.DefaultCustomVariable;
-import suikaMod.variables.DefaultSecondMagicNumber;
+import suikaMod.variables.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 
 //TODO: DON'T MASS RENAME/REFACTOR
 //TODO: DON'T MASS RENAME/REFACTOR
@@ -435,6 +426,8 @@ public class DefaultMod implements
         // Add the Custom Dynamic variables
         BaseMod.addDynamicVariable(new DefaultCustomVariable());
         BaseMod.addDynamicVariable(new DefaultSecondMagicNumber());
+        BaseMod.addDynamicVariable(new DPE());
+        BaseMod.addDynamicVariable(new Vamp());
        // BaseMod.addCard(new Suika());
         
         logger.info("Adding cards");

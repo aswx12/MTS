@@ -2,7 +2,17 @@ package suikaMod.cards.CardGenerator;
 
 public class ActionVar
 {
+    //region dmg related
     public static String dmg = "DAMAGE";
+
+    public static String dmgModify = "dmgModifyValue";
+
+    public static String dmgPerEnergy ="dmgPerEnergyValue";
+
+    public static String dmgPerExhaustedAtt = "dmgPerExhAtt";
+
+    public static String vampDmg ="vampDmgValue";
+    //endregion
     public static String blc = "BLOCK";
     public static String gEnergy = "ENERGY";
     public static String rpt = "repeatTIME";
@@ -99,7 +109,7 @@ public class ActionVar
     //endregion
     //region Draw
     public static String draw = "drawQty";
-    public static String drawUntilxHand = "drawUntilxHandQty"; //not needed
+    public static String drawUntilxHand = "drawUntilxHandQty";
     public static String drawXtrNxtTurn = "drawXtraNextTurnQty";
     public static String drawXtrAtStart = "drawXtraAtTurnStartQty";
     public static String drawWhenDisc = "drawWhenDiscQty";

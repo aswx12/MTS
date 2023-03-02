@@ -6,36 +6,42 @@ import suikaMod.cards.AbstractDefaultCard;
 
 import static suikaMod.DefaultMod.makeID;
 
-public class DefaultSecondMagicNumber extends DynamicVariable {
+public class Vamp extends DynamicVariable
+{
 
     //For in-depth comments, check the other variable(DefaultCustomVariable). It's nearly identical.
 
     @Override
-    public String key() {
-        return makeID("aVul");
+    public String key()
+    {
+        return makeID("Vamp");
         // This is what you put between "!!" in your card strings to actually display the number.
         // You can name this anything (no spaces), but please pre-phase it with your mod name as otherwise mod conflicts can occur.
         // Remember, we're using makeID so it automatically puts "theDefault:" (or, your id) before the name.
     }
 
     @Override
-    public boolean isModified(AbstractCard card) {
-        return ((AbstractDefaultCard) card).aIsVulnerableValueModified;
+    public boolean isModified(AbstractCard card)
+    {
+        return ((AbstractDefaultCard) card).isVampDmgModified;
 
     }
 
     @Override
-    public int value(AbstractCard card) {
-        return ((AbstractDefaultCard) card).aVulnerableValue;
+    public int value(AbstractCard card)
+    {
+        return ((AbstractDefaultCard) card).vampDmg;
     }
 
     @Override
-    public int baseValue(AbstractCard card) {
-        return ((AbstractDefaultCard) card).aBaseVulnerableValue;
+    public int baseValue(AbstractCard card)
+    {
+        return ((AbstractDefaultCard) card).baseVampDmg;
     }
 
     @Override
-    public boolean upgraded(AbstractCard card) {
-        return ((AbstractDefaultCard) card).aUpgradedVulnerableValue;
+    public boolean upgraded(AbstractCard card)
+    {
+        return ((AbstractDefaultCard) card).upgradedVampDmg;
     }
 }
