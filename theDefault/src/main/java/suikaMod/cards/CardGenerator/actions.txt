@@ -1,0 +1,92 @@
+DAMAGE RELATED
+
+
+Deal x more dmg based on cards containing certain word ?
+Modify x dmg on use x
+Deal x dmg to (all) based on energy use[whirlwind] x
+Exh hand, deal x dmg for each card exh [too specific?]
+deal x dmg to random enemy on block gain (power)
+VampireDmg x
+
+---------------------------------------
+CanUse action
+Unplayble
+playable if every card in hand is attack [clash]
+
+
+--------------------------------------
+Buff/Debuff
+Gain str if enemy attack intent [spot weakness]
+Lose strength[flex]
+Gain dex
+Lose Dex
+Buff affect card x time [heavy blade]
+Gain buff at turn start
+-------------------------------------
+Variableless Action
+play top card [havoc]
+x2 block
+keep block at turn start
+x2 str
+Deal dmg equal block(body slam)
+
+----------------------------
+Dual var action
+Deal x dmg to random enemy x time 
+Lose x hp, deal x dmg to all enemy at turn end
+
+
+------------------
+Energy related
+Cost x less per time hp loss
+gain energy at turn start
+
+------------------------------------
+Health related
+lose x hp
+lose x hp draw x card at turn start
+
+
+----------------------------------
+Condition based action
+if enemy has x power(weak, str etc) do something
+When draw status/curse, deal x dmg to all
+
+
+--------------------------------
+Add copy
+Add copy of chosen Attack/Power card
+
+
+-----------------------------
+Block
+Gain x block per exh card
+Gain x block per attack this turn
+Exhaust non-attacks in hand, gain x block per exh
+
+
+
+
+--------------------------
+Discard To Hand {hologram
+discard to draw? top & bottom & shuffle
+
+
+Exhaust Card
+Exhaust Card(Random)[true grit]
+Exhaust non-attack
+Exhaust Hand
+Exhaust Up to?
+Set card Cost
+Exhaust Dmg?  [fiend fire]
+Put card from hand to bottom draw
+Delayed add copy
+Choose to Copy
+
+
+
+Shuffle make cost 0?
+Shuffle (Add to draw at random)
+Add (spawn card)
+Put (hand/discard to drawpile)
+Draw (draw to hand)
