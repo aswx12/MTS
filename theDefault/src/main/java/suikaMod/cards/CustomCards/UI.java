@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.*;
 import java.nio.file.*;
+import java.util.regex.Pattern;
 
 public class UI extends JFrame
 {
@@ -90,6 +91,23 @@ public class UI extends JFrame
             public boolean isCellEditable(int row, int column)
             {
                 return column != 0;
+            }
+
+            @Override
+            public void setValueAt(Object value, int row, int column)
+            {
+                //limit cell character
+                if (column>=1 && value.toString().length()>=4)
+                {
+                    if(value.toString().contains("-"))
+                        super.setValueAt(value.toString().substring(0,4), row, column);
+                    else
+                    super.setValueAt(value.toString().substring(0,3), row, column);
+                }
+                else
+                {
+                    super.setValueAt(value, row, column);
+                }
             }
 
 
@@ -250,6 +268,7 @@ public class UI extends JFrame
                     tabModel.setValueAt(data, rowIndex++, 0);
                     tableHeight += 20;
                     SetTableSize();
+
                 });
             }
         });
@@ -324,11 +343,12 @@ public class UI extends JFrame
 
     private boolean isNumeric(String text)
     {
+        String regex = "-?(0|[1-9]\\d*)";
         if (text == null || text.trim().equals(""))
         {
             return false;
         }
-        if(text.equals("-1") || text.equals("-2"))
+      /*  if(text.equals("-1") || text.equals("-2"))
             return true;
         for (int iCount = 0; iCount < text.length(); iCount++)
         {
@@ -336,8 +356,8 @@ public class UI extends JFrame
             {
                 return false;
             }
-        }
-        return true;
+        }*/
+        return text.matches(regex);
     }
 
     private String GetModId()
@@ -361,6 +381,7 @@ public class UI extends JFrame
             throw new RuntimeException(e);
         }
     }
+
 
     //endregion
 

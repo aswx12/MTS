@@ -17,7 +17,9 @@ import com.megacrit.cardcrawl.localization.LocalizedStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import javafx.scene.effect.Effect;
 import suikaMod.DefaultMod;
+import suikaMod.actions.ModifyDmgAction;
 import suikaMod.cards.AbstractDynamicCard;
+import suikaMod.cards.DefaultCommonPower;
 import suikaMod.characters.TheDefault;
 
 import static suikaMod.DefaultMod.makeCardPath;
@@ -43,13 +45,18 @@ public class ActionTestFile extends AbstractDynamicCard
     private static final int UPGRADED_COST = 1;
 
 
+
+    private static String DESC="Test";
+    private String desc =DESC;
+    private static final String upDesc="upTest";
+
+
     // /STAT DECLARATION/
 
     public ActionTestFile()
     {
-        super(ID, "ActionTestFile", IMG, "a", COST, TYPE, COLOR, RARITY, TARGET);
+        super(ID, "ActionTestFile", IMG, DESC, COST, TYPE, COLOR, RARITY, TARGET);
         isMultiDamage = true;
-
         //this.tags.add(CardTags.STARTER_STRIKE);
         //this.tags.add(CardTags.STRIKE);
 
@@ -91,7 +98,10 @@ public class ActionTestFile extends AbstractDynamicCard
         {
             upgradeName();
             upgradeBaseCost(UPGRADED_COST);
+            rawDescription=upDesc; //dis is da wae
             initializeDescription();
         }
+
     }
+
 }

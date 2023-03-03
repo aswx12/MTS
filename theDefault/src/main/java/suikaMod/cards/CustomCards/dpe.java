@@ -16,6 +16,7 @@ import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.localization.LocalizedStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import suikaMod.DefaultMod;
+import suikaMod.actions.ModifyDmgAction;
 import suikaMod.cards.AbstractDynamicCard;
 import suikaMod.characters.TheDefault;
 
@@ -67,6 +68,7 @@ public class dpe extends AbstractDynamicCard
     {
          this.addToBot(
                 new WhirlwindAction(p, this.multiDPE, this.damageTypeForTurn, this.freeToPlayOnce, this.energyOnUse));
+
     }
 
 

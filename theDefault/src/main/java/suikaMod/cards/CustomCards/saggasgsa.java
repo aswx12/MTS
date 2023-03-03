@@ -16,6 +16,7 @@ import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.localization.LocalizedStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import suikaMod.DefaultMod;
+import suikaMod.actions.*;
 import suikaMod.cards.AbstractDynamicCard;
 import suikaMod.characters.TheDefault;
 
@@ -29,31 +30,32 @@ import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
 @AutoAdd.Seen
-public class vamp extends AbstractDynamicCard
+public class saggasgsa extends AbstractDynamicCard
 {
-    public static final String ID = DefaultMod.makeID(vamp.class.getSimpleName()); 
+    public static final String ID = DefaultMod.makeID(saggasgsa.class.getSimpleName()); 
     public static final String IMG = makeCardPath("Attack.png"); 
     private static final CardRarity RARITY = CardRarity.UNCOMMON; 
-    private static final CardTarget TARGET = CardTarget.ALL_ENEMY; 
+    private static final CardTarget TARGET = CardTarget.ENEMY; 
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
     private static final int COST = 1;  
     private static final int UPGRADED_COST = 1; 
 
-    private static final int vampDmgValue = 2;
-    private static final int UPGRADE_vampDmgValue= 3;
+    private static final int DAMAGE = 3;
+    private static final int UPGRADE_DAMAGE= 4;
+    private int dmgModifyValue = 5;
+    private final int UPGRADE_dmgModifyValue= 6;
 
     // /STAT DECLARATION/
 
-    public vamp ()
+    public saggasgsa ()
     { 
-        super(ID, "vamp", IMG,"!suikaMod:Vamp!", COST, TYPE, COLOR, RARITY, TARGET);
+        super(ID, "saggasgsa", IMG,"Deal !D! damge NL Increase this card's Damage by 5/6", COST, TYPE, COLOR, RARITY, TARGET);
 
-        baseVampDmg = vampDmgValue;
+        baseDamage = DAMAGE;
 
-       isMultiDamage = true;
-        //this.tags.add(CardTags.STARTER_STRIKE); 
+               //this.tags.add(CardTags.STARTER_STRIKE); 
         //this.tags.add(CardTags.STRIKE);
 
     }
@@ -64,7 +66,8 @@ public class vamp extends AbstractDynamicCard
     public void use(AbstractPlayer p, AbstractMonster m)
     {
          this.addToBot(
-                new VampireDamageAllEnemiesAction(p, this.multiVampDmg, this.damageTypeForTurn, AttackEffect.NONE));
+                new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));
+         this.addToBot(new ModifyDmgAction(this.uuid,dmgModifyValue));
     }
 
 
@@ -75,7 +78,8 @@ public class vamp extends AbstractDynamicCard
         if (!upgraded)
         {
             upgradeName();
-            upgradeVampDmg(UPGRADE_vampDmgValue);
+            upgradeDamage(UPGRADE_DAMAGE);
+            dmgModifyValue=UPGRADE_dmgModifyValue;
             upgradeBaseCost(UPGRADED_COST);
             initializeDescription();
         }

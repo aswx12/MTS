@@ -16,6 +16,7 @@ import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.localization.LocalizedStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import suikaMod.DefaultMod;
+import suikaMod.actions.ModifyDmgAction;
 import suikaMod.cards.AbstractDynamicCard;
 import suikaMod.characters.TheDefault;
 
@@ -75,6 +76,7 @@ public class all3 extends AbstractDynamicCard
                 new WhirlwindAction(p, this.multiDPE, this.damageTypeForTurn, this.freeToPlayOnce, this.energyOnUse));
         this.addToBot(
                 new VampireDamageAllEnemiesAction(p, this.multiVampDmg, this.damageTypeForTurn, AttackEffect.NONE));
+        this.addToBot(new ModifyDmgAction(this.uuid,-3));
     }
 
 

@@ -3,10 +3,9 @@ DAMAGE RELATED
 
 Deal x more dmg based on cards containing certain word ?
 Modify x dmg on use x
-Deal x dmg to (all) based on energy use[whirlwind] x
 Exh hand, deal x dmg for each card exh [too specific?]
 deal x dmg to random enemy on block gain (power)
-VampireDmg x
+
 
 ---------------------------------------
 CanUse action

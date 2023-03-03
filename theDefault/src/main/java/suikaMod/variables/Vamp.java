@@ -38,7 +38,9 @@ public class Vamp extends DynamicVariable
     {
         return ((AbstractDefaultCard) card).baseVampDmg;
     }
-
+    public void setIsModified(AbstractCard card, boolean v) {
+        ((AbstractDefaultCard) card).isDPEModified = v;
+    }
     @Override
     public boolean upgraded(AbstractCard card)
     {

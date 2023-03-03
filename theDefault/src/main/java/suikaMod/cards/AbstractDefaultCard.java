@@ -11,13 +11,15 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public abstract class AbstractDefaultCard extends CustomCard
 {
-
+    private static final Logger logger = LogManager.getLogger(AbstractCard.class.getName());
     // Custom Abstract Cards can be a bit confusing. While this is a simple base for simply adding a second magic number,
     // if you're new to modding I suggest you skip this file until you know what unique things that aren't provided
     // by default, that you need in your own cards.
@@ -1106,4 +1108,7 @@ public abstract class AbstractDefaultCard extends CustomCard
     //endregion
 
     //endregion
+
+    /*---------------------------------------------------------------------------*/
+
 }

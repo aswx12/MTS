@@ -20,6 +20,7 @@ public class CardTemplateStrings
     {
         return Integer.parseInt(stringToParse.getText());
     }
+
     public static String stringParse(JComboBox thingToParse)
     {
         return thingToParse.getSelectedItem().toString();
@@ -61,6 +62,7 @@ public class CardTemplateStrings
                 "import com.megacrit.cardcrawl.localization.LocalizedStrings;\n" +
                 "import com.megacrit.cardcrawl.monsters.AbstractMonster;\n" +
                 "import " + MODID + ".DefaultMod;\n" +
+                "import " + MODID + ".actions.*;\n" +
                 "import " + MODID + ".cards.AbstractDynamicCard;\n" +
                 "import " + MODID + ".characters.TheDefault;\n" +
                 "\n" +
@@ -68,7 +70,7 @@ public class CardTemplateStrings
                 "\n" +
                 "import java.io.File;  // Import the File class\n" +
                 "import java.io.IOException;\n" +
-                "import java.util.Iterator;\n"+
+                "import java.util.Iterator;\n" +
                 "\n" +
                 "import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;\n" +
                 "\n" +
@@ -192,11 +194,11 @@ public class CardTemplateStrings
                 repeat = true;
             }
         }
-        variable=sbVariable.toString();
-        baseValue=sbBaseValue.toString();
-        actions=sbActions.toString();
-        actionsWhenDiscard=sbDiscActions.toString();
-        upgrade=sbUpgrade.toString();
+        variable = sbVariable.toString();
+        baseValue = sbBaseValue.toString();
+        actions = sbActions.toString();
+        actionsWhenDiscard = sbDiscActions.toString();
+        upgrade = sbUpgrade.toString();
 
         String closeDiscAction = "";
         if (!actionsWhenDiscard.isEmpty())
@@ -230,7 +232,7 @@ public class CardTemplateStrings
                 "    public " + name.getText() + " ()\n" +
                 "    { \n" +
                 "        super(ID, \"" + name.getText() + "\", IMG," + "\"" + DESCRIPTION + "\"" + ", COST, TYPE, COLOR, RARITY, TARGET);\n" +
-                "\n"+
+                "\n" +
                 "" + baseValue + "\n" +
                 "" + CardState(innateCheck, retainCheck, exhaustCheck, etherealCheck) +
                 "       " + isMulti +

@@ -1,7 +1,5 @@
 package suikaMod.cards.CardGenerator;
 
-import java.lang.annotation.Target;
-
 import static suikaMod.cards.CardGenerator.ActionVar.*;
 
 
@@ -12,6 +10,7 @@ public class ContentAdd
     //region dmg
     static final String damage = "Damage";
 
+    static final String modifyDmg ="ModifyDamageOnUse";
     static final String DPE = "DamagePerEnergyUsed";
 
     static final String vampireDmg = "VampireDamage";
@@ -141,6 +140,10 @@ public class ContentAdd
             case damage:
                 variable = "    private static final int " + dmg + " = " + value + ";\n" +
                         "    private static final int UPGRADE_" + dmg + "= " + upgradeValue + ";\n";
+                break;
+            case modifyDmg:
+                variable = "    private int " + dmgModify + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + dmgModify + "= " + upgradeValue + ";\n";
                 break;
             case DPE:
                 variable = "    private static final int " + dmgPerEnergy + " = " + value + ";\n" +
@@ -555,6 +558,10 @@ public class ContentAdd
                         "                new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));\n";
                 break;
 
+            case modifyDmg:
+                action = "         this.addToBot(new ModifyDmgAction(this.uuid,"+dmgModify+"));\n";
+                break;
+
             case DPE:
                 if (target.equals("All Enemy"))
                 {
@@ -897,6 +904,11 @@ public class ContentAdd
             case damage:
                 Upgrade = "            upgradeDamage(UPGRADE_" + dmg + ");\n";
                 break;
+
+            case modifyDmg:
+                Upgrade = "            " + dmgModify + "=UPGRADE_" + dmgModify + ";\n";
+                break;
+
             case DPE:
                 Upgrade = "            upgradeDPE(UPGRADE_" + dmgPerEnergy + ");\n";
                 break;
