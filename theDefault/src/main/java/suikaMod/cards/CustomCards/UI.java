@@ -55,14 +55,26 @@ public class UI extends JFrame
     private JCheckBox upRetainCheck;
     private JCheckBox upExhaustCheck;
     private JCheckBox upEtherealCheck;
+    private JTable onUpgradeActionTable;
+    private JScrollPane onUpgradeScroll;
+    private JScrollPane actionListScroll;
+    private JLabel DefaultStateLabel;
+    private JLabel onUpgradeStateLabel;
+    private JButton AddOnUpgradeButton;
+    private JButton removeUpActionButton;
+    private JCheckBox addActionOnUpgradeCheck;
+    private JPanel actionOnUpgradePanel;
 
     int rowIndex = 0;
+    int upTableRowIndex=0;
     int tableHeight = 0;
+    int upTableHeight =0;
     JFileChooser f = new JFileChooser();
     File workingDirectory;
 
     boolean cellNum;
     DefaultTableModel tabModel;
+    DefaultTableModel upgradeTabModel;
 
     JCheckBox cardStates[] = {
             InnateCheck,
@@ -85,12 +97,12 @@ public class UI extends JFrame
 
     public UI()
     {
-
         setContentPane(mainPanel);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         CardPanel.setVisible(false);
         upDescPanel.setVisible(false);
+        actionOnUpgradePanel.setVisible(false);
         this.pack();
         setResizable(false);
 
@@ -104,6 +116,7 @@ public class UI extends JFrame
 
         actionList.setModel(actionListModel);
         String[] colName = {"Action", "Base Value", "Upgraded Value"};
+        String[] colNameUpGrade = {"Action", "Value"};
         tabModel = new DefaultTableModel(null, colName)
         {
             @Override
@@ -127,18 +140,42 @@ public class UI extends JFrame
                     super.setValueAt(value, row, column);
                 }
             }
-
-
        /*     @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return Integer.class;
             }*/
         };
 
+        upgradeTabModel = new DefaultTableModel(null, colNameUpGrade)
+        {
+            @Override
+            public boolean isCellEditable(int row, int column)
+            {
+                return column != 0;
+            }
+
+            @Override
+            public void setValueAt(Object value, int row, int column)
+            {
+                //limit cell character
+                if (column >= 1 && value.toString().length() >= 4)
+                {
+                    if (value.toString().contains("-"))
+                        super.setValueAt(value.toString().substring(0, 4), row, column);
+                    else
+                        super.setValueAt(value.toString().substring(0, 3), row, column);
+                } else
+                {
+                    super.setValueAt(value, row, column);
+                }
+            }
+        };
 
         tabModel.isCellEditable(0, 0);
+        upgradeTabModel.isCellEditable(0,0);
         //tabModel.getColumnClass(1);
         actionTable.setModel(tabModel);
+        onUpgradeActionTable.setModel(upgradeTabModel);
 
 
         CreateNewCard.addActionListener(new ActionListener()
@@ -178,7 +215,7 @@ public class UI extends JFrame
                             CreateNewCard.setVisible(false);
                             cardTypeLabel.setVisible(false);
                             cardTypeList.setVisible(false);
-                            mainPanel.setPreferredSize(new Dimension(1000, getPreferredSize().height));
+                            setPreferredSize(new Dimension(1000, getPreferredSize().height));
                             pack();
 
 
@@ -274,7 +311,7 @@ public class UI extends JFrame
                     tabModel.addRow(new Object[]{null, null, null});
                     tabModel.setValueAt(data, rowIndex++, 0);
                     tableHeight += 20;
-                    SetTableSize();
+                    SetActionTableSize();
 
                 });
             }
@@ -290,7 +327,7 @@ public class UI extends JFrame
                     selectedActionListModel.removeElement(data);
                 });*/
 
-                RemoveSelectedActions(actionTable, actionListModel);
+                RemoveSelectedActions(actionTable, actionListModel,"actionTable");
             }
         });
         upDescCheck.addActionListener(new ActionListener()
@@ -360,10 +397,47 @@ public class UI extends JFrame
             }
         });
         //endregion
+        AddOnUpgradeButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                actionList.getSelectedValuesList().stream().forEach((data) ->
+                {
+                    actionListModel.removeElement(data);
+                    upgradeTabModel.addRow(new Object[]{null, null});
+                    upgradeTabModel.setValueAt(data, upTableRowIndex++, 0);
+                    upTableHeight += 20;
+                    SetUpgradeActionTableSize();
+
+                });
+            }
+        });
+        removeUpActionButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                RemoveSelectedActions(onUpgradeActionTable, actionListModel,"upActionTable");
+            }
+        });
+        addActionOnUpgradeCheck.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if(addActionOnUpgradeCheck.isSelected()){
+                    actionOnUpgradePanel.setVisible(true);
+                }else
+                {
+                    actionOnUpgradePanel.setVisible(false);
+                }
+            }
+        });
     }
 
 
-    public void RemoveSelectedActions(JTable table, DefaultListModel actionListModel)
+    public void RemoveSelectedActions(JTable table, DefaultListModel actionListModel,String whichTable)
     {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         int numRows = table.getSelectedRows().length;
@@ -371,16 +445,28 @@ public class UI extends JFrame
         {
             actionListModel.addElement(table.getValueAt(table.getSelectedRow(), 0));
             model.removeRow(table.getSelectedRow());
-            rowIndex--;
-            tableHeight -= 20;
+            if(whichTable.equals("actionTable"))
+            {
+                rowIndex--;
+                tableHeight -= 20;
+            }else if (whichTable.equals("upActionTable")){
+                upTableRowIndex--;
+                upTableHeight -= 20;
+            }
         }
-        SetTableSize();
+        SetActionTableSize();
     }
 
-    public void SetTableSize()
+    public void SetActionTableSize()
     {
         Dimension increaseHeight = new Dimension(450, tableHeight);
         actionTable.setPreferredSize(increaseHeight);
+
+    }
+    public void SetUpgradeActionTableSize()
+    {
+        Dimension increaseHeight = new Dimension(450, upTableHeight);
+        onUpgradeActionTable.setPreferredSize(increaseHeight);
     }
 
 

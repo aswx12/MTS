@@ -3,9 +3,10 @@
   <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="66" y="40" width="607" height="630"/>
+      <xy x="66" y="40" width="932" height="1068"/>
     </constraints>
     <properties>
+      <requestFocusEnabled value="true"/>
       <visible value="true"/>
     </properties>
     <border type="none"/>
@@ -13,7 +14,7 @@
       <grid id="24502" binding="CardPanel" layout-manager="GridLayoutManager" row-count="13" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <autoscrolls value="false"/>
@@ -86,7 +87,7 @@
               </model>
             </properties>
           </component>
-          <grid id="93eac" binding="ActionsPanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="93eac" binding="ActionsPanel" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="0" column="0" row-span="2" col-span="6" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -128,7 +129,7 @@
               </component>
               <scrollpane id="fdae2" binding="tableScroll">
                 <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <verticalScrollBarPolicy value="20"/>
@@ -157,9 +158,9 @@
                   </component>
                 </children>
               </scrollpane>
-              <scrollpane id="20d80">
+              <scrollpane id="20d80" binding="actionListScroll">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
@@ -265,6 +266,65 @@
                   </component>
                 </children>
               </scrollpane>
+              <component id="30720" class="javax.swing.JCheckBox" binding="addActionOnUpgradeCheck">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Add Action On Upgrade"/>
+                </properties>
+              </component>
+              <grid id="c57dc" binding="actionOnUpgradePanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="4" column="0" row-span="2" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="true"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <scrollpane id="d5259" binding="onUpgradeScroll">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="453" height="158"/>
+                      </grid>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="edeee" class="javax.swing.JTable" binding="onUpgradeActionTable">
+                        <constraints/>
+                        <properties>
+                          <fillsViewportHeight value="true"/>
+                          <maximumSize width="2147483647" height="400"/>
+                          <minimumSize width="450" height="100"/>
+                          <preferredScrollableViewportSize width="450" height="100"/>
+                          <preferredSize width="50" height="20"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
+                  <component id="27949" class="javax.swing.JButton" binding="removeUpActionButton">
+                    <constraints>
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Remove"/>
+                    </properties>
+                  </component>
+                  <component id="f31ae" class="javax.swing.JButton" binding="AddOnUpgradeButton">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <actionCommand value="Add On Upgrade"/>
+                      <contentAreaFilled value="true"/>
+                      <horizontalAlignment value="0"/>
+                      <margin top="0" left="0" bottom="0" right="0"/>
+                      <text value="Add On Upgrade"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
             </children>
           </grid>
           <component id="bff57" class="javax.swing.JButton" binding="CreateButton">
@@ -299,7 +359,7 @@
           <grid id="7e678" binding="upDescPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="11" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="11" column="0" row-span="1" col-span="2" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -335,7 +395,7 @@
               <text value="Innate"/>
             </properties>
           </component>
-          <component id="cd26b" class="javax.swing.JLabel">
+          <component id="cd26b" class="javax.swing.JLabel" binding="DefaultStateLabel">
             <constraints>
               <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -343,7 +403,7 @@
               <text value="Default"/>
             </properties>
           </component>
-          <component id="a597e" class="javax.swing.JLabel">
+          <component id="a597e" class="javax.swing.JLabel" binding="onUpgradeStateLabel">
             <constraints>
               <grid row="5" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
