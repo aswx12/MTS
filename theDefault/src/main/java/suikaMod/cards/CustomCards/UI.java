@@ -56,7 +56,6 @@ public class UI extends JFrame
     private JCheckBox upExhaustCheck;
     private JCheckBox upEtherealCheck;
 
-    boolean test = false;
     int rowIndex = 0;
     int tableHeight = 0;
     JFileChooser f = new JFileChooser();
@@ -244,21 +243,8 @@ public class UI extends JFrame
                 }
                 //endregion
 
-              /*  String cardContent = CreateCard(
-                        CardName,
-                        costField,
-                        upCostField,
-                        rarityList,
-                        targetList,
-                        cardTypeList,
-                        descriptionField,
-                        unlockCheck,
-                        tabModel,
-                        innateCheck,
-                        RetainCheck,
-                        ExhaustCheck,
-                        EtherealCheck);*/
                 String cardContent = CreateCard();
+
                 try
                 {
                     // Creates a Writer using FileWriter
@@ -399,19 +385,7 @@ public class UI extends JFrame
 
 
     //region Utils
-    public String CreateCard(/*JTextField name,
-                             JTextField cost,
-                             JTextField upgradeCost,
-                             JComboBox rarityList,
-                             JComboBox targetList,
-                             JComboBox cardType,
-                             JTextArea descriptionField,
-                             JCheckBox seen,
-                             DefaultTableModel actionTableModel,
-                             JCheckBox innateCheck,
-                             JCheckBox retainCheck,
-                             JCheckBox exhaustCheck,
-                             JCheckBox etherealCheck*/)
+    public String CreateCard()
     {
         return CardTemplateStrings.CardTemplate(
                 CardName,
