@@ -1,5 +1,6 @@
 package suikaMod.cards.CardGenerator;
 
+import com.sun.crypto.provider.JceKeyStore;
 import suikaMod.DefaultMod;
 
 import javax.swing.*;
@@ -13,6 +14,9 @@ public class CardTemplateStrings
     static StringBuilder sbActions = new StringBuilder();
     static StringBuilder sbDiscActions = new StringBuilder();
     static StringBuilder sbUpgrade = new StringBuilder();
+
+    static StringBuilder sbState = new StringBuilder();
+    static StringBuilder sbUpState = new StringBuilder();
     static boolean repeat;
 
     //region UTILITIES
@@ -96,25 +100,49 @@ public class CardTemplateStrings
             return targetSpaceCheck;
     }
 
-    public static String CardState(JCheckBox innateCheck, JCheckBox retainCheck, JCheckBox exhaustCheck, JCheckBox etherealCheck)
+    public static void SetState(JCheckBox stateCheck, String state)
+    {
+        if (stateCheck.isSelected())
+        {
+            sbState.append("            this.").append(state).append("=true; \n");
+        }
+    }
+
+    public static String CardState(JCheckBox cardStates[])
     {
         String states = "";
-        if (innateCheck.isSelected())
+        SetState(cardStates[0], "isInnate");
+        SetState(cardStates[1], "retain");
+        SetState(cardStates[2], "exhaust");
+        SetState(cardStates[3], "isEthereal");
+        states = sbState.toString();
+        return states;
+    }
+
+    public static void SetUpgradedState(JCheckBox CardState[],JCheckBox upCardState[],int i,String state)
+    {
+        if (upCardState[i].isSelected())
         {
-            states += "this.isInnate=true; \n";
+            if (!CardState[i].isSelected())
+            {
+                sbUpState.append("            this.").append(state).append("=true; \n");
+            }
+        } else{
+            if (CardState[i].isSelected())
+            {
+                sbUpState.append("            this.").append(state).append("=false; \n");
+            }
         }
-        if (retainCheck.isSelected())
-        {
-            states += "this.retain=true; \n";
-        }
-        if (exhaustCheck.isSelected())
-        {
-            states += "        this.exhaust=true; \n";
-        }
-        if (etherealCheck.isSelected())
-        {
-            states += "        this.isEthereal=true; \n";
-        }
+    }
+
+    public static String UpgradedCardState(JCheckBox cardStates[], JCheckBox upCardStates[])
+    {
+        String states = "";
+        SetUpgradedState(cardStates,upCardStates,0,"isInnate");
+        SetUpgradedState(cardStates,upCardStates,1,"retain");
+        SetUpgradedState(cardStates,upCardStates,2,"exhaust");
+        SetUpgradedState(cardStates,upCardStates,3,"isEthereal");
+        states = sbUpState.toString();
         return states;
     }
 
@@ -144,16 +172,16 @@ public class CardTemplateStrings
                                       JComboBox target,
                                       JComboBox cardType,
                                       JTextArea description,
+                                      JTextArea upDescription,
+                                      JCheckBox diffUpDescCheck,
                                       JCheckBox seen,
                                       DefaultTableModel actionTableModel,
-                                      JCheckBox innateCheck,
-                                      JCheckBox retainCheck,
-                                      JCheckBox exhaustCheck,
-                                      JCheckBox etherealCheck)
+                                      JCheckBox cardStates[],
+                                      JCheckBox upCardStates[])
     {
 
         String DESCRIPTION = description.getText().replaceAll("(?!\\r)\\n", " NL ");
-
+        String upgrade_DESCRIPTION = upDescription.getText().replaceAll("(?!\\r)\\n", " NL ");
 
         String variable = "";
         String baseValue = "";
@@ -161,12 +189,8 @@ public class CardTemplateStrings
         String actionsWhenDiscard = "";
         String upgrade = "";
 
-        String isMulti = "";
-        if (target.getSelectedItem().toString().equals("All Enemy"))
-        {
-            isMulti = "isMultiDamage = true;\n";
-        }
 
+        //region Adding info to cards
         for (int i = 0; i < actionTableModel.getRowCount(); i++)
         {
 
@@ -191,19 +215,40 @@ public class CardTemplateStrings
 
             if (GetActionNames(actionTableModel, i).equals("Repeat"))
             {
-                repeat = true;
+                repeat = true; //rework?
             }
         }
+        //endregion
+
         variable = sbVariable.toString();
         baseValue = sbBaseValue.toString();
         actions = sbActions.toString();
         actionsWhenDiscard = sbDiscActions.toString();
         upgrade = sbUpgrade.toString();
 
+        //region condition checks
         String closeDiscAction = "";
         if (!actionsWhenDiscard.isEmpty())
         {
             closeDiscAction = "\n   }";
+        }
+
+        String isMulti = "";
+        if (target.getSelectedItem().toString().equals("All Enemy"))
+        {
+            isMulti = "isMultiDamage = true;\n";
+        }
+
+        String upDescInit = "";
+        String upDescChange = "";
+        if (diffUpDescCheck.isSelected())
+        {
+            upDescInit = "    private static final String upDesc=\"" + upgrade_DESCRIPTION + "\";\n";
+            upDescChange = "            rawDescription=upDesc;\n";
+        } else
+        {
+            upDescInit = "";
+            upDescChange = "";
         }
 
         String unlocked = "";
@@ -211,6 +256,7 @@ public class CardTemplateStrings
             unlocked = "Seen";
         else
             unlocked = "Notseen";
+        //endregion
 
         String cardInfo = Imports() +
                 "@AutoAdd." + unlocked + "\n" +
@@ -228,13 +274,14 @@ public class CardTemplateStrings
                 "\n" + variable +
                 "\n" +
                 "    // /STAT DECLARATION/\n" +
-                "\n" +
+                "\n    private static String desc =\"" + DESCRIPTION + "\";\n" +
+                "" + upDescInit +
+
                 "    public " + name.getText() + " ()\n" +
                 "    { \n" +
-                "        super(ID, \"" + name.getText() + "\", IMG," + "\"" + DESCRIPTION + "\"" + ", COST, TYPE, COLOR, RARITY, TARGET);\n" +
-                "\n" +
+                "        super(ID, \"" + name.getText() + "\", IMG,desc, COST, TYPE, COLOR, RARITY, TARGET);\n" +
                 "" + baseValue + "\n" +
-                "" + CardState(innateCheck, retainCheck, exhaustCheck, etherealCheck) +
+                "" + CardState(cardStates) +
                 "       " + isMulti +
                 "        //this.tags.add(CardTags.STARTER_STRIKE); \n" + //wht if not starter?
                 "        //this.tags.add(CardTags.STRIKE);\n" +
@@ -260,6 +307,8 @@ public class CardTemplateStrings
                 "            upgradeName();\n" +
                 "" + upgrade +
                 "            upgradeBaseCost(UPGRADED_COST);\n" +
+                "" + upDescChange +
+                "" + UpgradedCardState(cardStates, upCardStates) +
                 "            initializeDescription();\n" +
                 "        }\n" +
                 "    }\n" +

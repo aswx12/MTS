@@ -3,8 +3,6 @@ package suikaMod.cards.CustomCards;
 import suikaMod.cards.CardGenerator.CardTemplateStrings;
 
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.*;
 import java.nio.file.*;
-import java.util.regex.Pattern;
 
 public class UI extends JFrame
 {
@@ -49,7 +46,15 @@ public class UI extends JFrame
     public JCheckBox ExhaustCheck;
     private JCheckBox EtherealCheck;
     private JCheckBox RetainCheck;
-    private JCheckBox innateCheck;
+    private JCheckBox InnateCheck;
+    private JTextArea upDescField;
+    private JLabel upDescLabel;
+    private JCheckBox upDescCheck;
+    private JPanel upDescPanel;
+    private JCheckBox upInnateCheck;
+    private JCheckBox upRetainCheck;
+    private JCheckBox upExhaustCheck;
+    private JCheckBox upEtherealCheck;
 
     boolean test = false;
     int rowIndex = 0;
@@ -58,6 +63,20 @@ public class UI extends JFrame
     File workingDirectory;
 
     boolean cellNum;
+    DefaultTableModel tabModel;
+
+    JCheckBox cardStates[] = {
+            InnateCheck,
+            RetainCheck,
+            ExhaustCheck,
+            EtherealCheck,
+    };
+    JCheckBox upCardStates[] = {
+            upInnateCheck,
+            upRetainCheck,
+            upExhaustCheck,
+            upEtherealCheck
+    };
 
     public static void main(String[] args)
     {
@@ -72,6 +91,7 @@ public class UI extends JFrame
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         CardPanel.setVisible(false);
+        upDescPanel.setVisible(false);
         this.pack();
         setResizable(false);
 
@@ -85,7 +105,7 @@ public class UI extends JFrame
 
         actionList.setModel(actionListModel);
         String[] colName = {"Action", "Base Value", "Upgraded Value"};
-        DefaultTableModel tabModel = new DefaultTableModel(null, colName)
+        tabModel = new DefaultTableModel(null, colName)
         {
             @Override
             public boolean isCellEditable(int row, int column)
@@ -97,14 +117,13 @@ public class UI extends JFrame
             public void setValueAt(Object value, int row, int column)
             {
                 //limit cell character
-                if (column>=1 && value.toString().length()>=4)
+                if (column >= 1 && value.toString().length() >= 4)
                 {
-                    if(value.toString().contains("-"))
-                        super.setValueAt(value.toString().substring(0,4), row, column);
+                    if (value.toString().contains("-"))
+                        super.setValueAt(value.toString().substring(0, 4), row, column);
                     else
-                    super.setValueAt(value.toString().substring(0,3), row, column);
-                }
-                else
+                        super.setValueAt(value.toString().substring(0, 3), row, column);
+                } else
                 {
                     super.setValueAt(value, row, column);
                 }
@@ -121,6 +140,7 @@ public class UI extends JFrame
         tabModel.isCellEditable(0, 0);
         //tabModel.getColumnClass(1);
         actionTable.setModel(tabModel);
+
 
         CreateNewCard.addActionListener(new ActionListener()
         {
@@ -224,7 +244,7 @@ public class UI extends JFrame
                 }
                 //endregion
 
-                String cardContent = CreateCard(
+              /*  String cardContent = CreateCard(
                         CardName,
                         costField,
                         upCostField,
@@ -237,7 +257,8 @@ public class UI extends JFrame
                         innateCheck,
                         RetainCheck,
                         ExhaustCheck,
-                        EtherealCheck);
+                        EtherealCheck);*/
+                String cardContent = CreateCard();
                 try
                 {
                     // Creates a Writer using FileWriter
@@ -286,6 +307,73 @@ public class UI extends JFrame
                 RemoveSelectedActions(actionTable, actionListModel);
             }
         });
+        upDescCheck.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (upDescCheck.isSelected())
+                {
+                    upDescPanel.setVisible(true);
+                } else
+                    upDescPanel.setVisible(false);
+            }
+        });
+
+        //region cardstates
+        InnateCheck.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (InnateCheck.isSelected())
+                {
+                    upInnateCheck.setSelected(true);
+                } else
+                    upInnateCheck.setSelected(false);
+            }
+        });
+
+        RetainCheck.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (RetainCheck.isSelected())
+                {
+                    upRetainCheck.setSelected(true);
+                } else
+                    upRetainCheck.setSelected(false);
+            }
+        });
+
+
+        ExhaustCheck.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (ExhaustCheck.isSelected())
+                {
+                    upExhaustCheck.setSelected(true);
+                } else
+                    upExhaustCheck.setSelected(false);
+            }
+        });
+
+        EtherealCheck.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (EtherealCheck.isSelected())
+                {
+                    upEtherealCheck.setSelected(true);
+                } else
+                    upEtherealCheck.setSelected(false);
+            }
+        });
+        //endregion
     }
 
 
@@ -311,7 +399,7 @@ public class UI extends JFrame
 
 
     //region Utils
-    public String CreateCard(JTextField name,
+    public String CreateCard(/*JTextField name,
                              JTextField cost,
                              JTextField upgradeCost,
                              JComboBox rarityList,
@@ -323,22 +411,22 @@ public class UI extends JFrame
                              JCheckBox innateCheck,
                              JCheckBox retainCheck,
                              JCheckBox exhaustCheck,
-                             JCheckBox etherealCheck)
+                             JCheckBox etherealCheck*/)
     {
         return CardTemplateStrings.CardTemplate(
-                name,
-                cost,
-                upgradeCost,
+                CardName,
+                costField,
+                upCostField,
                 rarityList,
                 targetList,
-                cardType,
+                cardTypeList,
                 descriptionField,
-                seen,
-                actionTableModel,
-                innateCheck,
-                retainCheck,
-                exhaustCheck,
-                etherealCheck);
+                upDescField,
+                upDescCheck,
+                unlockCheck,
+                tabModel,
+                cardStates,
+                upCardStates);
     }
 
     private boolean isNumeric(String text)

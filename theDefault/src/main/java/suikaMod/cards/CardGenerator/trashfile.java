@@ -12,6 +12,10 @@ import java.util.Iterator;
 
 public class trashfile
 {
+
+    /*" + "\"" + DESCRIPTION + "\"" + "*/
+
+
     //region multiDmg utils
    /* public boolean dmgModified(int baseDmg, float tmp)
     {

@@ -47,7 +47,6 @@ public class ActionTestFile extends AbstractDynamicCard
 
 
     private static String DESC="Test";
-    private String desc =DESC;
     private static final String upDesc="upTest";
 
 
