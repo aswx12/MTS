@@ -12,6 +12,7 @@ public class CardTemplateStrings
     static StringBuilder sbVariable = new StringBuilder();
     static StringBuilder sbBaseValue = new StringBuilder();
     static StringBuilder sbActions = new StringBuilder();
+    static StringBuilder sbActionsOnUpgrade = new StringBuilder();
     static StringBuilder sbDiscActions = new StringBuilder();
     static StringBuilder sbUpgrade = new StringBuilder();
 
@@ -119,7 +120,7 @@ public class CardTemplateStrings
         return states;
     }
 
-    public static void SetUpgradedState(JCheckBox CardState[],JCheckBox upCardState[],int i,String state)
+    public static void SetUpgradedState(JCheckBox CardState[], JCheckBox upCardState[], int i, String state)
     {
         if (upCardState[i].isSelected())
         {
@@ -127,7 +128,8 @@ public class CardTemplateStrings
             {
                 sbUpState.append("            this.").append(state).append("=true; \n");
             }
-        } else{
+        } else
+        {
             if (CardState[i].isSelected())
             {
                 sbUpState.append("            this.").append(state).append("=false; \n");
@@ -138,22 +140,31 @@ public class CardTemplateStrings
     public static String UpgradedCardState(JCheckBox cardStates[], JCheckBox upCardStates[])
     {
         String states = "";
-        SetUpgradedState(cardStates,upCardStates,0,"isInnate");
-        SetUpgradedState(cardStates,upCardStates,1,"retain");
-        SetUpgradedState(cardStates,upCardStates,2,"exhaust");
-        SetUpgradedState(cardStates,upCardStates,3,"isEthereal");
+        SetUpgradedState(cardStates, upCardStates, 0, "isInnate");
+        SetUpgradedState(cardStates, upCardStates, 1, "retain");
+        SetUpgradedState(cardStates, upCardStates, 2, "exhaust");
+        SetUpgradedState(cardStates, upCardStates, 3, "isEthereal");
         states = sbUpState.toString();
         return states;
     }
 
-    public static String LoopInsert(boolean repeat, String actions)
+    public static String LoopInsert(boolean repeat, String actions, boolean addOnUpgrade, String actionOnUpgrade)
     {
         String loop = "";
         if (repeat)
         {
+            if (addOnUpgrade)
+            {
+                return loop = "for (int i = 0; i < TIME; i++) {\n" +
+                        "           " + actions + actionOnUpgrade + "        }\n";
+            }
+
             return loop = "for (int i = 0; i < TIME; i++) {\n" +
                     "           " + actions + "        }\n";
         }
+        if(addOnUpgrade)
+            return actions+actionOnUpgrade;
+
         return actions;
     }
 
@@ -176,6 +187,8 @@ public class CardTemplateStrings
                                       JCheckBox diffUpDescCheck,
                                       JCheckBox seen,
                                       DefaultTableModel actionTableModel,
+                                      DefaultTableModel actionOnUpgradeTableModel,
+                                      JCheckBox addActionOnUpgrade,
                                       JCheckBox cardStates[],
                                       JCheckBox upCardStates[])
     {
@@ -186,6 +199,7 @@ public class CardTemplateStrings
         String variable = "";
         String baseValue = "";
         String actions = "";
+        String actionsOnUpgrade = "";
         String actionsWhenDiscard = "";
         String upgrade = "";
 
@@ -209,7 +223,6 @@ public class CardTemplateStrings
             sbDiscActions.append(ContentAdd.ActionsWhenDiscard(
                     GetActionNames(actionTableModel, i)));
 
-
             sbUpgrade.append(ContentAdd.Upgrade(
                     GetActionNames(actionTableModel, i)));
 
@@ -218,11 +231,35 @@ public class CardTemplateStrings
                 repeat = true; //rework?
             }
         }
+
+        for (int i = 0; i < actionOnUpgradeTableModel.getRowCount(); i++)
+        {
+
+            sbVariable.append(ContentAdd.AllVariableUpgrade(
+                    GetActionNames(actionOnUpgradeTableModel, i),
+                    GetActionValues(actionOnUpgradeTableModel, i, 1)));
+
+            sbBaseValue.append(ContentAdd.BaseValue(
+                    GetActionNames(actionOnUpgradeTableModel, i)));
+
+            sbActionsOnUpgrade.append(ContentAdd.AllActions(
+                    GetActionNames(actionOnUpgradeTableModel, i),
+                    stringParse(target)));
+
+            sbDiscActions.append(ContentAdd.ActionsWhenDiscard(
+                    GetActionNames(actionOnUpgradeTableModel, i))); //set upgrade condition
+
+            sbUpgrade.append(ContentAdd.Upgrade(
+                    GetActionNames(actionOnUpgradeTableModel, i)));
+
+        }
+
         //endregion
 
         variable = sbVariable.toString();
         baseValue = sbBaseValue.toString();
         actions = sbActions.toString();
+        actionsOnUpgrade = sbActionsOnUpgrade.toString();
         actionsWhenDiscard = sbDiscActions.toString();
         upgrade = sbUpgrade.toString();
 
@@ -237,6 +274,13 @@ public class CardTemplateStrings
         if (target.getSelectedItem().toString().equals("All Enemy"))
         {
             isMulti = "isMultiDamage = true;\n";
+        }
+
+        String addActOnUpgrade = "";
+        if (addActionOnUpgrade.isSelected())
+        {
+            addActOnUpgrade = "       if(this.upgraded){\n" +
+                    actionsOnUpgrade +"}\n";
         }
 
         String upDescInit = "";
@@ -293,7 +337,7 @@ public class CardTemplateStrings
                 "    @Override\n" +
                 "    public void use(AbstractPlayer p, AbstractMonster m)\n" +
                 "    {\n" +
-                "" + LoopInsert(repeat, actions) +
+                "" + LoopInsert(repeat, actions, addActionOnUpgrade.isSelected(), addActOnUpgrade) +
                 "    }\n" +
                 "\n" +
                 "" + actionsWhenDiscard + closeDiscAction +

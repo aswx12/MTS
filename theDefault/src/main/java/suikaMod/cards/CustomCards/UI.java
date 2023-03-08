@@ -72,6 +72,11 @@ public class UI extends JFrame
     JFileChooser f = new JFileChooser();
     File workingDirectory;
 
+    int winXPos = 500;
+    Point originWinPos = new Point(winXPos,200);
+    Point upActionEnabledWinPos = new Point(winXPos,100);
+
+
     boolean cellNum;
     DefaultTableModel tabModel;
     DefaultTableModel upgradeTabModel;
@@ -97,15 +102,21 @@ public class UI extends JFrame
 
     public UI()
     {
+        //region UI Init
         setContentPane(mainPanel);
-        setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         CardPanel.setVisible(false);
         upDescPanel.setVisible(false);
         actionOnUpgradePanel.setVisible(false);
         this.pack();
+        setTitle("TheCreator");
+        setLocationRelativeTo(null);
+        setVisible(true);
         setResizable(false);
 
+        //endregion
+
+        //region List & Table Init
         DefaultListModel originActionListModel = new DefaultListModel();
         DefaultListModel actionListModel = new DefaultListModel();
         for (int i = 0; i < actionList.getModel().getSize(); i++)
@@ -176,8 +187,9 @@ public class UI extends JFrame
         //tabModel.getColumnClass(1);
         actionTable.setModel(tabModel);
         onUpgradeActionTable.setModel(upgradeTabModel);
+        //endregion
 
-
+        //region UI ACTION LISTENER
         CreateNewCard.addActionListener(new ActionListener()
         {
             @Override
@@ -215,8 +227,8 @@ public class UI extends JFrame
                             CreateNewCard.setVisible(false);
                             cardTypeLabel.setVisible(false);
                             cardTypeList.setVisible(false);
-                            setPreferredSize(new Dimension(1000, getPreferredSize().height));
-                            pack();
+                            setLocation(originWinPos);
+                            SetWindowSize(0);
 
 
                         } else
@@ -243,7 +255,10 @@ public class UI extends JFrame
                 if (actionTable.isEditing())
                 {
                     actionTable.getCellEditor().stopCellEditing();
+
                 }
+                if(onUpgradeActionTable.isEditing())
+                    onUpgradeActionTable.getCellEditor().stopCellEditing();
 
                 //region table values check
                 for (int i = 0; i < actionTable.getRowCount(); i++)
@@ -335,11 +350,20 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                int xDescHeight = 90;
                 if (upDescCheck.isSelected())
                 {
                     upDescPanel.setVisible(true);
+                    SetWindowSize(xDescHeight);
+                    if(addActionOnUpgradeCheck.isSelected())
+                        setLocation(winXPos,50);
                 } else
+                {
                     upDescPanel.setVisible(false);
+                    SetWindowSize(-xDescHeight);
+                    if(addActionOnUpgradeCheck.isSelected())
+                        setLocation(upActionEnabledWinPos);
+                }
             }
         });
 
@@ -426,16 +450,48 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                int xtraTableHeight = 250;
+
                 if(addActionOnUpgradeCheck.isSelected()){
                     actionOnUpgradePanel.setVisible(true);
+                    SetWindowSize(xtraTableHeight);
+                    setLocation(upActionEnabledWinPos);
                 }else
                 {
                     actionOnUpgradePanel.setVisible(false);
+                    SetWindowSize(-xtraTableHeight);
+                    setLocation(originWinPos);
                 }
+
             }
         });
+
+        //endregion
     }
 
+
+
+
+    //region Utils
+    public String CreateCard()
+    {
+        return CardTemplateStrings.CardTemplate(
+                CardName,
+                costField,
+                upCostField,
+                rarityList,
+                targetList,
+                cardTypeList,
+                descriptionField,
+                upDescField,
+                upDescCheck,
+                unlockCheck,
+                tabModel,
+                upgradeTabModel,
+                addActionOnUpgradeCheck,
+                cardStates,
+                upCardStates);
+    }
 
     public void RemoveSelectedActions(JTable table, DefaultListModel actionListModel,String whichTable)
     {
@@ -457,6 +513,11 @@ public class UI extends JFrame
         SetActionTableSize();
     }
 
+    public void SetWindowSize(int ExtraHeight){
+        setPreferredSize(new Dimension(1000, getPreferredSize().height+ExtraHeight));
+        pack();
+    }
+
     public void SetActionTableSize()
     {
         Dimension increaseHeight = new Dimension(450, tableHeight);
@@ -467,26 +528,6 @@ public class UI extends JFrame
     {
         Dimension increaseHeight = new Dimension(450, upTableHeight);
         onUpgradeActionTable.setPreferredSize(increaseHeight);
-    }
-
-
-    //region Utils
-    public String CreateCard()
-    {
-        return CardTemplateStrings.CardTemplate(
-                CardName,
-                costField,
-                upCostField,
-                rarityList,
-                targetList,
-                cardTypeList,
-                descriptionField,
-                upDescField,
-                upDescCheck,
-                unlockCheck,
-                tabModel,
-                cardStates,
-                upCardStates);
     }
 
     private boolean isNumeric(String text)
@@ -529,7 +570,6 @@ public class UI extends JFrame
             throw new RuntimeException(e);
         }
     }
-
 
     //endregion
 

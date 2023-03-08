@@ -131,6 +131,11 @@ public class ContentAdd
         return Variable(action, value, upgradeValue);
     }
 
+    public static String AllVariableUpgrade(String action, int upgradeValue)
+    {
+        return Variable(action, 0, upgradeValue);
+    }
+
     public static String Variable(String matcher, int value, int upgradeValue)
     {
         String variable = "";

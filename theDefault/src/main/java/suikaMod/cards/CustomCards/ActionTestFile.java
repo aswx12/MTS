@@ -37,7 +37,7 @@ public class ActionTestFile extends AbstractDynamicCard
     public static final String ID = DefaultMod.makeID(ActionTestFile.class.getSimpleName());
     public static final String IMG = makeCardPath("Attack.png");
     private static final CardRarity RARITY = CardRarity.UNCOMMON;
-    private static final CardTarget TARGET = CardTarget.ENEMY;
+    private static final CardTarget TARGET = CardTarget.NONE;
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
@@ -68,6 +68,11 @@ public class ActionTestFile extends AbstractDynamicCard
     public void use(AbstractPlayer p, AbstractMonster m)
     {
 
+        this.addToBot(new DrawCardAction(AbstractDungeon.player, 2));
+        if(this.upgraded){
+            this.addToBot(
+                    new DamageAction(m, new DamageInfo(p, 5, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));
+        }
 
         //new VampireDamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.NONE);
         // this.addToBot(new ApplyPowerAction(p, p, new DarkEmbracePower(p, 1), 1));
@@ -85,7 +90,7 @@ public class ActionTestFile extends AbstractDynamicCard
 
     public void triggerOnManualDiscard()
     {
-        this.addToBot(new DrawCardAction(AbstractDungeon.player, 2));
+
     }
 
 
