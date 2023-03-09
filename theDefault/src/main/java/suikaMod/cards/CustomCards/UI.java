@@ -66,15 +66,15 @@ public class UI extends JFrame
     private JPanel actionOnUpgradePanel;
 
     int rowIndex = 0;
-    int upTableRowIndex=0;
+    int upTableRowIndex = 0;
     int tableHeight = 0;
-    int upTableHeight =0;
+    int upTableHeight = 0;
     JFileChooser f = new JFileChooser();
     File workingDirectory;
 
     int winXPos = 500;
-    Point originWinPos = new Point(winXPos,200);
-    Point upActionEnabledWinPos = new Point(winXPos,100);
+    Point originWinPos = new Point(winXPos, 200);
+    Point upActionEnabledWinPos = new Point(winXPos, 100);
 
 
     boolean cellNum;
@@ -183,7 +183,7 @@ public class UI extends JFrame
         };
 
         tabModel.isCellEditable(0, 0);
-        upgradeTabModel.isCellEditable(0,0);
+        upgradeTabModel.isCellEditable(0, 0);
         //tabModel.getColumnClass(1);
         actionTable.setModel(tabModel);
         onUpgradeActionTable.setModel(upgradeTabModel);
@@ -257,7 +257,7 @@ public class UI extends JFrame
                     actionTable.getCellEditor().stopCellEditing();
 
                 }
-                if(onUpgradeActionTable.isEditing())
+                if (onUpgradeActionTable.isEditing())
                     onUpgradeActionTable.getCellEditor().stopCellEditing();
 
                 //region table values check
@@ -265,19 +265,16 @@ public class UI extends JFrame
                 {
                     for (int j = 1; j < actionTable.getColumnCount(); j++)
                     {
-                        if (tabModel.getValueAt(i, j) == null)
-                        {
-                            JOptionPane.showMessageDialog(CreateButton, "Action: " + tabModel.getValueAt(i, 0).toString() + " [" + tabModel.getColumnName(j) + "] field is empty");
-                            return;
-                        }
-                        cellNum = isNumeric(tabModel.getValueAt(i, j).toString());
-                        if (!cellNum)
-                        {
-                            JOptionPane.showMessageDialog(CreateButton, "Action: " + tabModel.getValueAt(i, 0).toString() + " [" + tabModel.getColumnName(j) + "] field contains letter or is not whole number");
-                            return;
-                        }
-
+                       if(!InputValueFieldCheck(tabModel,i,j))
+                           return;
                     }
+                }
+
+                //InputValueFieldCheck(onUpgradeActionTable,upgradeTabModel);
+                for (int i = 0; i < onUpgradeActionTable.getRowCount(); i++)
+                {
+                    if(!InputValueFieldCheck(upgradeTabModel,i,1))
+                        return;
                 }
                 //endregion
 
@@ -342,7 +339,7 @@ public class UI extends JFrame
                     selectedActionListModel.removeElement(data);
                 });*/
 
-                RemoveSelectedActions(actionTable, actionListModel,"actionTable");
+                RemoveSelectedActions(actionTable, actionListModel, "actionTable");
             }
         });
         upDescCheck.addActionListener(new ActionListener()
@@ -355,13 +352,13 @@ public class UI extends JFrame
                 {
                     upDescPanel.setVisible(true);
                     SetWindowSize(xDescHeight);
-                    if(addActionOnUpgradeCheck.isSelected())
-                        setLocation(winXPos,50);
+                    if (addActionOnUpgradeCheck.isSelected())
+                        setLocation(winXPos, 50);
                 } else
                 {
                     upDescPanel.setVisible(false);
                     SetWindowSize(-xDescHeight);
-                    if(addActionOnUpgradeCheck.isSelected())
+                    if (addActionOnUpgradeCheck.isSelected())
                         setLocation(upActionEnabledWinPos);
                 }
             }
@@ -442,7 +439,7 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                RemoveSelectedActions(onUpgradeActionTable, actionListModel,"upActionTable");
+                RemoveSelectedActions(onUpgradeActionTable, actionListModel, "upActionTable");
             }
         });
         addActionOnUpgradeCheck.addActionListener(new ActionListener()
@@ -452,11 +449,12 @@ public class UI extends JFrame
             {
                 int xtraTableHeight = 250;
 
-                if(addActionOnUpgradeCheck.isSelected()){
+                if (addActionOnUpgradeCheck.isSelected())
+                {
                     actionOnUpgradePanel.setVisible(true);
                     SetWindowSize(xtraTableHeight);
                     setLocation(upActionEnabledWinPos);
-                }else
+                } else
                 {
                     actionOnUpgradePanel.setVisible(false);
                     SetWindowSize(-xtraTableHeight);
@@ -468,8 +466,6 @@ public class UI extends JFrame
 
         //endregion
     }
-
-
 
 
     //region Utils
@@ -493,7 +489,24 @@ public class UI extends JFrame
                 upCardStates);
     }
 
-    public void RemoveSelectedActions(JTable table, DefaultListModel actionListModel,String whichTable)
+    private boolean InputValueFieldCheck(DefaultTableModel model, int i, int j)
+    {
+        String actionName =model.getValueAt(i, 0).toString() + "\n[" + model.getColumnName(j);
+        if (model.getValueAt(i, j) == null)
+        {
+            JOptionPane.showMessageDialog(CreateButton, "Action: " + actionName + "] field is empty");
+            return false;
+        }
+        cellNum = isNumeric(model.getValueAt(i, j).toString());
+        if (!cellNum)
+        {
+            JOptionPane.showMessageDialog(CreateButton, "Action: " + actionName + "] field contains letter or is not whole number");
+            return false;
+        }
+        return true;
+    }
+
+    public void RemoveSelectedActions(JTable table, DefaultListModel actionListModel, String whichTable)
     {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         int numRows = table.getSelectedRows().length;
@@ -501,11 +514,12 @@ public class UI extends JFrame
         {
             actionListModel.addElement(table.getValueAt(table.getSelectedRow(), 0));
             model.removeRow(table.getSelectedRow());
-            if(whichTable.equals("actionTable"))
+            if (whichTable.equals("actionTable"))
             {
                 rowIndex--;
                 tableHeight -= 20;
-            }else if (whichTable.equals("upActionTable")){
+            } else if (whichTable.equals("upActionTable"))
+            {
                 upTableRowIndex--;
                 upTableHeight -= 20;
             }
@@ -513,8 +527,9 @@ public class UI extends JFrame
         SetActionTableSize();
     }
 
-    public void SetWindowSize(int ExtraHeight){
-        setPreferredSize(new Dimension(1000, getPreferredSize().height+ExtraHeight));
+    public void SetWindowSize(int ExtraHeight)
+    {
+        setPreferredSize(new Dimension(1000, getPreferredSize().height + ExtraHeight));
         pack();
     }
 
@@ -524,6 +539,7 @@ public class UI extends JFrame
         actionTable.setPreferredSize(increaseHeight);
 
     }
+
     public void SetUpgradeActionTableSize()
     {
         Dimension increaseHeight = new Dimension(450, upTableHeight);

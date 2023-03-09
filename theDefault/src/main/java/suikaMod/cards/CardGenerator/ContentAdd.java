@@ -131,9 +131,9 @@ public class ContentAdd
         return Variable(action, value, upgradeValue);
     }
 
-    public static String AllVariableUpgrade(String action, int upgradeValue)
+    public static String AllVariableUpgrade(String action, int SingleValue)
     {
-        return Variable(action, 0, upgradeValue);
+        return Variable(action, SingleValue, 0);
     }
 
     public static String Variable(String matcher, int value, int upgradeValue)
@@ -559,7 +559,7 @@ public class ContentAdd
                             "                new DamageAllEnemiesAction(p, this.multiDamage, this.damageTypeForTurn, AttackEffect.SLASH_HORIZONTAL));\n";
                     break;
                 }
-                action = "         this.addToBot(\n" +
+                action = "        this.addToBot(\n" +
                         "                new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));\n";
                 break;
 

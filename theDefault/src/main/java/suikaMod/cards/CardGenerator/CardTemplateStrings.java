@@ -249,8 +249,8 @@ public class CardTemplateStrings
             sbDiscActions.append(ContentAdd.ActionsWhenDiscard(
                     GetActionNames(actionOnUpgradeTableModel, i))); //set upgrade condition
 
-            sbUpgrade.append(ContentAdd.Upgrade(
-                    GetActionNames(actionOnUpgradeTableModel, i)));
+           /* sbUpgrade.append(ContentAdd.Upgrade(
+                    GetActionNames(actionOnUpgradeTableModel, i)));*/
 
         }
 
@@ -279,8 +279,8 @@ public class CardTemplateStrings
         String addActOnUpgrade = "";
         if (addActionOnUpgrade.isSelected())
         {
-            addActOnUpgrade = "       if(this.upgraded){\n" +
-                    actionsOnUpgrade +"}\n";
+            addActOnUpgrade = "        if(this.upgraded){\n" +
+                    "   "+actionsOnUpgrade +"       }\n";
         }
 
         String upDescInit = "";
