@@ -176,6 +176,9 @@
                         <item value="Modify Damage On Use"/>
                         <item value="Damage Per Energy Used"/>
                         <item value="Vampire Damage"/>
+                        <item value="Damage If Target Poisoned"/>
+                        <item value="Damage Per Attack Played"/>
+                        <item value="Damage Per Skill In Hand"/>
                         <item value=""/>
                         <item value="Block"/>
                         <item value="Gain Energy"/>

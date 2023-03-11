@@ -17,6 +17,7 @@ import com.megacrit.cardcrawl.localization.LocalizedStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import javafx.scene.effect.Effect;
 import suikaMod.DefaultMod;
+import suikaMod.actions.*;
 import suikaMod.actions.ModifyDmgAction;
 import suikaMod.cards.AbstractDynamicCard;
 import suikaMod.cards.DefaultCommonPower;
@@ -37,16 +38,16 @@ public class ActionTestFile extends AbstractDynamicCard
     public static final String ID = DefaultMod.makeID(ActionTestFile.class.getSimpleName());
     public static final String IMG = makeCardPath("Attack.png");
     private static final CardRarity RARITY = CardRarity.UNCOMMON;
-    private static final CardTarget TARGET = CardTarget.NONE;
+    private static final CardTarget TARGET = CardTarget.ALL_ENEMY;
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
     private static final int COST = 1;
     private static final int UPGRADED_COST = 1;
 
+    static final int DMG =1;
 
-
-    private static String DESC="Test";
+    private static String DESC="!D!";
     private static final String upDesc="upTest";
 
 
@@ -55,6 +56,8 @@ public class ActionTestFile extends AbstractDynamicCard
     public ActionTestFile()
     {
         super(ID, "ActionTestFile", IMG, DESC, COST, TYPE, COLOR, RARITY, TARGET);
+
+        baseDamage=DMG;
         isMultiDamage = true;
         //this.tags.add(CardTags.STARTER_STRIKE);
         //this.tags.add(CardTags.STRIKE);
@@ -67,12 +70,17 @@ public class ActionTestFile extends AbstractDynamicCard
     @Override
     public void use(AbstractPlayer p, AbstractMonster m)
     {
+        AbstractMonster mo;
+        Iterator var3;
+        var3 = AbstractDungeon.getCurrRoom().monsters.monsters.iterator();
+         while(var3.hasNext())
+         {
+             mo = (AbstractMonster) var3.next();
+             //this.addToBot(new DamagePerAttackPlayedAction(mo, new DamageInfo(p, this.damage, this.damageTypeForTurn), AttackEffect.SLASH_DIAGONAL));
+            // this.addToBot(new FlechetteAction(mo, new DamageInfo(p, this.damage, this.damageTypeForTurn)));
+         }
 
-        this.addToBot(new DrawCardAction(AbstractDungeon.player, 2));
-        if(this.upgraded){
-            this.addToBot(
-                    new DamageAction(m, new DamageInfo(p, 5, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));
-        }
+
 
         //new VampireDamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.NONE);
         // this.addToBot(new ApplyPowerAction(p, p, new DarkEmbracePower(p, 1), 1));

@@ -2,9 +2,11 @@ DAMAGE RELATED
 
 
 Deal x more dmg based on cards containing certain word ?
-Modify x dmg on use x
 Exh hand, deal x dmg for each card exh [too specific?]
 deal x dmg to random enemy on block gain (power)
+
+enemy takes x dmg per card play this turn
+
 
 
 ---------------------------------------
@@ -39,6 +41,8 @@ Lose x hp, deal x dmg to all enemy at turn end
 Energy related
 Cost x less per time hp loss
 gain energy at turn start
+next turn get energy
+gain energy if a card has been discarded this turn
 
 ------------------------------------
 Health related
@@ -82,7 +86,8 @@ Put card from hand to bottom draw
 Delayed add copy
 Choose to Copy
 
-
+choose card to retain
+Next x Skill plays twice this turn
 
 Shuffle make cost 0?
 Shuffle (Add to draw at random)

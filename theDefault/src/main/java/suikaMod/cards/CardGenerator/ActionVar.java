@@ -10,8 +10,11 @@ public class ActionVar
     public static String dmgPerEnergy ="dmgPerEnergyValue";
 
     public static String dmgPerExhaustedAtt = "dmgPerExhAtt";
-
     public static String vampDmg ="vampDmgValue";
+
+    public static String dmgIfTargetPsn ="dmgIfTargetPsnValue";
+    public static String dmgPerAttPlayed ="dmgPerAttPlayedValue";
+    public static String dmgPerSkillInHand ="dmgPerSkillHandValue";
     //endregion
     public static String blc = "BLOCK";
     public static String gEnergy = "ENERGY";

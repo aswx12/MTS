@@ -14,7 +14,9 @@ public class ContentAdd
     static final String DPE = "DamagePerEnergyUsed";
 
     static final String vampireDmg = "VampireDamage";
-
+    static final String damageIfTargetPoison = "DamageIfTargetPoisoned";
+    static final String DPAP = "DamagePerAttackPlayed";
+    static final String DPSH = "DamagePerSkillInHand";
     //endregion
     static final String block = "Block";
     static final String gainEnergy = "GainEnergy";
@@ -158,6 +160,18 @@ public class ContentAdd
                 variable = "    private static final int " + vampDmg + " = " + value + ";\n" +
                         "    private static final int UPGRADE_" + vampDmg + "= " + upgradeValue + ";\n";
                 break;
+            case damageIfTargetPoison:
+                variable = "    private static final int " + dmgIfTargetPsn + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + dmgIfTargetPsn + "= " + upgradeValue + ";\n";
+                break;
+            case DPAP:
+                variable = "    private static final int " + dmgPerAttPlayed + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + dmgPerAttPlayed + "= " + upgradeValue + ";\n";
+                break;
+            case DPSH:
+                variable = "    private static final int " + dmgPerSkillInHand + " = " + value + ";\n" +
+                        "    private static final int UPGRADE_" + dmgPerSkillInHand + "= " + upgradeValue + ";\n";
+                break;
 
             //endregion
             case block:
@@ -174,7 +188,7 @@ public class ContentAdd
                 break;
 
             //region Apply
-            case applyVulnerable: //change this later to magic number
+            case applyVulnerable:
                 variable = "    private static final int " + aVul + " = " + value + ";\n" +
                         "    private static final int UPGRADE_" + aVul + " = " + upgradeValue + ";\n";
                 break;
@@ -496,6 +510,15 @@ public class ContentAdd
             case vampireDmg:
                 base = "        baseVampDmg = " + vampDmg + ";\n";
                 break;
+            case damageIfTargetPoison:
+                base = "        baseDmgPsnCondition = " + dmgIfTargetPsn + ";\n";
+                break;
+            case DPAP:
+                base = "        baseDPAP = " + dmgPerAttPlayed + ";\n";
+                break;
+            case DPSH:
+                base = "        baseDPSH = " + dmgPerSkillInHand + ";\n";
+                break;
 
             //endregion
             case block:
@@ -587,6 +610,41 @@ public class ContentAdd
                 action = "         this.addToBot(\n" +
                         "                new VampireDamageAction(m, new DamageInfo(p, vampDmg, damageTypeForTurn), AttackEffect.NONE));\n";
                 break;
+            case damageIfTargetPoison:
+                if (target.equals("All Enemy"))
+                {
+                    action = TargetAllEnemy(
+                            "this.addToBot(new BaneAction(mo, new DamageInfo(p, this.dmgPsnCondition, this.damageTypeForTurn)));");
+
+                    action = MultiTarget(target) + action;
+                    break;
+                }
+                action = "         this.addToBot(new BaneAction(m, new DamageInfo(p, this.dmgPsnCondition, this.damageTypeForTurn)));\n";
+                break;
+            case DPAP:
+                if (target.equals("All Enemy"))
+                {
+                    action = TargetAllEnemy(
+                            "this.addToBot(\n" +
+                                    "                new DamagePerAttackPlayedAction(mo, new DamageInfo(p, this.dmgPerAttPlayed, this.damageTypeForTurn), AttackEffect.SLASH_DIAGONAL));");
+
+                    action = MultiTarget(target) + action;
+                    break;
+                }
+                action = "         this.addToBot(\n" +
+                        "                new DamagePerAttackPlayedAction(m, new DamageInfo(p, this.dmgPerAttPlayed, this.damageTypeForTurn), AttackEffect.SLASH_DIAGONAL));\n";
+                break;
+            case DPSH:
+                if (target.equals("All Enemy"))
+                {
+                    action = TargetAllEnemy(
+                            "this.addToBot(new FlechetteAction(mo, new DamageInfo(p, this.dmgPerSkillInHand, this.damageTypeForTurn)));");
+
+                    action = MultiTarget(target) + action;
+                    break;
+                }
+                action = "         this.addToBot(new FlechetteAction(m, new DamageInfo(p, this.dmgPerSkillInHand, this.damageTypeForTurn)));\n";
+                break;
 
             //endregion
             case block:
@@ -603,7 +661,7 @@ public class ContentAdd
                     action = TargetAllEnemy(
                             "this.addToBot(new ApplyPowerAction(mo, p, new VulnerablePower(mo, this.aVulnerableValue, false), this.aVulnerableValue));");
 
-                    action = MultiDebuff(target) + action;
+                    action = MultiTarget(target) + action;
                     break;
                 }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new VulnerablePower(m, this.aVulnerableValue, false), this.aVulnerableValue));\n";
@@ -614,7 +672,7 @@ public class ContentAdd
                     action = TargetAllEnemy(
                             "this.addToBot(new ApplyPowerAction(mo, p, new WeakPower(mo, this.aWeakValue, false), this.aWeakValue));");
 
-                    action = MultiDebuff(target) + action;
+                    action = MultiTarget(target) + action;
                     break;
                 }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new WeakPower(m, this.aWeakValue, false), this.aWeakValue));\n";
@@ -626,7 +684,7 @@ public class ContentAdd
                     action = TargetAllEnemy(
                             "this.addToBot(new ApplyPowerAction(mo, p, new PoisonPower(mo, p, this.aPoisonValue), this.aPoisonValue, AttackEffect.POISON));");
 
-                    action = MultiDebuff(target) + action;
+                    action = MultiTarget(target) + action;
                     break;
                 }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new PoisonPower(m, p, this.aPoisonValue), this.aPoisonValue, AttackEffect.POISON));\n";
@@ -638,7 +696,7 @@ public class ContentAdd
                     action = targetAllEnemy +
                             "            this.addToBot(new ApplyPowerAction(mo, p, new StrengthPower(mo, this.aStrValue), this.aStrValue));\n" +
                             "        }\n";
-                    action = MultiDebuff(target) + action;
+                    action = MultiTarget(target) + action;
                     break;
                 }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new StrengthPower(m, this.aStrValue), this.aStrValue));\n";
@@ -920,6 +978,15 @@ public class ContentAdd
             case vampireDmg:
                 Upgrade = "            upgradeVampDmg(UPGRADE_" + vampDmg + ");\n";
                 break;
+            case damageIfTargetPoison:
+                Upgrade = "            upgradeDmgPsnCon(UPGRADE_" + dmgIfTargetPsn + ");\n";
+                break;
+            case DPAP:
+                Upgrade = "            upgradeDPAP(UPGRADE_" + dmgPerAttPlayed + ");\n";
+                break;
+            case DPSH:
+                Upgrade = "            upgradeDPSH(UPGRADE_" + dmgPerSkillInHand + ");\n";
+                break;
 
             //endregion
             case block:
@@ -1162,7 +1229,7 @@ public class ContentAdd
             "        while(var3.hasNext()) {\n" +
             "            mo = (AbstractMonster)var3.next();\n";
 
-    public static String MultiDebuff(String target)
+    public static String MultiTarget(String target)
     {
         if (!target.equals("All Enemy") || !var.isEmpty())
             return "";

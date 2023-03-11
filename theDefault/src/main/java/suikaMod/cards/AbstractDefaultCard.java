@@ -29,6 +29,7 @@ public abstract class AbstractDefaultCard extends CustomCard
     // In simple terms, it's for things that we don't want to define again and again in every single card we make.
 
     //region dmg
+
     public int dmgPerEnergy; //DPE
     public int baseDmgPerEnergy;
 
@@ -45,6 +46,43 @@ public abstract class AbstractDefaultCard extends CustomCard
     public boolean upgradedVampDmg;
     public boolean isVampDmgModified;
 
+    public int dmgPsnCondition;
+    public int baseDmgPsnCondition;
+
+    public boolean upgradedDmgPsnCondition;
+    public boolean isDmgPsnConditionModified;
+
+    public int dmgPerAttPlayed; //DPAP
+    public int baseDPAP;
+
+    public boolean upgradedDPAP;
+    public boolean isDPAPModified;
+
+    public int dmgPerSkillInHand; //DPSH
+    public int baseDPSH;
+
+    public boolean upgradedDPSH;
+    public boolean isDPSHModified;
+
+    int DMGArray[] = {
+            this.damage,
+            this.dmgPerEnergy,
+            this.vampDmg,
+            this.dmgPsnCondition,
+            this.dmgPerAttPlayed,
+            this.dmgPerSkillInHand,
+    };
+
+    boolean dmgBoolArray[] = new boolean[6];
+
+    int baseDmgArray[] = {
+            this.baseDamage,
+            this.baseDmgPerEnergy,
+            this.baseVampDmg,
+            this.baseDmgPsnCondition,
+            this.baseDPAP,
+            this.baseDPSH,
+    };
     //endregion
 
 
@@ -115,10 +153,14 @@ public abstract class AbstractDefaultCard extends CustomCard
         isCostModifiedForTurn = false;
 
 
-        isDamageModified = false;
+      /*  isDamageModified = false;
 
         isDPEModified = false;
         isVampDmgModified = false;
+        isDmgPsnConditionModified = false;
+        isDPAPModified = false;
+        isDPSHModified = false;*/
+        DmgModifySetFalse();
 
         isBlockModified = false;
 
@@ -149,6 +191,23 @@ public abstract class AbstractDefaultCard extends CustomCard
         {
             vampDmg = baseVampDmg;
             isVampDmgModified = true;
+        }
+
+        if (upgradedDmgPsnCondition)
+        {
+            baseDmgPsnCondition = dmgPsnCondition;
+            isDmgPsnConditionModified = true;
+        }
+
+        if (upgradedDPAP)
+        {
+            baseDPAP = dmgPerAttPlayed;
+            isDPAPModified = true;
+        }
+        if (upgradedDPSH)
+        {
+            baseDPSH = dmgPerSkillInHand;
+            isDPSHModified = true;
         }
 
         if (aUpgradedVulnerableValue)
@@ -220,6 +279,24 @@ public abstract class AbstractDefaultCard extends CustomCard
     {
         this.baseVampDmg = amount;
         this.upgradedVampDmg = true;
+    }
+
+    protected void upgradeDmgPsnCon(int amount)
+    {
+        this.baseDmgPsnCondition = amount;
+        this.upgradedDmgPsnCondition = true;
+    }
+
+    protected void upgradeDPAP(int amount)
+    {
+        this.baseDPAP = amount;
+        this.upgradedDPAP = true;
+    }
+
+    protected void upgradeDPSH(int amount)
+    {
+        this.baseDPSH = amount;
+        this.upgradedDPSH = true;
     }
 
     @Override
@@ -480,6 +557,12 @@ public abstract class AbstractDefaultCard extends CustomCard
     float tmpDmg;
     float tmpDPE;
     float tmpVampDmg;
+    float tmpDmgPsnCon;
+    float tmpDPAP;
+    float tmpDPSH;
+
+    float tmpArray[];
+
     Iterator var3;
     AbstractPower pApply;
 
@@ -488,13 +571,31 @@ public abstract class AbstractDefaultCard extends CustomCard
         this.isDamageModified = false;
         this.isDPEModified = false;
         this.isVampDmgModified = false;
+        this.isDmgPsnConditionModified = false;
+        this.isDPAPModified = false;
+        this.isDPSHModified = false;
+
     }
+
     public void SetTmp()
     {
         tmpDmg = (float) this.baseDamage;
         tmpDPE = (float) this.baseDmgPerEnergy;
         tmpVampDmg = (float) this.baseVampDmg;
+        tmpDmgPsnCon = (float) this.baseDmgPsnCondition;
+        tmpDPAP = (float) this.baseDPAP;
+        tmpDPSH = (float) this.baseDPSH;
+
+        tmpArray = new float[]{
+                tmpDmg,
+                tmpDPE,
+                tmpVampDmg,
+                tmpDmgPsnCon,
+                tmpDPAP,
+                tmpDPSH
+        };
     }
+
     public void SetRelicModifier()
     {
         var3 = player.relics.iterator();
@@ -502,106 +603,108 @@ public abstract class AbstractDefaultCard extends CustomCard
         while (var3.hasNext())
         {
             AbstractRelic r = (AbstractRelic) var3.next();
-
-            //region relic dmg modify
-            tmpDmg = r.atDamageModify(tmpDmg, this);
-            tmpDPE = r.atDamageModify(tmpDPE, this);
-            tmpVampDmg = r.atDamageModify(tmpVampDmg, this);
-            SetDmgModifierBool();
+            for (int i = 0; i < tmpArray.length; i++)
+            {
+                tmpArray[i] = r.atDamageModify(tmpArray[i], this);
+            }
+            SetDmgModifierBoolLoop();
 
             //endregion
         }
     }
-    public void SetDmgModifierBool()
-    {
-        if (this.baseDamage != (int) tmpDmg)
-        {
-            this.isDamageModified = true;
-        }
-        if (this.baseDmgPerEnergy != (int) tmpDPE)
-        {
-            this.isDPEModified = true;
-        }
-        if (this.baseVampDmg != (int) tmpVampDmg)
-        {
-            this.isVampDmgModified = true;
-        }
 
-    }
-    public void AtDmgGiveLoop()
+    public void SetDmgModifierBoolLoop()
     {
-        for (var3 = player.powers.iterator(); var3.hasNext(); tmpDmg = pApply.atDamageGive(tmpDmg, this.damageTypeForTurn, this))
+        for (int i = 0; i < tmpArray.length; i++)
         {
-            pApply = (AbstractPower) var3.next();
+            if (baseDmgArray[i] != (int) tmpArray[i])
+            {
+                dmgBoolArray[i] = true;
+            }
         }
-        for (var3 = player.powers.iterator(); var3.hasNext(); tmpDPE = pApply.atDamageGive(tmpDPE, this.damageTypeForTurn, this))
-        {
-            pApply = (AbstractPower) var3.next();
-        }
-        for (var3 = player.powers.iterator(); var3.hasNext(); tmpVampDmg = pApply.atDamageGive(tmpVampDmg, this.damageTypeForTurn, this))
-        {
-            pApply = (AbstractPower) var3.next();
-        }
-    }
-    public void AtDmgGive()
-    {
-        tmpDmg = player.stance.atDamageGive(tmpDmg, this.damageTypeForTurn, this);
-        tmpDPE = player.stance.atDamageGive(tmpDPE, this.damageTypeForTurn, this);
-        tmpVampDmg = player.stance.atDamageGive(tmpVampDmg, this.damageTypeForTurn, this);
-
         SetDmgModifierBool();
     }
+
+    int counter;
+
+    public void SetDmgModifierBool()
+    {
+        counter = 0;
+        this.isDamageModified = dmgBoolArray[counter++];
+        this.isDPEModified = dmgBoolArray[counter++];
+        this.isVampDmgModified = dmgBoolArray[counter++];
+        this.isDmgPsnConditionModified = dmgBoolArray[counter++];
+        this.isDPAPModified = dmgBoolArray[counter++];
+        this.isDPSHModified = dmgBoolArray[counter++];
+
+    }
+
+    public void AtDmgGiveLoop()
+    {
+        for (int i = 0; i < tmpArray.length; i++)
+        {
+            for (var3 = player.powers.iterator(); var3.hasNext(); tmpArray[i] = pApply.atDamageGive(tmpArray[i], this.damageTypeForTurn, this))
+            {
+                pApply = (AbstractPower) var3.next();
+            }
+        }
+
+    }
+
+    public void AtDmgGive()
+    {
+
+        for (int i = 0; i < tmpArray.length; i++)
+        {
+            tmpArray[i] = player.stance.atDamageGive(tmpArray[i], this.damageTypeForTurn, this);
+        }
+        SetDmgModifierBoolLoop();
+    }
+
     public void AtDmgFinalLoop()
     {
-        for (var3 = player.powers.iterator(); var3.hasNext(); tmpDmg = pApply.atDamageFinalGive(tmpDmg, this.damageTypeForTurn, this))
+        for (int i = 0; i < tmpArray.length; i++)
         {
-            pApply = (AbstractPower) var3.next();
-        }
-        for (var3 = player.powers.iterator(); var3.hasNext(); tmpDPE = pApply.atDamageFinalGive(tmpDPE, this.damageTypeForTurn, this))
-        {
-            pApply = (AbstractPower) var3.next();
-        }
-        for (var3 = player.powers.iterator(); var3.hasNext(); tmpVampDmg = pApply.atDamageFinalGive(tmpVampDmg, this.damageTypeForTurn, this))
-        {
-            pApply = (AbstractPower) var3.next();
+            for (var3 = player.powers.iterator(); var3.hasNext(); tmpArray[i] = pApply.atDamageFinalGive(tmpArray[i], this.damageTypeForTurn, this))
+            {
+                pApply = (AbstractPower) var3.next();
+            }
         }
     }
+
     public void SetTmpZero()
     {
-        if (tmpDmg < 0.0F)
+
+        for (int i = 0; i < tmpArray.length; i++)
         {
-            tmpDmg = 0.0F;
-        }
-        if (tmpDPE < 0.0F)
-        {
-            tmpDPE = 0.0F;
-        }
-        if (tmpVampDmg < 0.0F)
-        {
-            tmpVampDmg = 0.0F;
+            if (tmpArray[i] < 0.0F)
+                tmpArray[i] = 0.0F;
         }
     }
+
+    int dmgCounter;
+
     public void SetDmgFinal()
     {
         SetTmpZero();
 
-        if (this.baseDamage != MathUtils.floor(tmpDmg))
+        for (int i = 0; i < tmpArray.length; i++)
         {
-            this.isDamageModified = true;
-        }
-        if (this.baseDmgPerEnergy != MathUtils.floor(tmpDPE))
-        {
-            this.isDPEModified = true;
-        }
-        if (this.baseVampDmg != MathUtils.floor(tmpVampDmg))
-        {
-            this.isVampDmgModified = true;
-        }
+            if (baseDmgArray[i] != MathUtils.floor(tmpArray[i]))
+            {
+                dmgBoolArray[i] = true;
+            }
 
-        this.damage = MathUtils.floor(tmpDmg);
-        this.dmgPerEnergy = MathUtils.floor(tmpDPE);
-        this.vampDmg = MathUtils.floor(tmpVampDmg);
-
+            DMGArray[i] = MathUtils.floor(tmpArray[i]);
+        }
+        SetDmgModifierBool();
+        dmgCounter = 0;
+        this.damage = DMGArray[dmgCounter++];
+        this.dmgPerEnergy = DMGArray[dmgCounter++];
+        this.vampDmg = DMGArray[dmgCounter++];
+        this.dmgPsnCondition = DMGArray[dmgCounter++];
+        this.dmgPerAttPlayed = DMGArray[dmgCounter++];
+        this.dmgPerSkillInHand = DMGArray[dmgCounter++];
     }
 
 
@@ -760,20 +863,21 @@ public abstract class AbstractDefaultCard extends CustomCard
 
         DmgModifySetFalse();
 
-        if (!this.isMultiDamage)
-        {
-            SetTmp();
+        SetTmp();
 
-            SetRelicModifier();
+        SetRelicModifier();
 
-            AtDmgGiveLoop();
+        AtDmgGiveLoop();
 
-            AtDmgGive();
+        AtDmgGive();
 
-            AtDmgFinalLoop();
+        AtDmgFinalLoop();
 
-            SetDmgFinal();
-        } else
+        SetDmgFinal();
+
+        //something should be here to skip this calculation to save resources
+
+        if (this.isMultiDamage)
         {
             InitTmpMulti();
             int i = 0;
@@ -808,113 +912,54 @@ public abstract class AbstractDefaultCard extends CustomCard
         {
             AbstractRelic r = (AbstractRelic) var9.next();
 
-            //region setDmgModfiy
-            tmpDmg = r.atDamageModify(tmpDmg, this);
-            tmpDPE = r.atDamageModify(tmpDPE, this);
-            tmpVampDmg = r.atDamageModify(tmpVampDmg, this);
-            SetDmgModifierBool();
+            for (int i = 0; i < tmpArray.length; i++)
+            {
+                tmpArray[i] = r.atDamageModify(tmpArray[i], this);
+            }
+            SetDmgModifierBoolLoop();
 
-/*            if (this.baseDamage != (int) tmpDmg)
-            {
-                this.isDamageModified = true;
-            }
-            if (this.baseDmgPerEnergy != (int) tmpDPE)
-            {
-                this.isDPEModified = true;
-            }
-            if (this.baseVampDmg != (int) tmpVampDmg)
-            {
-                this.isVampDmgModified = true;
-            }*/
             //endregion
         }
     }
 
     public void AtDmgGiveLoopCal()
     {
-
-        for (var9 = player.powers.iterator(); var9.hasNext(); tmpDmg = pCal.atDamageGive(tmpDmg, this.damageTypeForTurn, this))
+        for (int i = 0; i < tmpArray.length; i++)
         {
-            pCal = (AbstractPower) var9.next();
-        }
-        for (var9 = player.powers.iterator(); var9.hasNext(); tmpDPE = pCal.atDamageGive(tmpDPE, this.damageTypeForTurn, this))
-        {
-            pCal = (AbstractPower) var9.next();
-        }
-        for (var9 = player.powers.iterator(); var9.hasNext(); tmpVampDmg = pCal.atDamageGive(tmpVampDmg, this.damageTypeForTurn, this))
-        {
-            pCal = (AbstractPower) var9.next();
+            for (var9 = player.powers.iterator(); var9.hasNext(); tmpArray[i] = pCal.atDamageGive(tmpArray[i], this.damageTypeForTurn, this))
+            {
+                pCal = (AbstractPower) var9.next();
+            }
         }
     }
 
     public void AtDmgCal(AbstractMonster mo)
     {
-        //region dmg
-        tmpDmg = player.stance.atDamageGive(tmpDmg, this.damageTypeForTurn, this);
-        if (this.baseDamage != (int) tmpDmg)
+        for (int i = 0; i < tmpArray.length; i++)
         {
-            this.isDamageModified = true;
-        }
+            tmpArray[i] = player.stance.atDamageGive(tmpArray[i], this.damageTypeForTurn, this);
+            if (baseDmgArray[i] != (int) tmpArray[i])
+            {
+                dmgBoolArray[i] = true;
+            }
 
-        for (var9 = mo.powers.iterator(); var9.hasNext(); tmpDmg = pCal.atDamageReceive(tmpDmg, this.damageTypeForTurn, this))
-        {
-            pCal = (AbstractPower) var9.next();
-        }
+            for (var9 = mo.powers.iterator(); var9.hasNext(); tmpArray[i] = pCal.atDamageReceive(tmpArray[i], this.damageTypeForTurn, this))
+            {
+                pCal = (AbstractPower) var9.next();
+            }
 
-        for (var9 = player.powers.iterator(); var9.hasNext(); tmpDmg = pCal.atDamageFinalGive(tmpDmg, this.damageTypeForTurn, this))
-        {
-            pCal = (AbstractPower) var9.next();
-        }
+            for (var9 = player.powers.iterator(); var9.hasNext(); tmpArray[i] = pCal.atDamageFinalGive(tmpArray[i], this.damageTypeForTurn, this))
+            {
+                pCal = (AbstractPower) var9.next();
+            }
 
-        for (var9 = mo.powers.iterator(); var9.hasNext(); tmpDmg = pCal.atDamageFinalReceive(tmpDmg, this.damageTypeForTurn, this))
-        {
-            pCal = (AbstractPower) var9.next();
+            for (var9 = mo.powers.iterator(); var9.hasNext(); tmpArray[i] = pCal.atDamageFinalReceive(tmpArray[i], this.damageTypeForTurn, this))
+            {
+                pCal = (AbstractPower) var9.next();
+            }
         }
-        //endregion
-        //region DPE
-        tmpDPE = player.stance.atDamageGive(tmpDPE, this.damageTypeForTurn, this);
-        if (this.baseDamage != (int) tmpDPE)
-        {
-            this.isDamageModified = true;
-        }
+        SetDmgModifierBool();
 
-        for (var9 = mo.powers.iterator(); var9.hasNext(); tmpDPE = pCal.atDamageReceive(tmpDPE, this.damageTypeForTurn, this))
-        {
-            pCal = (AbstractPower) var9.next();
-        }
-
-        for (var9 = player.powers.iterator(); var9.hasNext(); tmpDPE = pCal.atDamageFinalGive(tmpDPE, this.damageTypeForTurn, this))
-        {
-            pCal = (AbstractPower) var9.next();
-        }
-
-        for (var9 = mo.powers.iterator(); var9.hasNext(); tmpDPE = pCal.atDamageFinalReceive(tmpDPE, this.damageTypeForTurn, this))
-        {
-            pCal = (AbstractPower) var9.next();
-        }
-        //endregion
-        //region VampDmg
-        tmpVampDmg = player.stance.atDamageGive(tmpVampDmg, this.damageTypeForTurn, this);
-        if (this.baseDamage != (int) tmpVampDmg)
-        {
-            this.isDamageModified = true;
-        }
-
-        for (var9 = mo.powers.iterator(); var9.hasNext(); tmpVampDmg = pCal.atDamageReceive(tmpVampDmg, this.damageTypeForTurn, this))
-        {
-            pCal = (AbstractPower) var9.next();
-        }
-
-        for (var9 = player.powers.iterator(); var9.hasNext(); tmpVampDmg = pCal.atDamageFinalGive(tmpVampDmg, this.damageTypeForTurn, this))
-        {
-            pCal = (AbstractPower) var9.next();
-        }
-
-        for (var9 = mo.powers.iterator(); var9.hasNext(); tmpVampDmg = pCal.atDamageFinalReceive(tmpVampDmg, this.damageTypeForTurn, this))
-        {
-            pCal = (AbstractPower) var9.next();
-        }
-        //endregion
     }
     //endregion
 
@@ -934,18 +979,7 @@ public abstract class AbstractDefaultCard extends CustomCard
             tmpVampDmgMulti[i] = r.atDamageModify(tmpVampDmgMulti[i], this);
 
             SetDmgModifierMultiBool(i);
-                   /* if (this.baseDamage != (int) tmpDmgMulti[i])
-                    {
-                        this.isDamageModified = true;
-                    }
-                    if (this.baseDmgPerEnergy != (int) tmpDPEMulti[i])
-                    {
-                        this.isDPEModified = true;
-                    }
-                    if (this.baseVampDmg != (int) tmpVampDmgMulti[i])
-                    {
-                        this.isVampDmgModified = true;
-                    }*/
+
         }
     }
 
@@ -1067,7 +1101,7 @@ public abstract class AbstractDefaultCard extends CustomCard
 
         DmgModifySetFalse();
 
-        if (!this.isMultiDamage && mo != null)
+        if (mo != null)
         {
             SetTmp();
 
@@ -1079,7 +1113,11 @@ public abstract class AbstractDefaultCard extends CustomCard
 
             SetDmgFinal();
 
-        } else
+        }
+
+        //something should be here to skip this calculation to save resources
+
+        if (this.isMultiDamage && mo != null)
         {
             InitTmpMulti();
             int i = 0;
