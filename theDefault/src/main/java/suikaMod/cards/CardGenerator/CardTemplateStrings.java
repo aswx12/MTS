@@ -226,7 +226,7 @@ public class CardTemplateStrings
             sbUpgrade.append(ContentAdd.Upgrade(
                     GetActionNames(actionTableModel, i)));
 
-            if (GetActionNames(actionTableModel, i).equals("Repeat"))
+            if (GetActionNames(actionTableModel, i).equals("Repeat")) //own table?
             {
                 repeat = true; //rework?
             }

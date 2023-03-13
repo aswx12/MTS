@@ -132,7 +132,7 @@ public abstract class AbstractDefaultCard extends CustomCard
     public int gBaseStrValue;
     public boolean gUpgradedStrValue;
     public boolean gIsStrValueModified;
-    //endregion
+
 
 
     public AbstractDefaultCard(final String id,
@@ -175,6 +175,7 @@ public abstract class AbstractDefaultCard extends CustomCard
         gIsWeakValueModified = false;
         gIsPoisonValueModified = false;
         gIsStrValueModified = false;
+
     }
 
     public void displayUpgrades()

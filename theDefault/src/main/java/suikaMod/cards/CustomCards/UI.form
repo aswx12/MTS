@@ -194,6 +194,17 @@
                         <item value="Gain Poison"/>
                         <item value="Gain Strength"/>
                         <item value=""/>
+                        <item value="Apply Vulnerable If Enemy Intent:Attack"/>
+                        <item value="Apply Weak If Enemy Intent:Attack"/>
+                        <item value="Apply Poison If Enemy Intent:Attack"/>
+                        <item value="Apply Strength If Enemy Intent:Attack"/>
+                        <item value=""/>
+                        <item value="Gain Vulnerable If Enemy Intent:Attack"/>
+                        <item value="Gain Weak If Enemy Intent:Attack"/>
+                        <item value="Gain Poison If Enemy Intent:Attack"/>
+                        <item value="Gain Strength If Enemy Intent:Attack"/>
+                        <item value=""/>
+                        <item value=""/>
                         <item value="Add Copy(Discard)"/>
                         <item value="Add Copy(Hand)"/>
                         <item value="Add Copy(DrawPile)"/>

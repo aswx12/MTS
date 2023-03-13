@@ -38,7 +38,7 @@ public class ActionTestFile extends AbstractDynamicCard
     public static final String ID = DefaultMod.makeID(ActionTestFile.class.getSimpleName());
     public static final String IMG = makeCardPath("Attack.png");
     private static final CardRarity RARITY = CardRarity.UNCOMMON;
-    private static final CardTarget TARGET = CardTarget.ALL_ENEMY;
+    private static final CardTarget TARGET = CardTarget.ENEMY;
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
@@ -70,15 +70,19 @@ public class ActionTestFile extends AbstractDynamicCard
     @Override
     public void use(AbstractPlayer p, AbstractMonster m)
     {
-        AbstractMonster mo;
-        Iterator var3;
-        var3 = AbstractDungeon.getCurrRoom().monsters.monsters.iterator();
-         while(var3.hasNext())
-         {
-             mo = (AbstractMonster) var3.next();
-             //this.addToBot(new DamagePerAttackPlayedAction(mo, new DamageInfo(p, this.damage, this.damageTypeForTurn), AttackEffect.SLASH_DIAGONAL));
-            // this.addToBot(new FlechetteAction(mo, new DamageInfo(p, this.damage, this.damageTypeForTurn)));
-         }
+        /*if (m != null && m.getIntentBaseDmg() >= 0) {
+            this.addToBot(new ApplyPowerAction(m, p, new VulnerablePower(m, 1, false),1));
+            this.addToBot(new ApplyPowerAction(m, p, new WeakPower(m, 1, false), 1));
+            this.addToBot(new ApplyPowerAction(m, p, new StrengthPower(m, 1), 1));
+        this.addToBot(new ApplyPowerAction(m, p, new PoisonPower(m, p, 1), 1, AttackEffect.POISON));
+
+            this.addToBot(new ApplyPowerAction(p, p, new VulnerablePower(p, 1, false), 1));
+            this.addToBot(new ApplyPowerAction(p, p, new WeakPower(p, 1, false), 1));
+            this.addToBot(new ApplyPowerAction(p, p, new PoisonPower(p, p, 1), 1, AttackEffect.POISON));
+            this.addToBot(new ApplyPowerAction(p, p, new StrengthPower(p, 1),1));
+        }*/
+
+
 
 
 

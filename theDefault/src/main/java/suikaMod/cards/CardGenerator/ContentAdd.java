@@ -1,5 +1,7 @@
 package suikaMod.cards.CardGenerator;
 
+import suikaMod.actions.GiveVulnerableEnemyAttackIntentAction;
+
 import static suikaMod.cards.CardGenerator.ActionVar.*;
 
 
@@ -10,7 +12,7 @@ public class ContentAdd
     //region dmg
     static final String damage = "Damage";
 
-    static final String modifyDmg ="ModifyDamageOnUse";
+    static final String modifyDmg = "ModifyDamageOnUse";
     static final String DPE = "DamagePerEnergyUsed";
 
     static final String vampireDmg = "VampireDamage";
@@ -37,6 +39,23 @@ public class ContentAdd
     static final String gainWeak = "GainWeak";
     static final String gainPoison = "GainPoison";
     static final String gainStr = "GainStrength";
+
+    //endregion
+
+    //region apply/gain on attack intent
+    static final String applyVulnerableOnEnemyAttackIntent = "ApplyVulnerableIfEnemyIntent:Attack";
+
+    static final String applyWeakOnEnemyAttackIntent = "ApplyWeakIfEnemyIntent:Attack";
+
+    static final String applyPoisonOnEnemyAttackIntent = "ApplyPoisonIfEnemyIntent:Attack";
+
+    static final String applyStrOnEnemyAttackIntent = "ApplyStrengthIfEnemyIntent:Attack";
+
+    static final String gainVulnerableOnEnemyAttackIntent = "GainVulnerableIfEnemyIntent:Attack";
+    static final String gainWeakOnEnemyAttackIntent = "GainWeakIfEnemyIntent:Attack";
+    static final String gainPoisonOnEnemyAttackIntent = "GainPoisonIfEnemyIntent:Attack";
+    static final String gainStrOnEnemyAttackIntent = "GainStrengthIfEnemyIntent:Attack";
+
 
     //endregion
 
@@ -224,6 +243,46 @@ public class ContentAdd
                 variable = "    private static final int " + gStr + " = " + value + ";\n" +
                         "    private static final int UPGRADE_" + gStr + " = " + upgradeValue + ";\n";
                 break;
+            //endregion
+
+            //region apply/gain on enemy attack intent
+
+            case applyVulnerableOnEnemyAttackIntent:
+                variable = "    private int " + aVulEneAttIntent + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + aVulEneAttIntent + " = " + upgradeValue + ";\n";
+                break;
+            case applyWeakOnEnemyAttackIntent:
+                variable = "    private int " + aWkEneAttIntent + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + aWkEneAttIntent + " = " + upgradeValue + ";\n";
+                break;
+            case applyPoisonOnEnemyAttackIntent:
+                variable = "    private int " + aPsnEneAttIntent + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + aPsnEneAttIntent + " = " + upgradeValue + ";\n";
+                break;
+
+            case applyStrOnEnemyAttackIntent:
+                variable = "    private int " + aStrEneAttIntent + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + aStrEneAttIntent + " = " + upgradeValue + ";\n";
+                break;
+
+            case gainVulnerableOnEnemyAttackIntent:
+                variable = "    private int " + gVulEneAttIntent + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + gVulEneAttIntent + " = " + upgradeValue + ";\n";
+                break;
+            case gainWeakOnEnemyAttackIntent:
+                variable = "    private int " + gWkEneAttIntent + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + gWkEneAttIntent + " = " + upgradeValue + ";\n";
+                break;
+            case gainPoisonOnEnemyAttackIntent:
+                variable = "    private int " + gPsnEneAttIntent + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + gPsnEneAttIntent + " = " + upgradeValue + ";\n";
+                break;
+
+            case gainStrOnEnemyAttackIntent:
+                variable = "    private int " + gStrEneAttIntent + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + gStrEneAttIntent + " = " + upgradeValue + ";\n";
+                break;
+
             //endregion
 
             //region Add Card
@@ -572,6 +631,7 @@ public class ContentAdd
     public static String Actions(String matcher, String target)
     {
         String action = "";
+        String test = "";
         switch (matcher)
         {
             //region Dmg
@@ -587,7 +647,7 @@ public class ContentAdd
                 break;
 
             case modifyDmg:
-                action = "         this.addToBot(new ModifyDmgAction(this.uuid,"+dmgModify+"));\n";
+                action = "         this.addToBot(new ModifyDmgAction(this.uuid," + dmgModify + "));\n";
                 break;
 
             case DPE:
@@ -662,11 +722,14 @@ public class ContentAdd
                             "this.addToBot(new ApplyPowerAction(mo, p, new VulnerablePower(mo, this.aVulnerableValue, false), this.aVulnerableValue));");
 
                     action = MultiTarget(target) + action;
+
                     break;
                 }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new VulnerablePower(m, this.aVulnerableValue, false), this.aVulnerableValue));\n";
                 break;
             case applyWeak:
+                StringBuilder sb = new StringBuilder();
+                sb.append(action);
                 if (target.equals("All Enemy"))
                 {
                     action = TargetAllEnemy(
@@ -685,6 +748,7 @@ public class ContentAdd
                             "this.addToBot(new ApplyPowerAction(mo, p, new PoisonPower(mo, p, this.aPoisonValue), this.aPoisonValue, AttackEffect.POISON));");
 
                     action = MultiTarget(target) + action;
+
                     break;
                 }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new PoisonPower(m, p, this.aPoisonValue), this.aPoisonValue, AttackEffect.POISON));\n";
@@ -718,6 +782,42 @@ public class ContentAdd
                 action = "         this.addToBot(new ApplyPowerAction(p, p, new StrengthPower(p, this.gStrValue), this.gStrValue));\n";
                 break;
             //endregion
+
+            //region apply/gain on enemy attack intent
+
+            case applyVulnerableOnEnemyAttackIntent:
+                action = "         this.addToBot(new GiveVulnerableEnemyAttackIntentAction(m, m," + aVulEneAttIntent + "));\n";
+                break;
+            case applyWeakOnEnemyAttackIntent:
+                action = "         this.addToBot(new GiveWeakEnemyAttackIntentAction(m, m," + aWkEneAttIntent + "));\n";
+                break;
+            case applyPoisonOnEnemyAttackIntent:
+                action = "         this.addToBot(new GivePoisonEnemyAttackIntentAction(m, m," + aPsnEneAttIntent + "));\n";
+
+                break;
+            case applyStrOnEnemyAttackIntent:
+                action = "         this.addToBot(new GiveStrengthEnemyAttackIntentAction(m, m," + aStrEneAttIntent + "));\n";
+
+                break;
+            case gainVulnerableOnEnemyAttackIntent:
+                action = "         this.addToBot(new GiveVulnerableEnemyAttackIntentAction(m, p," + gVulEneAttIntent + "));\n";
+
+                break;
+            case gainWeakOnEnemyAttackIntent:
+                action = "         this.addToBot(new GiveWeakEnemyAttackIntentAction(m, p," + gWkEneAttIntent + "));\n";
+
+                break;
+            case gainPoisonOnEnemyAttackIntent:
+                action = "         this.addToBot(new GivePoisonEnemyAttackIntentAction(m, p," + gPsnEneAttIntent + "));\n";
+
+                break;
+            case gainStrOnEnemyAttackIntent:
+                action = "         this.addToBot(new GiveStrengthEnemyAttackIntentAction(m, p," + gStrEneAttIntent + "));\n";
+
+                break;
+
+            //endregion
+
 
             //region Add Card
 
@@ -1029,6 +1129,36 @@ public class ContentAdd
                 break;
             //endregion
 
+            //region apply/gain on enemy attack intent
+
+            case applyVulnerableOnEnemyAttackIntent:
+                Upgrade = "            " + aVulEneAttIntent + "=UPGRADE_" + aVulEneAttIntent + ";\n";
+                break;
+            case applyWeakOnEnemyAttackIntent:
+                Upgrade = "            " + aWkEneAttIntent + "=UPGRADE_" + aWkEneAttIntent + ";\n";
+                break;
+            case applyPoisonOnEnemyAttackIntent:
+                Upgrade = "            " + aPsnEneAttIntent + "=UPGRADE_" + aPsnEneAttIntent + ";\n";
+                break;
+            case applyStrOnEnemyAttackIntent:
+                Upgrade = "            " + aStrEneAttIntent + "=UPGRADE_" + aStrEneAttIntent + ";\n";
+                break;
+
+            case gainVulnerableOnEnemyAttackIntent:
+                Upgrade = "            " + gVulEneAttIntent + "=UPGRADE_" + gVulEneAttIntent + ";\n";
+                break;
+            case gainWeakOnEnemyAttackIntent:
+                Upgrade = "            " + gWkEneAttIntent + "=UPGRADE_" + gWkEneAttIntent + ";\n";
+                break;
+            case gainPoisonOnEnemyAttackIntent:
+                Upgrade = "            " + gPsnEneAttIntent + "=UPGRADE_" + gPsnEneAttIntent + ";\n";
+                break;
+            case gainStrOnEnemyAttackIntent:
+                Upgrade = "            " + gStrEneAttIntent + "=UPGRADE_" + gStrEneAttIntent + ";\n";
+                break;
+
+            //endregion
+
             //region Add cards
 
             //region Add Copy
@@ -1227,7 +1357,8 @@ public class ContentAdd
     static String var = "";
     static String targetAllEnemy = "        var3 = AbstractDungeon.getCurrRoom().monsters.monsters.iterator();\n" +
             "        while(var3.hasNext()) {\n" +
-            "            mo = (AbstractMonster)var3.next();\n";
+            "            mo = (AbstractMonster)var3.next();\n" +
+            "            if (!mo.isDead && !mo.isDying) {\n";
 
     public static String MultiTarget(String target)
     {
@@ -1246,6 +1377,7 @@ public class ContentAdd
     {
         String var = targetAllEnemy +
                 "            " + action + "\n" +
+                "           }\n" +
                 "        }\n";
         return var;
     }

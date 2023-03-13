@@ -187,6 +187,9 @@ public class UI extends JFrame
         //tabModel.getColumnClass(1);
         actionTable.setModel(tabModel);
         onUpgradeActionTable.setModel(upgradeTabModel);
+
+        actionTable.getTableHeader().setReorderingAllowed(false);
+        onUpgradeActionTable.getTableHeader().setReorderingAllowed(false);
         //endregion
 
         //region UI ACTION LISTENER

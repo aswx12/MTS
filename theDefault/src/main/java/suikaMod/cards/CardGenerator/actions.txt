@@ -6,6 +6,8 @@ Exh hand, deal x dmg for each card exh [too specific?]
 deal x dmg to random enemy on block gain (power)
 
 enemy takes x dmg per card play this turn
+dmg per orb [barrage]
+dmg per enemy in combat [bowling]
 
 
 
@@ -17,12 +19,12 @@ playable if every card in hand is attack [clash]
 
 --------------------------------------
 Buff/Debuff
-Gain str if enemy attack intent [spot weakness]
 Lose strength[flex]
 Gain dex
 Lose Dex
 Buff affect card x time [heavy blade]
 Gain buff at turn start
+Apply mark[pressure]
 -------------------------------------
 Variableless Action
 play top card [havoc]
@@ -48,7 +50,7 @@ gain energy if a card has been discarded this turn
 Health related
 lose x hp
 lose x hp draw x card at turn start
-
+heal[bandage up]
 
 ----------------------------------
 Condition based action
@@ -66,14 +68,14 @@ Block
 Gain x block per exh card
 Gain x block per attack this turn
 Exhaust non-attacks in hand, gain x block per exh
-
+Retain block till next turn
 
 
 
 --------------------------
 Discard To Hand {hologram
 discard to draw? top & bottom & shuffle
-
+Discard random [all out attack]
 
 Exhaust Card
 Exhaust Card(Random)[true grit]

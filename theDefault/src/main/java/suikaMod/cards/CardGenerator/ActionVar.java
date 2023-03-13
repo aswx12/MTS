@@ -32,6 +32,17 @@ public class ActionVar
     public static String gStr = "gSTR";
     //endregion
 
+    //region Buff/debuff enemy intent
+    public static String aVulEneAttIntent = "aVULNERABLEAttIntent";
+    public static String aWkEneAttIntent = "aWEAKAttIntent";
+    public static String aPsnEneAttIntent = "aPOISONAttIntent";
+    public static String aStrEneAttIntent = "aSTRAttIntent";
+
+    public static String gVulEneAttIntent = "gVULNERABLEAttIntent";
+    public static String gWkEneAttIntent = "gWEAKAttIntent";
+    public static String gPsnEneAttIntent = "gPOISONAttIntent";
+    public static String gStrEneAttIntent = "gSTRAttIntent";
+    //endregion
 
     //Discard(Disc)
     //Qty(quantity)
