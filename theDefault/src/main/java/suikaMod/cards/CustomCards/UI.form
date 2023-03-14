@@ -193,6 +193,8 @@
                         <item value="Gain Weak"/>
                         <item value="Gain Poison"/>
                         <item value="Gain Strength"/>
+                        <item value="Gain Dexterity"/>
+                        <item value="Gain Intangible"/>
                         <item value=""/>
                         <item value="Apply Vulnerable If Enemy Intent:Attack"/>
                         <item value="Apply Weak If Enemy Intent:Attack"/>
@@ -204,6 +206,8 @@
                         <item value="Gain Poison If Enemy Intent:Attack"/>
                         <item value="Gain Strength If Enemy Intent:Attack"/>
                         <item value=""/>
+                        <item value="Sacrifice HP"/>
+                        <item value="Heal"/>
                         <item value=""/>
                         <item value="Add Copy(Discard)"/>
                         <item value="Add Copy(Hand)"/>

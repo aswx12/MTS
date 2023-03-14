@@ -38,7 +38,7 @@ public class ActionTestFile extends AbstractDynamicCard
     public static final String ID = DefaultMod.makeID(ActionTestFile.class.getSimpleName());
     public static final String IMG = makeCardPath("Attack.png");
     private static final CardRarity RARITY = CardRarity.UNCOMMON;
-    private static final CardTarget TARGET = CardTarget.ENEMY;
+    private static final CardTarget TARGET = CardTarget.ALL_ENEMY;
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
@@ -82,6 +82,9 @@ public class ActionTestFile extends AbstractDynamicCard
             this.addToBot(new ApplyPowerAction(p, p, new StrengthPower(p, 1),1));
         }*/
 
+
+        this.addToBot(new ApplyPowerAction(m, p, new DexterityPower(m, 2), 2));
+        this.addToBot(new ApplyPowerAction(p, p, new IntangiblePlayerPower(p, 1), 1));
 
 
 

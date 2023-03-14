@@ -4,6 +4,7 @@ import suikaMod.cards.CardGenerator.CardTemplateStrings;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -126,7 +127,7 @@ public class UI extends JFrame
         }
 
         actionList.setModel(actionListModel);
-        String[] colName = {"Action", "Base Value", "Upgraded Value"};
+        String[] colName = {"Action", "Base Value", "Upgraded Value","Activation Condition"};
         String[] colNameUpGrade = {"Action", "Value"};
         tabModel = new DefaultTableModel(null, colName)
         {
@@ -140,7 +141,7 @@ public class UI extends JFrame
             public void setValueAt(Object value, int row, int column)
             {
                 //limit cell character
-                if (column >= 1 && value.toString().length() >= 4)
+                if (column >= 1 && column <= 2 && value.toString().length() >= 4)
                 {
                     if (value.toString().contains("-"))
                         super.setValueAt(value.toString().substring(0, 4), row, column);
@@ -182,15 +183,26 @@ public class UI extends JFrame
             }
         };
 
+
+
         tabModel.isCellEditable(0, 0);
         upgradeTabModel.isCellEditable(0, 0);
         //tabModel.getColumnClass(1);
         actionTable.setModel(tabModel);
         onUpgradeActionTable.setModel(upgradeTabModel);
 
+        DefaultComboBoxModel conditionListModel = new DefaultComboBoxModel();
+        TableColumn conditionColumn = actionTable.getColumnModel().getColumn(3);
+        JComboBox<String> conditionList = new JComboBox<>();
+        conditionListModel.addElement("None");
+        conditionListModel.addElement("Enemy Intent: Attack");
+        conditionList.setModel(conditionListModel);
+        conditionColumn.setCellEditor(new DefaultCellEditor(conditionList));
+
         actionTable.getTableHeader().setReorderingAllowed(false);
         onUpgradeActionTable.getTableHeader().setReorderingAllowed(false);
         //endregion
+
 
         //region UI ACTION LISTENER
         CreateNewCard.addActionListener(new ActionListener()
@@ -266,7 +278,7 @@ public class UI extends JFrame
                 //region table values check
                 for (int i = 0; i < actionTable.getRowCount(); i++)
                 {
-                    for (int j = 1; j < actionTable.getColumnCount(); j++)
+                    for (int j = 1; j < actionTable.getColumnCount()-1; j++)
                     {
                        if(!InputValueFieldCheck(tabModel,i,j))
                            return;
@@ -323,7 +335,7 @@ public class UI extends JFrame
                 actionList.getSelectedValuesList().stream().forEach((data) ->
                 {
                     actionListModel.removeElement(data);
-                    tabModel.addRow(new Object[]{null, null, null});
+                    tabModel.addRow(new Object[]{null, null, null,"None"});
                     tabModel.setValueAt(data, rowIndex++, 0);
                     tableHeight += 20;
                     SetActionTableSize();

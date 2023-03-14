@@ -12,6 +12,7 @@ public class CardTemplateStrings
     static StringBuilder sbVariable = new StringBuilder();
     static StringBuilder sbBaseValue = new StringBuilder();
     static StringBuilder sbActions = new StringBuilder();
+    static StringBuilder sbActionsEneAttIntent = new StringBuilder();
     static StringBuilder sbActionsOnUpgrade = new StringBuilder();
     static StringBuilder sbDiscActions = new StringBuilder();
     static StringBuilder sbUpgrade = new StringBuilder();
@@ -162,8 +163,8 @@ public class CardTemplateStrings
             return loop = "for (int i = 0; i < TIME; i++) {\n" +
                     "           " + actions + "        }\n";
         }
-        if(addOnUpgrade)
-            return actions+actionOnUpgrade;
+        if (addOnUpgrade)
+            return actions + actionOnUpgrade;
 
         return actions;
     }
@@ -199,6 +200,7 @@ public class CardTemplateStrings
         String variable = "";
         String baseValue = "";
         String actions = "";
+        String actionsOnEneAttIntent = "";
         String actionsOnUpgrade = "";
         String actionsWhenDiscard = "";
         String upgrade = "";
@@ -207,7 +209,6 @@ public class CardTemplateStrings
         //region Adding info to cards
         for (int i = 0; i < actionTableModel.getRowCount(); i++)
         {
-
             sbVariable.append(ContentAdd.AllVariable(
                     GetActionNames(actionTableModel, i),
                     GetActionValues(actionTableModel, i, 1),
@@ -216,9 +217,17 @@ public class CardTemplateStrings
             sbBaseValue.append(ContentAdd.BaseValue(
                     GetActionNames(actionTableModel, i)));
 
-            sbActions.append(ContentAdd.AllActions(
-                    GetActionNames(actionTableModel, i),
-                    stringParse(target)));
+            if (actionTableModel.getValueAt(i, 3).equals("None"))
+            {
+                sbActions.append(ContentAdd.AllActions(
+                        GetActionNames(actionTableModel, i),
+                        stringParse(target)));
+            } else if (actionTableModel.getValueAt(i, 3).equals("Enemy Intent: Attack"))
+            {
+                sbActionsEneAttIntent.append(ContentAdd.AllActions(
+                        GetActionNames(actionTableModel, i),
+                        stringParse(target)));
+            }
 
             sbDiscActions.append(ContentAdd.ActionsWhenDiscard(
                     GetActionNames(actionTableModel, i)));
@@ -259,6 +268,7 @@ public class CardTemplateStrings
         variable = sbVariable.toString();
         baseValue = sbBaseValue.toString();
         actions = sbActions.toString();
+        actionsOnEneAttIntent = sbActionsEneAttIntent.toString();
         actionsOnUpgrade = sbActionsOnUpgrade.toString();
         actionsWhenDiscard = sbDiscActions.toString();
         upgrade = sbUpgrade.toString();
@@ -280,7 +290,7 @@ public class CardTemplateStrings
         if (addActionOnUpgrade.isSelected())
         {
             addActOnUpgrade = "        if(this.upgraded){\n" +
-                    "   "+actionsOnUpgrade +"       }\n";
+                    "   " + actionsOnUpgrade + "       }\n";
         }
 
         String upDescInit = "";
@@ -294,6 +304,20 @@ public class CardTemplateStrings
             upDescInit = "";
             upDescChange = "";
         }
+
+        String cardTags = "";
+        if (name.getText().contains("Strike"))
+        {
+            cardTags = "this.tags.add(CardTags.STRIKE);\n";
+        }
+
+        String eneAttIntent = "        if (m != null && m.getIntentBaseDmg() >= 0)\n" +
+                "        {\n";
+        if (!actionsOnEneAttIntent.isEmpty())
+        {
+            actionsOnEneAttIntent = eneAttIntent + actionsOnEneAttIntent + "        }\n";
+        }
+
 
         String unlocked = "";
         if (seen.isSelected())
@@ -327,8 +351,8 @@ public class CardTemplateStrings
                 "" + baseValue + "\n" +
                 "" + CardState(cardStates) +
                 "       " + isMulti +
+                "       " + cardTags +
                 "        //this.tags.add(CardTags.STARTER_STRIKE); \n" + //wht if not starter?
-                "        //this.tags.add(CardTags.STRIKE);\n" +
                 "\n" +
                 "    }\n" +
                 "\n" +
@@ -338,6 +362,7 @@ public class CardTemplateStrings
                 "    public void use(AbstractPlayer p, AbstractMonster m)\n" +
                 "    {\n" +
                 "" + LoopInsert(repeat, actions, addActionOnUpgrade.isSelected(), addActOnUpgrade) +
+                "" + actionsOnEneAttIntent +
                 "    }\n" +
                 "\n" +
                 "" + actionsWhenDiscard + closeDiscAction +

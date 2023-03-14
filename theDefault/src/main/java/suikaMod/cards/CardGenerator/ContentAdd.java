@@ -39,6 +39,9 @@ public class ContentAdd
     static final String gainWeak = "GainWeak";
     static final String gainPoison = "GainPoison";
     static final String gainStr = "GainStrength";
+    static final String gainDex = "GainDexterity";
+    static final String gainIntangible = "GainIntangible";
+
 
     //endregion
 
@@ -55,6 +58,14 @@ public class ContentAdd
     static final String gainWeakOnEnemyAttackIntent = "GainWeakIfEnemyIntent:Attack";
     static final String gainPoisonOnEnemyAttackIntent = "GainPoisonIfEnemyIntent:Attack";
     static final String gainStrOnEnemyAttackIntent = "GainStrengthIfEnemyIntent:Attack";
+
+
+    //endregion
+
+    //region Health related
+
+    static final String sacrificeHP = "SacrificeHP";
+    static final String heal = "Heal";
 
 
     //endregion
@@ -243,6 +254,14 @@ public class ContentAdd
                 variable = "    private static final int " + gStr + " = " + value + ";\n" +
                         "    private static final int UPGRADE_" + gStr + " = " + upgradeValue + ";\n";
                 break;
+            case gainDex:
+                variable = "    private int " + gDex + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + gDex + " = " + upgradeValue + ";\n";
+                break;
+            case gainIntangible:
+                variable = "    private int " + gIntang + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + gIntang + " = " + upgradeValue + ";\n";
+                break;
             //endregion
 
             //region apply/gain on enemy attack intent
@@ -281,6 +300,19 @@ public class ContentAdd
             case gainStrOnEnemyAttackIntent:
                 variable = "    private int " + gStrEneAttIntent + " = " + value + ";\n" +
                         "    private final int UPGRADE_" + gStrEneAttIntent + " = " + upgradeValue + ";\n";
+                break;
+
+            //endregion
+
+            //region Health related
+
+            case sacrificeHP:
+                variable = "    private int " + loseHP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + loseHP + " = " + upgradeValue + ";\n";
+                break;
+            case heal:
+                variable = "    private int " + healing + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + healing + " = " + upgradeValue + ";\n";
                 break;
 
             //endregion
@@ -615,6 +647,15 @@ public class ContentAdd
                 base = "        gStrValue = gBaseStrValue= " + gStr + ";\n";
                 break;
             //endregion
+
+            //region Health
+
+            case heal:
+                base = "        this.tags.add(CardTags.HEALING);\n";
+                break;
+
+                //endregion
+
             default:
                 base = "";
         }
@@ -631,7 +672,6 @@ public class ContentAdd
     public static String Actions(String matcher, String target)
     {
         String action = "";
-        String test = "";
         switch (matcher)
         {
             //region Dmg
@@ -647,27 +687,27 @@ public class ContentAdd
                 break;
 
             case modifyDmg:
-                action = "         this.addToBot(new ModifyDmgAction(this.uuid," + dmgModify + "));\n";
+                action = "        this.addToBot(new ModifyDmgAction(this.uuid," + dmgModify + "));\n";
                 break;
 
             case DPE:
                 if (target.equals("All Enemy"))
                 {
-                    action = "         this.addToBot(\n" +
+                    action = "        this.addToBot(\n" +
                             "                new WhirlwindAction(p, this.multiDPE, this.damageTypeForTurn, this.freeToPlayOnce, this.energyOnUse));\n";
                     break;
                 }
-                action = "         this.addToBot(\n" +
+                action = "        this.addToBot(\n" +
                         "                new SkewerAction(p, m, dmgPerEnergy, this.damageTypeForTurn, this.freeToPlayOnce, this.energyOnUse));\n";
                 break;
             case vampireDmg:
                 if (target.equals("All Enemy"))
                 {
-                    action = "         this.addToBot(\n" +
+                    action = "        this.addToBot(\n" +
                             "                new VampireDamageAllEnemiesAction(p, this.multiVampDmg, this.damageTypeForTurn, AttackEffect.NONE));\n";
                     break;
                 }
-                action = "         this.addToBot(\n" +
+                action = "        this.addToBot(\n" +
                         "                new VampireDamageAction(m, new DamageInfo(p, vampDmg, damageTypeForTurn), AttackEffect.NONE));\n";
                 break;
             case damageIfTargetPoison:
@@ -718,24 +758,15 @@ public class ContentAdd
 
                 if (target.equals("All Enemy"))
                 {
-                    action = TargetAllEnemy(
-                            "this.addToBot(new ApplyPowerAction(mo, p, new VulnerablePower(mo, this.aVulnerableValue, false), this.aVulnerableValue));");
-
-                    action = MultiTarget(target) + action;
-
+                    action = "         this.addToBot(new ApplyVulnerableActionAll(this.aVulnerableValue));\n";
                     break;
                 }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new VulnerablePower(m, this.aVulnerableValue, false), this.aVulnerableValue));\n";
                 break;
             case applyWeak:
-                StringBuilder sb = new StringBuilder();
-                sb.append(action);
                 if (target.equals("All Enemy"))
                 {
-                    action = TargetAllEnemy(
-                            "this.addToBot(new ApplyPowerAction(mo, p, new WeakPower(mo, this.aWeakValue, false), this.aWeakValue));");
-
-                    action = MultiTarget(target) + action;
+                    action = "         this.addToBot(new ApplyWeakActionAll(this.aWeakValue));\n";
                     break;
                 }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new WeakPower(m, this.aWeakValue, false), this.aWeakValue));\n";
@@ -744,10 +775,7 @@ public class ContentAdd
             case applyPoison:
                 if (target.equals("All Enemy"))
                 {
-                    action = TargetAllEnemy(
-                            "this.addToBot(new ApplyPowerAction(mo, p, new PoisonPower(mo, p, this.aPoisonValue), this.aPoisonValue, AttackEffect.POISON));");
-
-                    action = MultiTarget(target) + action;
+                    action = "         this.addToBot(new ApplyPoisonActionAll(this.aPoisonValue));\n";
 
                     break;
                 }
@@ -757,10 +785,7 @@ public class ContentAdd
             case applyStr:
                 if (target.equals("All Enemy"))
                 {
-                    action = targetAllEnemy +
-                            "            this.addToBot(new ApplyPowerAction(mo, p, new StrengthPower(mo, this.aStrValue), this.aStrValue));\n" +
-                            "        }\n";
-                    action = MultiTarget(target) + action;
+                    action = "         this.addToBot(new ApplyStrActionAll(this.aStrValue));\n";
                     break;
                 }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new StrengthPower(m, this.aStrValue), this.aStrValue));\n";
@@ -780,6 +805,12 @@ public class ContentAdd
                 break;
             case gainStr:
                 action = "         this.addToBot(new ApplyPowerAction(p, p, new StrengthPower(p, this.gStrValue), this.gStrValue));\n";
+                break;
+            case gainDex:
+                action = "         this.addToBot(new ApplyPowerAction(p, p, new DexterityPower(p, "+gDex+"), "+gDex+"));\n";
+                break;
+            case gainIntangible:
+                action = "         this.addToBot(new ApplyPowerAction(p, p, new IntangiblePlayerPower(p, "+gIntang+"), "+gIntang+"));\n";
                 break;
             //endregion
 
@@ -818,6 +849,16 @@ public class ContentAdd
 
             //endregion
 
+            //region Health related
+
+            case sacrificeHP:
+                action = "         this.addToBot(new LoseHPAction(p, p, " + loseHP + "));\n";
+                break;
+            case heal:
+                action = "         this.addToBot(new HealAction(p, p, " + healing + "));\n";
+                break;
+
+            //endregion
 
             //region Add Card
 
@@ -1127,6 +1168,12 @@ public class ContentAdd
             case gainStr:
                 Upgrade = "            this.upgradeGStrValue(UPGRADE_" + gStr + ");\n";
                 break;
+            case gainDex:
+                Upgrade = "            " + gDex + " = UPGRADE_" + gDex + ";\n";
+                break;
+            case gainIntangible:
+                Upgrade = "            " + gIntang + " = UPGRADE_" + gIntang + ";\n";
+                break;
             //endregion
 
             //region apply/gain on enemy attack intent
@@ -1155,6 +1202,17 @@ public class ContentAdd
                 break;
             case gainStrOnEnemyAttackIntent:
                 Upgrade = "            " + gStrEneAttIntent + "=UPGRADE_" + gStrEneAttIntent + ";\n";
+                break;
+
+            //endregion
+
+            //health related
+
+            case sacrificeHP:
+                Upgrade = "            " + loseHP + " = UPGRADE_" + loseHP + ";\n";
+                break;
+            case heal:
+                Upgrade = "            " + healing + " = UPGRADE_" + healing + ";\n";
                 break;
 
             //endregion

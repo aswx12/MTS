@@ -30,6 +30,11 @@ public class ActionVar
     public static String gWk = "gWEAK";
     public static String gPsn = "gPOISON";
     public static String gStr = "gSTR";
+
+    public static String gDex = "gDEX"; //maybe attack intent too?
+
+    public static String gIntang="gINTANG";
+
     //endregion
 
     //region Buff/debuff enemy intent
@@ -42,6 +47,16 @@ public class ActionVar
     public static String gWkEneAttIntent = "gWEAKAttIntent";
     public static String gPsnEneAttIntent = "gPOISONAttIntent";
     public static String gStrEneAttIntent = "gSTRAttIntent";
+
+
+    //endregion
+
+    //region Health related
+
+    public static String loseHP = "hpValue";
+    public static String healing = "healingValue";
+
+
     //endregion
 
     //Discard(Disc)

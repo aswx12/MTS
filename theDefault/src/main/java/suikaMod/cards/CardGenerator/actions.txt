@@ -19,9 +19,7 @@ playable if every card in hand is attack [clash]
 
 --------------------------------------
 Buff/Debuff
-Lose strength[flex]
-Gain dex
-Lose Dex
+Lose strength at turn end[flex]
 Buff affect card x time [heavy blade]
 Gain buff at turn start
 Apply mark[pressure]
@@ -48,10 +46,7 @@ gain energy if a card has been discarded this turn
 
 ------------------------------------
 Health related
-lose x hp
 lose x hp draw x card at turn start
-heal[bandage up]
-
 ----------------------------------
 Condition based action
 if enemy has x power(weak, str etc) do something
