@@ -127,8 +127,8 @@ public class UI extends JFrame
         }
 
         actionList.setModel(actionListModel);
-        String[] colName = {"Action", "Base Value", "Upgraded Value","Activation Condition"};
-        String[] colNameUpGrade = {"Action", "Value"};
+        String[] colName = {"Action", "Base Value", "Upgraded Value", "Activation Condition","Extra Option"};
+        String[] colNameUpGrade = {"Action", "Value", "Activation Condition"};
         tabModel = new DefaultTableModel(null, colName)
         {
             @Override
@@ -170,7 +170,7 @@ public class UI extends JFrame
             public void setValueAt(Object value, int row, int column)
             {
                 //limit cell character
-                if (column >= 1 && value.toString().length() >= 4)
+                if (column == 1 && value.toString().length() >= 4)
                 {
                     if (value.toString().contains("-"))
                         super.setValueAt(value.toString().substring(0, 4), row, column);
@@ -184,7 +184,6 @@ public class UI extends JFrame
         };
 
 
-
         tabModel.isCellEditable(0, 0);
         upgradeTabModel.isCellEditable(0, 0);
         //tabModel.getColumnClass(1);
@@ -192,17 +191,32 @@ public class UI extends JFrame
         onUpgradeActionTable.setModel(upgradeTabModel);
 
         DefaultComboBoxModel conditionListModel = new DefaultComboBoxModel();
-        TableColumn conditionColumn = actionTable.getColumnModel().getColumn(3);
+
+        TableColumn conditionColumnDefault = actionTable.getColumnModel().getColumn(3);
+        TableColumn conditionColumnUpgrade = onUpgradeActionTable.getColumnModel().getColumn(2);
+
         JComboBox<String> conditionList = new JComboBox<>();
         conditionListModel.addElement("None");
         conditionListModel.addElement("Enemy Intent: Attack");
         conditionList.setModel(conditionListModel);
-        conditionColumn.setCellEditor(new DefaultCellEditor(conditionList));
+        conditionColumnDefault.setCellEditor(new DefaultCellEditor(conditionList));
+        conditionColumnUpgrade.setCellEditor(new DefaultCellEditor(conditionList));
+
+        DefaultComboBoxModel extraOptionListModel = new DefaultComboBoxModel();
+        TableColumn extraOptionCol = actionTable.getColumnModel().getColumn(4);
+
+        JComboBox<String> extraOptionList = new JComboBox<>();
+        extraOptionListModel.addElement("Hand");
+        extraOptionListModel.addElement("Discard");
+        extraOptionListModel.addElement("Draw Pile");
+        extraOptionListModel.addElement("Top Draw Pile");
+        extraOptionListModel.addElement("Bot Draw Pile");
+        extraOptionList.setModel(extraOptionListModel);
+        extraOptionCol.setCellEditor(new DefaultCellEditor(extraOptionList));
 
         actionTable.getTableHeader().setReorderingAllowed(false);
         onUpgradeActionTable.getTableHeader().setReorderingAllowed(false);
         //endregion
-
 
         //region UI ACTION LISTENER
         CreateNewCard.addActionListener(new ActionListener()
@@ -278,17 +292,17 @@ public class UI extends JFrame
                 //region table values check
                 for (int i = 0; i < actionTable.getRowCount(); i++)
                 {
-                    for (int j = 1; j < actionTable.getColumnCount()-1; j++)
+                    for (int j = 1; j < actionTable.getColumnCount() - 2; j++)
                     {
-                       if(!InputValueFieldCheck(tabModel,i,j))
-                           return;
+                        if (!InputValueFieldCheck(tabModel, i, j))
+                            return;
                     }
                 }
 
                 //InputValueFieldCheck(onUpgradeActionTable,upgradeTabModel);
                 for (int i = 0; i < onUpgradeActionTable.getRowCount(); i++)
                 {
-                    if(!InputValueFieldCheck(upgradeTabModel,i,1))
+                    if (!InputValueFieldCheck(upgradeTabModel, i, 1))
                         return;
                 }
                 //endregion
@@ -334,8 +348,9 @@ public class UI extends JFrame
             {
                 actionList.getSelectedValuesList().stream().forEach((data) ->
                 {
+                    if(!data.toString().contains("Add"))
                     actionListModel.removeElement(data);
-                    tabModel.addRow(new Object[]{null, null, null,"None"});
+                    tabModel.addRow(new Object[]{null, null, null, "None","Hand"});
                     tabModel.setValueAt(data, rowIndex++, 0);
                     tableHeight += 20;
                     SetActionTableSize();
@@ -441,7 +456,7 @@ public class UI extends JFrame
                 actionList.getSelectedValuesList().stream().forEach((data) ->
                 {
                     actionListModel.removeElement(data);
-                    upgradeTabModel.addRow(new Object[]{null, null});
+                    upgradeTabModel.addRow(new Object[]{null, null, "None"});
                     upgradeTabModel.setValueAt(data, upTableRowIndex++, 0);
                     upTableHeight += 20;
                     SetUpgradeActionTableSize();
@@ -506,7 +521,7 @@ public class UI extends JFrame
 
     private boolean InputValueFieldCheck(DefaultTableModel model, int i, int j)
     {
-        String actionName =model.getValueAt(i, 0).toString() + "\n[" + model.getColumnName(j);
+        String actionName = model.getValueAt(i, 0).toString() + "\n[" + model.getColumnName(j);
         if (model.getValueAt(i, j) == null)
         {
             JOptionPane.showMessageDialog(CreateButton, "Action: " + actionName + "] field is empty");
@@ -544,7 +559,7 @@ public class UI extends JFrame
 
     public void SetWindowSize(int ExtraHeight)
     {
-        setPreferredSize(new Dimension(1000, getPreferredSize().height + ExtraHeight));
+        setPreferredSize(new Dimension(1300, getPreferredSize().height + ExtraHeight));
         pack();
     }
 

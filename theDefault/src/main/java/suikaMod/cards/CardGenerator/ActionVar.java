@@ -22,6 +22,8 @@ public class ActionVar
 
     //region Buff/debuff
     public static String aVul = "aVULNERABLE";
+/*    static int aVulVersion;
+    static String aVulOrg = aVul;*/
     public static String aWk = "aWEAK";
     public static String aPsn = "aPOISON";
     public static String aStr = "aSTR";
@@ -38,6 +40,7 @@ public class ActionVar
     //endregion
 
     //region Buff/debuff enemy intent
+/*
     public static String aVulEneAttIntent = "aVULNERABLEAttIntent";
     public static String aWkEneAttIntent = "aWEAKAttIntent";
     public static String aPsnEneAttIntent = "aPOISONAttIntent";
@@ -47,6 +50,7 @@ public class ActionVar
     public static String gWkEneAttIntent = "gWEAKAttIntent";
     public static String gPsnEneAttIntent = "gPOISONAttIntent";
     public static String gStrEneAttIntent = "gSTRAttIntent";
+*/
 
 
     //endregion
@@ -65,10 +69,20 @@ public class ActionVar
 
     //region Copy played card
     public static String copy2Disc = "copy2DiscQty";
+    static int copy2DiscVersion;
+    static String copy2DiscOrg = copy2Disc;
     public static String copy2Hand = "copy2HandQty";
+    static int copy2HandVersion;
+    static String copy2HandOrg = copy2Hand;
     public static String copy2DrawP = "copy2DrawPQty";
+    static int copy2DrawPVersion;
+    static String copy2DrawPOrg = copy2DrawP;
     public static String copy2TopDrawP = "copy2TopDrawPQty";
+    static int copy2TopDrawPVersion;
+    static String copy2TopDrawPOrg = copy2TopDrawP;
     public static String copy2BotDrawP = "copy2BotDrawPQty";
+    static int copy2BotDrawPVersion;
+    static String copy2BotDrawPOrg = copy2BotDrawP;
     //endregion
 
     //region Add random copies

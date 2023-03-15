@@ -1,9 +1,6 @@
 package suikaMod.cards.CardGenerator;
 
-import suikaMod.actions.GiveVulnerableEnemyAttackIntentAction;
-
 import static suikaMod.cards.CardGenerator.ActionVar.*;
-
 
 public class ContentAdd
 {
@@ -42,26 +39,6 @@ public class ContentAdd
     static final String gainDex = "GainDexterity";
     static final String gainIntangible = "GainIntangible";
 
-
-    //endregion
-
-    //region apply/gain on attack intent
-    static final String applyVulnerableOnEnemyAttackIntent = "ApplyVulnerableIfEnemyIntent:Attack";
-
-    static final String applyWeakOnEnemyAttackIntent = "ApplyWeakIfEnemyIntent:Attack";
-
-    static final String applyPoisonOnEnemyAttackIntent = "ApplyPoisonIfEnemyIntent:Attack";
-
-    static final String applyStrOnEnemyAttackIntent = "ApplyStrengthIfEnemyIntent:Attack";
-
-    static final String gainVulnerableOnEnemyAttackIntent = "GainVulnerableIfEnemyIntent:Attack";
-    static final String gainWeakOnEnemyAttackIntent = "GainWeakIfEnemyIntent:Attack";
-    static final String gainPoisonOnEnemyAttackIntent = "GainPoisonIfEnemyIntent:Attack";
-    static final String gainStrOnEnemyAttackIntent = "GainStrengthIfEnemyIntent:Attack";
-
-
-    //endregion
-
     //region Health related
 
     static final String sacrificeHP = "SacrificeHP";
@@ -73,12 +50,12 @@ public class ContentAdd
     //region Add Card
 
     //region Add Copy
-    static final String addCopy2Discard = "AddCopy(Discard)";
-    static final String addCopy2Hand = "AddCopy(Hand)";
-
-    static final String addCopy2DrawPile = "AddCopy(DrawPile)";
-    static final String addCopy2TopDrawPile = "AddCopy(TopDrawPile)";
-    static final String addCopy2BotDrawPile = "AddCopy(BotDrawPile)";
+    static final String addCopy = "AddCopy";
+    static final String addCopy2Hand = "Hand";
+    static final String addCopy2Discard = "Discard";
+    static final String addCopy2DrawPile = "DrawPile";
+    static final String addCopy2TopDrawPile = "TopDrawPile";
+    static final String addCopy2BotDrawPile = "BotDrawPile";
 
     static final String addRandomAttackHandCopy = "AddRandomAttackCopy(Hand)";
     static final String addRandomSkillHandCopy = "AddRandomSkillCopy(Hand)";
@@ -158,17 +135,17 @@ public class ContentAdd
     //endregion
 
     //region Variable
-    public static String AllVariable(String action, int value, int upgradeValue)
+    public static String AllVariable(String action, int value, int upgradeValue, String where)
     {
-        return Variable(action, value, upgradeValue);
+        return Variable(action, value, upgradeValue, where);
     }
 
     public static String AllVariableUpgrade(String action, int SingleValue)
     {
-        return Variable(action, SingleValue, 0);
+        return Variable(action, SingleValue, 0, "");
     }
 
-    public static String Variable(String matcher, int value, int upgradeValue)
+    public static String Variable(String matcher, int value, int upgradeValue, String where)
     {
         String variable = "";
         switch (matcher)
@@ -219,8 +196,10 @@ public class ContentAdd
 
             //region Apply
             case applyVulnerable:
-                variable = "    private static final int " + aVul + " = " + value + ";\n" +
-                        "    private static final int UPGRADE_" + aVul + " = " + upgradeValue + ";\n";
+
+                /* aVul= aVulOrg + aVulVersion++;*/
+                variable = "    private  int " + aVul + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + aVul + " = " + upgradeValue + ";\n";
                 break;
             case applyWeak: //change this later to magic number
                 variable = "    private static final int " + aWk + " = " + value + ";\n" +
@@ -264,46 +243,6 @@ public class ContentAdd
                 break;
             //endregion
 
-            //region apply/gain on enemy attack intent
-
-            case applyVulnerableOnEnemyAttackIntent:
-                variable = "    private int " + aVulEneAttIntent + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + aVulEneAttIntent + " = " + upgradeValue + ";\n";
-                break;
-            case applyWeakOnEnemyAttackIntent:
-                variable = "    private int " + aWkEneAttIntent + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + aWkEneAttIntent + " = " + upgradeValue + ";\n";
-                break;
-            case applyPoisonOnEnemyAttackIntent:
-                variable = "    private int " + aPsnEneAttIntent + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + aPsnEneAttIntent + " = " + upgradeValue + ";\n";
-                break;
-
-            case applyStrOnEnemyAttackIntent:
-                variable = "    private int " + aStrEneAttIntent + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + aStrEneAttIntent + " = " + upgradeValue + ";\n";
-                break;
-
-            case gainVulnerableOnEnemyAttackIntent:
-                variable = "    private int " + gVulEneAttIntent + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + gVulEneAttIntent + " = " + upgradeValue + ";\n";
-                break;
-            case gainWeakOnEnemyAttackIntent:
-                variable = "    private int " + gWkEneAttIntent + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + gWkEneAttIntent + " = " + upgradeValue + ";\n";
-                break;
-            case gainPoisonOnEnemyAttackIntent:
-                variable = "    private int " + gPsnEneAttIntent + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + gPsnEneAttIntent + " = " + upgradeValue + ";\n";
-                break;
-
-            case gainStrOnEnemyAttackIntent:
-                variable = "    private int " + gStrEneAttIntent + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + gStrEneAttIntent + " = " + upgradeValue + ";\n";
-                break;
-
-            //endregion
-
             //region Health related
 
             case sacrificeHP:
@@ -320,25 +259,37 @@ public class ContentAdd
             //region Add Card
 
             //region Copy
-            case addCopy2Discard:
-                variable = "    private int " + copy2Disc + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + copy2Disc + " = " + upgradeValue + ";\n";
-                break;
-            case addCopy2Hand:
-                variable = "    private int " + copy2Hand + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + copy2Hand + " = " + upgradeValue + ";\n";
-                break;
-            case addCopy2DrawPile:
-                variable = "    private int " + copy2DrawP + " = " + value + ";\n" +
-                        "    private final int " + copy2DrawP + " = " + upgradeValue + ";\n";
-                break;
-            case addCopy2TopDrawPile:
-                variable = "    private int " + copy2TopDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + copy2TopDrawP + " = " + upgradeValue + ";\n";
-                break;
-            case addCopy2BotDrawPile:
-                variable = "    private int " + copy2BotDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + copy2BotDrawP + " = " + upgradeValue + ";\n";
+            case addCopy:
+                switch (where)
+                {
+                    case addCopy2Hand:
+                        copy2Hand = copy2HandOrg + copy2HandVersion++;
+                        variable = "    private int " + copy2Hand + " = " + value + ";\n" +
+                                "    private final int UPGRADE_" + copy2Hand + " = " + upgradeValue + ";\n";
+                        break;
+                    case addCopy2Discard:
+                        copy2Disc = copy2DiscOrg + copy2DiscVersion++;
+                        variable = "    private int " + copy2Disc + " = " + value + ";\n" +
+                                "    private final int UPGRADE_" + copy2Disc + " = " + upgradeValue + ";\n";
+                        break;
+                    case addCopy2DrawPile:
+                        copy2DrawP = copy2DrawPOrg + copy2DrawPVersion++;
+                        variable = "    private int " + copy2DrawP + " = " + value + ";\n" +
+                                "    private final int UPGRADE_" + copy2DrawP + " = " + upgradeValue + ";\n";
+                        break;
+                    case addCopy2TopDrawPile:
+                        copy2TopDrawP = copy2TopDrawPOrg + copy2TopDrawPVersion++;
+                        variable = "    private int " + copy2TopDrawP + " = " + value + ";\n" +
+                                "    private final int UPGRADE_" + copy2TopDrawP + " = " + upgradeValue + ";\n";
+                        break;
+                    case addCopy2BotDrawPile:
+                        copy2BotDrawP = copy2BotDrawPOrg + copy2BotDrawPVersion++;
+                        variable = "    private int " + copy2BotDrawP + " = " + value + ";\n" +
+                                "    private final int UPGRADE_" + copy2BotDrawP + " = " + upgradeValue + ";\n";
+                        break;
+                    default:
+                        break;
+                }
                 break;
 
             case addRandomAttackHandCopy:
@@ -634,9 +585,9 @@ public class ContentAdd
             //endregion
 
             //region Gain
-            case gainVulnerable:
+            /*case gainVulnerable:
                 base = "        gVulnerableValue = gBaseVulnerableValue = " + gVul + ";\n";
-                break;
+                break;*/
             case gainWeak:
                 base = "        gWeakValue = gBaseWeakValue= " + gWk + ";\n";
                 break;
@@ -654,7 +605,7 @@ public class ContentAdd
                 base = "        this.tags.add(CardTags.HEALING);\n";
                 break;
 
-                //endregion
+            //endregion
 
             default:
                 base = "";
@@ -664,12 +615,12 @@ public class ContentAdd
     //endregion
 
     //region Actions
-    public static String AllActions(String action, String target)
+    public static String AllActions(String action, String target, String where)
     {
-        return Actions(action, target);
+        return Actions(action, target, where);
     }
 
-    public static String Actions(String matcher, String target)
+    public static String Actions(String matcher, String target, String where)
     {
         String action = "";
         switch (matcher)
@@ -761,7 +712,7 @@ public class ContentAdd
                     action = "         this.addToBot(new ApplyVulnerableActionAll(this.aVulnerableValue));\n";
                     break;
                 }
-                action = "         this.addToBot(new ApplyPowerAction(m, p, new VulnerablePower(m, this.aVulnerableValue, false), this.aVulnerableValue));\n";
+                action = "         this.addToBot(new ApplyPowerAction(m, p, new VulnerablePower(m, " + aVul + ", false), " + aVul + "));\n";
                 break;
             case applyWeak:
                 if (target.equals("All Enemy"))
@@ -807,46 +758,11 @@ public class ContentAdd
                 action = "         this.addToBot(new ApplyPowerAction(p, p, new StrengthPower(p, this.gStrValue), this.gStrValue));\n";
                 break;
             case gainDex:
-                action = "         this.addToBot(new ApplyPowerAction(p, p, new DexterityPower(p, "+gDex+"), "+gDex+"));\n";
+                action = "         this.addToBot(new ApplyPowerAction(p, p, new DexterityPower(p, " + gDex + "), " + gDex + "));\n";
                 break;
             case gainIntangible:
-                action = "         this.addToBot(new ApplyPowerAction(p, p, new IntangiblePlayerPower(p, "+gIntang+"), "+gIntang+"));\n";
+                action = "         this.addToBot(new ApplyPowerAction(p, p, new IntangiblePlayerPower(p, " + gIntang + "), " + gIntang + "));\n";
                 break;
-            //endregion
-
-            //region apply/gain on enemy attack intent
-
-            case applyVulnerableOnEnemyAttackIntent:
-                action = "         this.addToBot(new GiveVulnerableEnemyAttackIntentAction(m, m," + aVulEneAttIntent + "));\n";
-                break;
-            case applyWeakOnEnemyAttackIntent:
-                action = "         this.addToBot(new GiveWeakEnemyAttackIntentAction(m, m," + aWkEneAttIntent + "));\n";
-                break;
-            case applyPoisonOnEnemyAttackIntent:
-                action = "         this.addToBot(new GivePoisonEnemyAttackIntentAction(m, m," + aPsnEneAttIntent + "));\n";
-
-                break;
-            case applyStrOnEnemyAttackIntent:
-                action = "         this.addToBot(new GiveStrengthEnemyAttackIntentAction(m, m," + aStrEneAttIntent + "));\n";
-
-                break;
-            case gainVulnerableOnEnemyAttackIntent:
-                action = "         this.addToBot(new GiveVulnerableEnemyAttackIntentAction(m, p," + gVulEneAttIntent + "));\n";
-
-                break;
-            case gainWeakOnEnemyAttackIntent:
-                action = "         this.addToBot(new GiveWeakEnemyAttackIntentAction(m, p," + gWkEneAttIntent + "));\n";
-
-                break;
-            case gainPoisonOnEnemyAttackIntent:
-                action = "         this.addToBot(new GivePoisonEnemyAttackIntentAction(m, p," + gPsnEneAttIntent + "));\n";
-
-                break;
-            case gainStrOnEnemyAttackIntent:
-                action = "         this.addToBot(new GiveStrengthEnemyAttackIntentAction(m, p," + gStrEneAttIntent + "));\n";
-
-                break;
-
             //endregion
 
             //region Health related
@@ -863,20 +779,28 @@ public class ContentAdd
             //region Add Card
 
             //region Add Copy
-            case addCopy2Discard:
-                action = "         this.addToBot(new MakeTempCardInDiscardAction(this.makeStatEquivalentCopy(), " + copy2Disc + "));\n";
-                break;
-            case addCopy2Hand:
-                action = "         this.addToBot(new MakeTempCardInHandAction(this.makeStatEquivalentCopy()," + copy2Hand + "));\n";
-                break;
-            case addCopy2DrawPile:
-                action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy()," + copy2DrawP + " ,true,true));\n";
-                break;
-            case addCopy2TopDrawPile:
-                action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + copy2TopDrawP + ",false,false,false));\n";
-                break;
-            case addCopy2BotDrawPile:
-                action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + copy2BotDrawP + ",false,false,true));\n";
+            case addCopy:
+                switch (where)
+                {
+                    case addCopy2Hand:
+                        action = "         this.addToBot(new MakeTempCardInHandAction(this.makeStatEquivalentCopy()," + copy2Hand + "));\n";
+                        break;
+                    case addCopy2Discard:
+                        action = "         this.addToBot(new MakeTempCardInDiscardAction(this.makeStatEquivalentCopy(), " + copy2Disc + "));\n";
+                        break;
+                    case addCopy2DrawPile:
+                        action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy()," + copy2DrawP + " ,true,true));\n";
+                        break;
+                    case addCopy2TopDrawPile:
+                        action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + copy2TopDrawP + ",false,false,false));\n";
+                        break;
+                    case addCopy2BotDrawPile:
+                        action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + copy2BotDrawP + ",false,false,true));\n";
+                        break;
+                    default:
+                        break;
+                }
+
                 break;
 
             case addRandomAttackHandCopy:
@@ -1094,12 +1018,12 @@ public class ContentAdd
     //endregion
 
     //region Upgrade
-    public static String AddUpgrade(String action)
+    public static String AddUpgrade(String action, String where)
     {
-        return Upgrade(action);
+        return Upgrade(action, where);
     }
 
-    public static String Upgrade(String matcher)
+    public static String Upgrade(String matcher, String where)
     {
         String Upgrade = "";
         switch (matcher)
@@ -1142,7 +1066,7 @@ public class ContentAdd
                 Upgrade = "            " + rpt + " = UPGRADE_" + rpt + ";\n";
                 break;
             case applyVulnerable:
-                Upgrade = "            this.upgradeAVulnerableValue(UPGRADE_" + aVul + ");\n";
+                Upgrade = "            " + aVul + "=upgradeAVulnerableValue(UPGRADE_" + aVul + ");\n";
                 break;
             case applyWeak:
                 Upgrade = "            this.upgradeAWeakValue(UPGRADE_" + aWk + ");\n";
@@ -1176,36 +1100,6 @@ public class ContentAdd
                 break;
             //endregion
 
-            //region apply/gain on enemy attack intent
-
-            case applyVulnerableOnEnemyAttackIntent:
-                Upgrade = "            " + aVulEneAttIntent + "=UPGRADE_" + aVulEneAttIntent + ";\n";
-                break;
-            case applyWeakOnEnemyAttackIntent:
-                Upgrade = "            " + aWkEneAttIntent + "=UPGRADE_" + aWkEneAttIntent + ";\n";
-                break;
-            case applyPoisonOnEnemyAttackIntent:
-                Upgrade = "            " + aPsnEneAttIntent + "=UPGRADE_" + aPsnEneAttIntent + ";\n";
-                break;
-            case applyStrOnEnemyAttackIntent:
-                Upgrade = "            " + aStrEneAttIntent + "=UPGRADE_" + aStrEneAttIntent + ";\n";
-                break;
-
-            case gainVulnerableOnEnemyAttackIntent:
-                Upgrade = "            " + gVulEneAttIntent + "=UPGRADE_" + gVulEneAttIntent + ";\n";
-                break;
-            case gainWeakOnEnemyAttackIntent:
-                Upgrade = "            " + gWkEneAttIntent + "=UPGRADE_" + gWkEneAttIntent + ";\n";
-                break;
-            case gainPoisonOnEnemyAttackIntent:
-                Upgrade = "            " + gPsnEneAttIntent + "=UPGRADE_" + gPsnEneAttIntent + ";\n";
-                break;
-            case gainStrOnEnemyAttackIntent:
-                Upgrade = "            " + gStrEneAttIntent + "=UPGRADE_" + gStrEneAttIntent + ";\n";
-                break;
-
-            //endregion
-
             //health related
 
             case sacrificeHP:
@@ -1220,17 +1114,32 @@ public class ContentAdd
             //region Add cards
 
             //region Add Copy
-            case addCopy2Discard:
-                Upgrade = "            " + copy2Disc + "=UPGRADE_" + copy2Disc + ";\n";
-                break;
-            case addCopy2Hand:
-                Upgrade = "            " + copy2Hand + "=UPGRADE_" + copy2Hand + ";\n";
-                break;
-            case addCopy2TopDrawPile:
-                Upgrade = "            " + copy2TopDrawP + "=UPGRADE_" + copy2TopDrawP + ";\n";
-                break;
-            case addCopy2BotDrawPile:
-                Upgrade = "            " + copy2BotDrawP + "=UPGRADE_" + copy2BotDrawP + ";\n";
+            case addCopy:
+                switch (where)
+                {
+                    case addCopy2Hand:
+                        Upgrade = "            " + copy2Hand + "=UPGRADE_" + copy2Hand + ";\n";
+
+                        break;
+                    case addCopy2Discard:
+                        Upgrade = "            " + copy2Disc + "=UPGRADE_" + copy2Disc + ";\n";
+
+                        break;
+                    case addCopy2DrawPile:
+                        Upgrade = "            " + copy2DrawP + "=UPGRADE_" + copy2DrawP + ";\n";
+
+                        break;
+                    case addCopy2TopDrawPile:
+                        Upgrade = "            " + copy2TopDrawP + "=UPGRADE_" + copy2TopDrawP + ";\n";
+
+                        break;
+                    case addCopy2BotDrawPile:
+                        Upgrade = "            " + copy2BotDrawP + "=UPGRADE_" + copy2BotDrawP + ";\n";
+
+                        break;
+                    default:
+                        break;
+                }
                 break;
 
             case addRandomAttackHandCopy:

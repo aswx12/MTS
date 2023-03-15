@@ -14,6 +14,7 @@ public class CardTemplateStrings
     static StringBuilder sbActions = new StringBuilder();
     static StringBuilder sbActionsEneAttIntent = new StringBuilder();
     static StringBuilder sbActionsOnUpgrade = new StringBuilder();
+    static StringBuilder sbActionsEneAttIntentOnUpgrade = new StringBuilder();
     static StringBuilder sbDiscActions = new StringBuilder();
     static StringBuilder sbUpgrade = new StringBuilder();
 
@@ -41,6 +42,10 @@ public class CardTemplateStrings
     public static String GetActionNames(DefaultTableModel actionTableModel, int row)
     {
         return DeleteSpace((String) actionTableModel.getValueAt(row, 0));
+    }
+    public static String GetActionExtraOption(DefaultTableModel actionTableModel, int row,int col)
+    {
+        return DeleteSpace((String) actionTableModel.getValueAt(row, col));
     }
 
     public static String upperCase(JComboBox string)
@@ -202,6 +207,7 @@ public class CardTemplateStrings
         String actions = "";
         String actionsOnEneAttIntent = "";
         String actionsOnUpgrade = "";
+        String actionsOnEneAttIntentOnUpgrade = "";
         String actionsWhenDiscard = "";
         String upgrade = "";
 
@@ -212,7 +218,8 @@ public class CardTemplateStrings
             sbVariable.append(ContentAdd.AllVariable(
                     GetActionNames(actionTableModel, i),
                     GetActionValues(actionTableModel, i, 1),
-                    GetActionValues(actionTableModel, i, 2)));
+                    GetActionValues(actionTableModel, i, 2),
+                    GetActionExtraOption(actionTableModel,i,4)));
 
             sbBaseValue.append(ContentAdd.BaseValue(
                     GetActionNames(actionTableModel, i)));
@@ -221,19 +228,22 @@ public class CardTemplateStrings
             {
                 sbActions.append(ContentAdd.AllActions(
                         GetActionNames(actionTableModel, i),
-                        stringParse(target)));
+                        stringParse(target),
+                        GetActionExtraOption(actionTableModel,i,4)));
             } else if (actionTableModel.getValueAt(i, 3).equals("Enemy Intent: Attack"))
             {
                 sbActionsEneAttIntent.append(ContentAdd.AllActions(
                         GetActionNames(actionTableModel, i),
-                        stringParse(target)));
+                        stringParse(target),
+                        GetActionExtraOption(actionTableModel,i,4)));
             }
 
             sbDiscActions.append(ContentAdd.ActionsWhenDiscard(
                     GetActionNames(actionTableModel, i)));
 
             sbUpgrade.append(ContentAdd.Upgrade(
-                    GetActionNames(actionTableModel, i)));
+                    GetActionNames(actionTableModel, i),
+                    GetActionExtraOption(actionTableModel,i,4)));
 
             if (GetActionNames(actionTableModel, i).equals("Repeat")) //own table?
             {
@@ -241,27 +251,39 @@ public class CardTemplateStrings
             }
         }
 
-        for (int i = 0; i < actionOnUpgradeTableModel.getRowCount(); i++)
-        {
+        if(addActionOnUpgrade.isSelected()){
+            for (int i = 0; i < actionOnUpgradeTableModel.getRowCount(); i++)
+            {
 
-            sbVariable.append(ContentAdd.AllVariableUpgrade(
-                    GetActionNames(actionOnUpgradeTableModel, i),
-                    GetActionValues(actionOnUpgradeTableModel, i, 1)));
+                sbVariable.append(ContentAdd.AllVariableUpgrade(
+                        GetActionNames(actionOnUpgradeTableModel, i),
+                        GetActionValues(actionOnUpgradeTableModel, i, 1)));
 
-            sbBaseValue.append(ContentAdd.BaseValue(
-                    GetActionNames(actionOnUpgradeTableModel, i)));
+                sbBaseValue.append(ContentAdd.BaseValue(
+                        GetActionNames(actionOnUpgradeTableModel, i)));
 
-            sbActionsOnUpgrade.append(ContentAdd.AllActions(
-                    GetActionNames(actionOnUpgradeTableModel, i),
-                    stringParse(target)));
+                if (actionOnUpgradeTableModel.getValueAt(i, 2).equals("None"))
+                {
+                    sbActionsOnUpgrade.append(ContentAdd.AllActions(
+                            GetActionNames(actionOnUpgradeTableModel, i),
+                            stringParse(target),
+                            GetActionExtraOption(actionTableModel,i,3)));
 
-            sbDiscActions.append(ContentAdd.ActionsWhenDiscard(
-                    GetActionNames(actionOnUpgradeTableModel, i))); //set upgrade condition
+                } else if (actionOnUpgradeTableModel.getValueAt(i, 2).equals("Enemy Intent: Attack"))
+                {
+                    sbActionsEneAttIntentOnUpgrade.append(ContentAdd.AllActions(
+                            GetActionNames(actionOnUpgradeTableModel, i),
+                            stringParse(target),
+                            GetActionExtraOption(actionTableModel,i,3)));
+                }
 
-           /* sbUpgrade.append(ContentAdd.Upgrade(
-                    GetActionNames(actionOnUpgradeTableModel, i)));*/
 
+                sbDiscActions.append(ContentAdd.ActionsWhenDiscard(
+                        GetActionNames(actionOnUpgradeTableModel, i))); //set upgrade condition
+
+            }
         }
+
 
         //endregion
 
@@ -270,6 +292,7 @@ public class CardTemplateStrings
         actions = sbActions.toString();
         actionsOnEneAttIntent = sbActionsEneAttIntent.toString();
         actionsOnUpgrade = sbActionsOnUpgrade.toString();
+        actionsOnEneAttIntentOnUpgrade = sbActionsEneAttIntentOnUpgrade.toString();
         actionsWhenDiscard = sbDiscActions.toString();
         upgrade = sbUpgrade.toString();
 
@@ -286,11 +309,22 @@ public class CardTemplateStrings
             isMulti = "isMultiDamage = true;\n";
         }
 
+        String eneAttIntent = "        if (m != null && m.getIntentBaseDmg() >= 0)\n" +
+                "        {\n";
+        if (!actionsOnEneAttIntent.isEmpty())
+        {
+            actionsOnEneAttIntent = eneAttIntent + actionsOnEneAttIntent + "        }\n";
+        }
+        if (!actionsOnEneAttIntentOnUpgrade.isEmpty())
+        {
+            actionsOnEneAttIntentOnUpgrade = eneAttIntent + actionsOnEneAttIntentOnUpgrade + "        }\n";
+        }
+
         String addActOnUpgrade = "";
         if (addActionOnUpgrade.isSelected())
         {
             addActOnUpgrade = "        if(this.upgraded){\n" +
-                    "   " + actionsOnUpgrade + "       }\n";
+                    "   " + actionsOnUpgrade + actionsOnEneAttIntentOnUpgrade  + "       }\n";
         }
 
         String upDescInit = "";
@@ -309,13 +343,6 @@ public class CardTemplateStrings
         if (name.getText().contains("Strike"))
         {
             cardTags = "this.tags.add(CardTags.STRIKE);\n";
-        }
-
-        String eneAttIntent = "        if (m != null && m.getIntentBaseDmg() >= 0)\n" +
-                "        {\n";
-        if (!actionsOnEneAttIntent.isEmpty())
-        {
-            actionsOnEneAttIntent = eneAttIntent + actionsOnEneAttIntent + "        }\n";
         }
 
 

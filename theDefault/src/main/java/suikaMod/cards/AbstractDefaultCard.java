@@ -316,11 +316,12 @@ public abstract class AbstractDefaultCard extends CustomCard
     }
 
     //region Apply
-    public void upgradeAVulnerableValue(int amount)
+    public int upgradeAVulnerableValue(int amount)
     { // If we're upgrading (read: changing) the number. Note "upgrade" and NOT "upgraded" - 2 different things. One is a boolean, and then this one is what you will usually use - change the integer by how much you want to upgrade.
         aBaseVulnerableValue = amount; // Upgrade the number by the amount you provide in your card.
         aVulnerableValue = aBaseVulnerableValue; // Set the number to be equal to the base value.
         aUpgradedVulnerableValue = true; // Upgraded = true - which does what the above method does.
+        return aVulnerableValue;
     }
 
 /*    public void upgradeAValues(int amount, int baseValue, int value, boolean upgradeBool)
@@ -330,56 +331,64 @@ public abstract class AbstractDefaultCard extends CustomCard
         upgradeBool = true;
     }*/
 
-    public void upgradeAWeakValue(int amount)
+    public int upgradeAWeakValue(int amount)
     {
         aBaseWeakValue = amount;
         aWeakValue = aBaseWeakValue;
         aUpgradedWeakValue = true;
+        return aWeakValue;
     }
 
-    public void upgradeAPoisonValue(int amount)
+    public int upgradeAPoisonValue(int amount)
     {
         aBasePoisonValue = amount;
         aPoisonValue = aBasePoisonValue;
         aUpgradedPoisonValue = true;
+        return aPoisonValue;
     }
 
-    public void upgradeAStrValue(int amount)
+    public int upgradeAStrValue(int amount)
     {
         aBaseStrValue = amount;
         aStrValue = aBaseStrValue;
         aUpgradedStrValue = true;
+        return aStrValue;
     }
     //endregion
 
     //region Gain
 
-    public void upgradeGVulnerableValue(int amount)
+    public int upgradeGVulnerableValue(int amount)
     {
         gBaseVulnerableValue = amount;
         gVulnerableValue = gBaseVulnerableValue;
         gUpgradedVulnerableValue = true;
+
+        return gVulnerableValue;
     }
 
-    public void upgradeGWeakValue(int amount)
+    public int upgradeGWeakValue(int amount)
     {
         gBaseWeakValue = amount;
         gWeakValue = gBaseWeakValue;
         gUpgradedWeakValue = true;
+        return gWeakValue;
     }
 
-    public void upgradeGPoisonValue(int amount)
+    public int upgradeGPoisonValue(int amount)
     {
         gBasePoisonValue = amount;
         gPoisonValue = gBasePoisonValue;
         gUpgradedPoisonValue = true;
+        return gPoisonValue;
     }
 
-    public void upgradeGStrValue(int amount)
+    public int upgradeGStrValue(int amount)
     {
         gBaseStrValue = amount;
         gStrValue = gBaseStrValue;
         gUpgradedStrValue = true;
+        return gStrValue;
     }
 
     //endregion
