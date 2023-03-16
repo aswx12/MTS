@@ -94,6 +94,7 @@ public class UI extends JFrame
             upExhaustCheck,
             upEtherealCheck
     };
+    String cardName;
 
     public static void main(String[] args)
     {
@@ -127,7 +128,7 @@ public class UI extends JFrame
         }
 
         actionList.setModel(actionListModel);
-        String[] colName = {"Action", "Base Value", "Upgraded Value", "Activation Condition","Extra Option"};
+        String[] colName = {"Action", "Base Value", "Upgraded Value", "Activation Condition", "Extra Option"};
         String[] colNameUpGrade = {"Action", "Value", "Activation Condition"};
         tabModel = new DefaultTableModel(null, colName)
         {
@@ -226,6 +227,7 @@ public class UI extends JFrame
             {
                 String curDir = System.getProperty("user.dir");
                 System.out.println(curDir);
+                cardName = CardTemplateStrings.DeleteSpace(CardName.getText());
                 if (curDir.contains("theDefault"))
                 {
                     workingDirectory = new File(System.getProperty("user.dir") + "/src/main/java/" + GetModId() + "/cards/CustomCards/");
@@ -237,9 +239,10 @@ public class UI extends JFrame
 
                 if (!CardName.getText().isEmpty())
                 {
+
                     f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                     f.showSaveDialog(null);
-                    File file = new File(f.getSelectedFile() + "/" + CardName.getText() + ".java");
+                    File file = new File(f.getSelectedFile() + "/" + cardName + ".java");
 
                     f.setCurrentDirectory(f.getSelectedFile());
                     try
@@ -325,8 +328,9 @@ public class UI extends JFrame
 
                 try
                 {
+                    cardName = CardTemplateStrings.DeleteSpace(CardName.getText());
                     // Creates a Writer using FileWriter
-                    FileWriter output = new FileWriter(f.getSelectedFile() + "/" + CardName.getText() + ".java");
+                    FileWriter output = new FileWriter(f.getSelectedFile() + "/" + cardName + ".java");
 
                     // Writes the  to file
                     output.write(cardContent);
@@ -348,9 +352,9 @@ public class UI extends JFrame
             {
                 actionList.getSelectedValuesList().stream().forEach((data) ->
                 {
-                    if(!data.toString().contains("Add"))
-                    actionListModel.removeElement(data);
-                    tabModel.addRow(new Object[]{null, null, null, "None","Hand"});
+                    if (!data.toString().contains("Add"))
+                        actionListModel.removeElement(data);
+                    tabModel.addRow(new Object[]{null, null, null, "None", "Hand"});
                     tabModel.setValueAt(data, rowIndex++, 0);
                     tableHeight += 20;
                     SetActionTableSize();

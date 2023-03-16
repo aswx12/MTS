@@ -199,6 +199,7 @@ public class CardTemplateStrings
                                       JCheckBox upCardStates[])
     {
 
+        String className = DeleteSpace(name.getText());
         String DESCRIPTION = description.getText().replaceAll("(?!\\r)\\n", " NL ");
         String upgrade_DESCRIPTION = upDescription.getText().replaceAll("(?!\\r)\\n", " NL ");
 
@@ -221,7 +222,7 @@ public class CardTemplateStrings
                     GetActionValues(actionTableModel, i, 2),
                     GetActionExtraOption(actionTableModel,i,4)));
 
-            sbBaseValue.append(ContentAdd.BaseValue(
+            sbBaseValue.append(ContentAdd.SetBase(
                     GetActionNames(actionTableModel, i)));
 
             if (actionTableModel.getValueAt(i, 3).equals("None"))
@@ -259,7 +260,7 @@ public class CardTemplateStrings
                         GetActionNames(actionOnUpgradeTableModel, i),
                         GetActionValues(actionOnUpgradeTableModel, i, 1)));
 
-                sbBaseValue.append(ContentAdd.BaseValue(
+                sbBaseValue.append(ContentAdd.SetBase(
                         GetActionNames(actionOnUpgradeTableModel, i)));
 
                 if (actionOnUpgradeTableModel.getValueAt(i, 2).equals("None"))
@@ -355,9 +356,9 @@ public class CardTemplateStrings
 
         String cardInfo = Imports() +
                 "@AutoAdd." + unlocked + "\n" +
-                "public class " + DeleteSpace(name.getText()) + " extends AbstractDynamicCard\n" +
+                "public class " + className + " extends AbstractDynamicCard\n" +
                 "{\n" +
-                "    public static final String ID = DefaultMod.makeID(" + name.getText() + ".class.getSimpleName()); \n" +
+                "    public static final String ID = DefaultMod.makeID(" + className + ".class.getSimpleName()); \n" +
                 "    public static final String IMG = makeCardPath(\"Attack.png\"); \n" +
                 "    private static final CardRarity RARITY = CardRarity." + upperCase(rarity) + "; \n" +
                 "    private static final CardTarget TARGET = CardTarget." + ReplaceSpace(target) + "; \n" +
@@ -372,7 +373,7 @@ public class CardTemplateStrings
                 "\n    private static String desc =\"" + DESCRIPTION + "\";\n" +
                 "" + upDescInit +
 
-                "    public " + name.getText() + " ()\n" +
+                "    public " + className + " ()\n" +
                 "    { \n" +
                 "        super(ID, \"" + name.getText() + "\", IMG,desc, COST, TYPE, COLOR, RARITY, TARGET);\n" +
                 "" + baseValue + "\n" +

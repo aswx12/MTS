@@ -1,6 +1,7 @@
 package suikaMod.cards.CardGenerator;
 
 import static suikaMod.cards.CardGenerator.ActionVar.*;
+import static suikaMod.cards.CardGenerator.ActionVar.actionVar;
 
 public class ContentAdd
 {
@@ -39,6 +40,7 @@ public class ContentAdd
     static final String gainDex = "GainDexterity";
     static final String gainIntangible = "GainIntangible";
 
+    //endregion
     //region Health related
 
     static final String sacrificeHP = "SacrificeHP";
@@ -51,64 +53,21 @@ public class ContentAdd
 
     //region Add Copy
     static final String addCopy = "AddCopy";
+    static final String addRandomAttackCopy = "AddRandomAttackCopy";
+    static final String addRandomSkillCopy = "AddRandomSkillCopy";
+    static final String addRandomPowerCopy = "AddRandomPowerCopy";
+    static final String addRandomColorlessCopy = "AddRandomColorlessCopy";
+
+    static final String addRandomAttack = "AddRandomAttack";
+    static final String addRandomSkill = "AddRandomSkill";
+    static final String addRandomPower = "AddRandomPower";
+    static final String addRandomColorless = "AddRandomColorless";
+
     static final String addCopy2Hand = "Hand";
     static final String addCopy2Discard = "Discard";
     static final String addCopy2DrawPile = "DrawPile";
     static final String addCopy2TopDrawPile = "TopDrawPile";
     static final String addCopy2BotDrawPile = "BotDrawPile";
-
-    static final String addRandomAttackHandCopy = "AddRandomAttackCopy(Hand)";
-    static final String addRandomSkillHandCopy = "AddRandomSkillCopy(Hand)";
-    static final String addRandomPowerHandCopy = "AddRandomPowerCopy(Hand)";
-    static final String addRandomColorlessHandCopy = "AddRandomColorlessCopy(Hand)";
-
-    static final String addRandomAttackDiscardCopy = "AddRandomAttackCopy(Discard)";
-    static final String addRandomSkillDiscardCopy = "AddRandomSkillCopy(Discard)";
-    static final String addRandomPowerDiscardCopy = "AddRandomPowerCopy(Discard)";
-    static final String addRandomColorlessDiscardCopy = "AddRandomColorlessCopy(Discard)";
-
-    static final String addRandomAttackDrawPileCopy = "AddRandomAttackCopy(DrawPile)";
-    static final String addRandomSkillDrawPileCopy = "AddRandomSkillCopy(DrawPile)";
-    static final String addRandomPowerDrawPileCopy = "AddRandomPowerCopy(DrawPile)";
-    static final String addRandomColorlessDrawPileCopy = "AddRandomColorlessCopy(DrawPile)";
-
-    static final String addRandomAttackTopDrawPileCopy = "AddRandomAttackCopy(TopDrawPile)";
-    static final String addRandomSkillTopDrawPileCopy = "AddRandomSkillCopy(TopDrawPile)";
-    static final String addRandomPowerTopDrawPileCopy = "AddRandomPowerCopy(TopDrawPile)";
-    static final String addRandomColorlessTopDrawPileCopy = "AddRandomColorlessCopy(TopDrawPile)";
-
-    static final String addRandomAttackBotDrawPileCopy = "AddRandomAttackCopy(BotDrawPile)";
-    static final String addRandomSkillBotDrawPileCopy = "AddRandomSkillCopy(BotDrawPile)";
-    static final String addRandomPowerBotDrawPileCopy = "AddRandomPowerCopy(BotDrawPile)";
-    static final String addRandomColorlessBotDrawPileCopy = "AddRandomColorlessCopy(BotDrawPile)";
-    //endregion
-
-    //region Add Random
-    static final String addRandomAttackHand = "AddRandomAttack(Hand)";
-    static final String addRandomSkillHand = "AddRandomSkill(Hand)";
-    static final String addRandomPowerHand = "AddRandomPower(Hand)";
-    static final String addRandomColorlessHand = "AddRandomColorless(Hand)";
-
-    static final String addRandomAttackDiscard = "AddRandomAttack(Discard)";
-    static final String addRandomSkillDiscard = "AddRandomSkill(Discard)";
-    static final String addRandomPowerDiscard = "AddRandomPower(Discard)";
-    static final String addRandomColorlessDiscard = "AddRandomColorless(Discard)";
-
-    static final String addRandomAttackDrawPile = "AddRandomAttack(DrawPile)";
-    static final String addRandomSkillDrawPile = "AddRandomSkill(DrawPile)";
-    static final String addRandomPowerDrawPile = "AddRandomPower(DrawPile)";
-    static final String addRandomColorlessDrawPile = "AddRandomColorless(DrawPile)";
-
-    static final String addRandomAttackTopDrawPile = "AddRandomAttack(TopDrawPile)";
-    static final String addRandomSkillTopDrawPile = "AddRandomSkill(TopDrawPile)";
-    static final String addRandomPowerTopDrawPile = "AddRandomPower(TopDrawPile)";
-    static final String addRandomColorlessTopDrawPile = "AddRandomColorless(TopDrawPile)";
-
-    static final String addRandomAttackBotDrawPile = "AddRandomAttack(BotDrawPile)";
-    static final String addRandomSkillBotDrawPile = "AddRandomSkill(BotDrawPile)";
-    static final String addRandomPowerBotDrawPile = "AddRandomPower(BotDrawPile)";
-    static final String addRandomColorlessBotDrawPile = "AddRandomColorless(BotDrawPile)";
-
 
     //endregion
 
@@ -133,7 +92,8 @@ public class ContentAdd
     //endregion
 
     //endregion
-
+    static String cpyString="copy";
+    static String notCpy="uniq";
     //region Variable
     public static String AllVariable(String action, int value, int upgradeValue, String where)
     {
@@ -145,7 +105,37 @@ public class ContentAdd
         return Variable(action, SingleValue, 0, "");
     }
 
-    public static String Variable(String matcher, int value, int upgradeValue, String where)
+    public static String varInit(int value, int upgradeValue)
+    {
+        return "    private int " + actionVar + " = " + value + ";\n" +
+                "    private final int UPGRADE_" + actionVar + " = " + upgradeValue + ";\n";
+    }
+    public static String SetVersion(String where,int V,String actionVarV,int value,int upgradeValue){
+        actionVar = actionVarV;
+        switch (where)
+        {
+            case addCopy2Hand:
+                actionVar += V + toHand;
+                break;
+            case addCopy2Discard:
+                actionVar += V + toDisc;
+                break;
+            case addCopy2DrawPile:
+                actionVar += V + toDrawP;
+                break;
+            case addCopy2TopDrawPile:
+                actionVar += V + toTopDrawP;
+                break;
+            case addCopy2BotDrawPile:
+                actionVar += V + toBotDrawP;
+                break;
+            default:
+                break;
+        }
+        return varInit(value, upgradeValue);
+    }
+
+    public static String Variable(String matcher, int value, int upgradeValue, String targetLocation)
     {
         String variable = "";
         switch (matcher)
@@ -260,211 +250,35 @@ public class ContentAdd
 
             //region Copy
             case addCopy:
-                switch (where)
-                {
-                    case addCopy2Hand:
-                        copy2Hand = copy2HandOrg + copy2HandVersion++;
-                        variable = "    private int " + copy2Hand + " = " + value + ";\n" +
-                                "    private final int UPGRADE_" + copy2Hand + " = " + upgradeValue + ";\n";
-                        break;
-                    case addCopy2Discard:
-                        copy2Disc = copy2DiscOrg + copy2DiscVersion++;
-                        variable = "    private int " + copy2Disc + " = " + value + ";\n" +
-                                "    private final int UPGRADE_" + copy2Disc + " = " + upgradeValue + ";\n";
-                        break;
-                    case addCopy2DrawPile:
-                        copy2DrawP = copy2DrawPOrg + copy2DrawPVersion++;
-                        variable = "    private int " + copy2DrawP + " = " + value + ";\n" +
-                                "    private final int UPGRADE_" + copy2DrawP + " = " + upgradeValue + ";\n";
-                        break;
-                    case addCopy2TopDrawPile:
-                        copy2TopDrawP = copy2TopDrawPOrg + copy2TopDrawPVersion++;
-                        variable = "    private int " + copy2TopDrawP + " = " + value + ";\n" +
-                                "    private final int UPGRADE_" + copy2TopDrawP + " = " + upgradeValue + ";\n";
-                        break;
-                    case addCopy2BotDrawPile:
-                        copy2BotDrawP = copy2BotDrawPOrg + copy2BotDrawPVersion++;
-                        variable = "    private int " + copy2BotDrawP + " = " + value + ";\n" +
-                                "    private final int UPGRADE_" + copy2BotDrawP + " = " + upgradeValue + ";\n";
-                        break;
-                    default:
-                        break;
-                }
+                variable = SetVersion(targetLocation,addCpyV++,addCpy,value,upgradeValue);
                 break;
-
-            case addRandomAttackHandCopy:
-                variable = "    private int " + rAttackHandCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rAttackHandCopy + " = " + upgradeValue + ";\n";
+            case addRandomAttackCopy:
+                variable = SetVersion(targetLocation,randomAttCpyV++, RandomAttCpy,value,upgradeValue);
                 break;
-            case addRandomSkillHandCopy:
-                variable = "    private int " + rSkillHandCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rSkillHandCopy + " = " + upgradeValue + ";\n";
+            case addRandomSkillCopy:
+                variable = SetVersion(targetLocation,randomSkillCpyV++, RandomSkillCpy,value,upgradeValue);
                 break;
-            case addRandomPowerHandCopy:
-                variable = "    private int " + rPowerHandCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rPowerHandCopy + " = " + upgradeValue + ";\n";
+            case addRandomPowerCopy:
+                variable = SetVersion(targetLocation,randomPowerCpyV++, RandomPowerCpy,value,upgradeValue);
                 break;
-            case addRandomColorlessHandCopy:
-                variable = "    private int " + rColorlessHandCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rColorlessHandCopy + " = " + upgradeValue + ";\n";
+            case addRandomColorlessCopy:
+                variable = SetVersion(targetLocation,randomColorlessCpyV++, RandomColorlessCpy,value,upgradeValue);
                 break;
-
-            case addRandomAttackDiscardCopy:
-                variable = "    private int " + rAttackDiscCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rAttackDiscCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomSkillDiscardCopy:
-                variable = "    private int " + rSkillDiscCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rSkillDiscCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomPowerDiscardCopy:
-                variable = "    private int " + rPowerDiscCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rPowerDiscCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomColorlessDiscardCopy:
-                variable = "    private int " + rColorlessDiscCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rColorlessDiscCopy + " = " + upgradeValue + ";\n";
-                break;
-            //------------------------------------------------------------------------
-            case addRandomAttackDrawPileCopy:
-                variable = "    private int " + rAttackDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rAttackDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomSkillDrawPileCopy:
-                variable = "    private int " + rSkillDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rSkillDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomPowerDrawPileCopy:
-                variable = "    private int " + rPowerDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rPowerDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomColorlessDrawPileCopy:
-                variable = "    private int " + rColorlessDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rColorlessDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-
-            case addRandomAttackTopDrawPileCopy:
-                variable = "    private int " + rAttackTopDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rAttackTopDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomSkillTopDrawPileCopy:
-                variable = "    private int " + rSkillTopDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rSkillTopDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomPowerTopDrawPileCopy:
-                variable = "    private int " + rPowerTopDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rPowerTopDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomColorlessTopDrawPileCopy:
-                variable = "    private int " + rColorlessTopDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rColorlessTopDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-
-            case addRandomAttackBotDrawPileCopy:
-                variable = "    private int " + rAttackBotDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rAttackBotDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomSkillBotDrawPileCopy:
-                variable = "    private int " + rSkillBotDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rSkillBotDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomPowerBotDrawPileCopy:
-                variable = "    private int " + rPowerBotDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rPowerBotDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomColorlessBotDrawPileCopy:
-                variable = "    private int " + rColorlessBotDrawPCopy + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rColorlessBotDrawPCopy + " = " + upgradeValue + ";\n";
-                break;
-
             //endregion
             //-------------------------------------------------------------
             //region Add Random
-            case addRandomAttackHand:
-                variable = "    private int " + rAttackHand + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rAttackHand + " = " + upgradeValue + ";\n";
+            case addRandomAttack:
+                variable = SetVersion(targetLocation,randomAttV++, RandomAtt,value,upgradeValue);
                 break;
-            case addRandomSkillHand:
-                variable = "    private int " + rSkillHand + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rSkillHand + " = " + upgradeValue + ";\n";
+            case addRandomSkill:
+                variable = SetVersion(targetLocation,randomSkillV++,RandomSkill,value,upgradeValue);
                 break;
-            case addRandomPowerHand:
-                variable = "    private int " + rPowerHand + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rPowerHand + " = " + upgradeValue + ";\n";
+            case addRandomPower:
+                variable = SetVersion(targetLocation,randomPowerV++,RandomPower,value,upgradeValue);
                 break;
-            case addRandomColorlessHand:
-                variable = "    private int " + rColorlessHand + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rColorlessHand + " = " + upgradeValue + ";\n";
+            case addRandomColorless:
+                variable = SetVersion(targetLocation,randomColorlessV++,RandomColorless,value,upgradeValue);
                 break;
-
-            case addRandomAttackDiscard:
-                variable = "    private int " + rAttackDisc + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rAttackDisc + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomSkillDiscard:
-                variable = "    private int " + rSkillDisc + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rSkillDisc + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomPowerDiscard:
-                variable = "    private int " + rPowerDisc + " = " + value + ";\n" +
-                        "    private final int UPGRADE_d" + rPowerDisc + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomColorlessDiscard:
-                variable = "    private int " + rColorlessDisc + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rColorlessDisc + " = " + upgradeValue + ";\n";
-                break;
-            //--------------------------------------------------
-            case addRandomAttackDrawPile:
-                variable = "    private int " + rAttackDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rAttackDrawP + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomSkillDrawPile:
-                variable = "    private int " + rSkillDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rSkillDrawP + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomPowerDrawPile:
-                variable = "    private int " + rPowerDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rPowerDrawP + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomColorlessDrawPile:
-                variable = "    private int " + rColorlessDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rColorlessDrawP + " = " + upgradeValue + ";\n";
-                break;
-
-            case addRandomAttackTopDrawPile:
-                variable = "    private int " + rAttackTopDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rAttackTopDrawP + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomSkillTopDrawPile:
-                variable = "    private int " + rSkillTopDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rSkillTopDrawP + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomPowerTopDrawPile:
-                variable = "    private int " + rPowerTopDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rPowerTopDrawP + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomColorlessTopDrawPile:
-                variable = "    private int " + rColorlessTopDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rColorlessTopDrawP + " = " + upgradeValue + ";\n";
-                break;
-
-            case addRandomAttackBotDrawPile:
-                variable = "    private int " + rAttackBotDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rAttackBotDrawP + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomSkillBotDrawPile:
-                variable = "    private int " + rSkillBotDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rSkillBotDrawP + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomPowerBotDrawPile:
-                variable = "    private int " + rPowerBotDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rPowerBotDrawP + " = " + upgradeValue + ";\n";
-                break;
-            case addRandomColorlessBotDrawPile:
-                variable = "    private int " + rColorlessBotDrawP + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + rColorlessBotDrawP + " = " + upgradeValue + ";\n";
-                break;
-
 
             //---------------------------------------------------
 
@@ -534,6 +348,7 @@ public class ContentAdd
     {
         return BaseValue(action);
     }
+
 
     public static String BaseValue(String matcher)
     {
@@ -619,10 +434,81 @@ public class ContentAdd
     {
         return Actions(action, target, where);
     }
+    public static String randomAdd(String method, String where, String cardType){
+        String action="";
+        String methodHand="";
+        String methodDisc="";
+        String methodDraw="";
 
-    public static String Actions(String matcher, String target, String where)
+
+        if(method.equals(cpyString)){
+            methodHand="AddRandomCardHandCopy";
+            methodDisc ="AddRandomCardDiscardCopy";
+            methodDraw="AddRandomCardDrawPCopy";
+        }
+        else {
+            methodHand="AddRandomCardHand";
+            methodDisc ="AddRandomCardDiscard";
+            methodDraw="AddRandomCardDrawP";
+        }
+
+        switch (where)
+        {
+            case addCopy2Hand:
+                action = "         "+methodHand+"(" + actionVar + ",CardType."+cardType+");\n";
+                break;
+            case addCopy2Discard:
+                action = "         "+methodDisc+"(" + actionVar + ",CardType."+cardType+");\n";
+                break;
+            case addCopy2DrawPile:
+                action = "         "+methodDraw+"(" + actionVar + ",CardType."+cardType+",\"Random\");\n";
+                break;
+            case addCopy2TopDrawPile:
+                action = "         "+methodDraw+"(" + actionVar + ",CardType."+cardType+",\"Top\");\n";
+                break;
+            case addCopy2BotDrawPile:
+                action = "         "+methodDraw+"(" + actionVar + ",CardType."+cardType+",\"Bot\");\n";
+                break;
+            default:
+                break;
+        }
+        return action;
+    }
+
+    public static String randomColorless(String method,String where){
+        String action="";
+        String methodString="";
+        if(method.equals(cpyString)){
+            methodString="AddRandomColorlessCopy";
+        }
+        else
+            methodString="AddRandomColorless";
+        switch (where)
+        {
+            case addCopy2Hand:
+                action = "         "+methodString+"(" + actionVar + ",\"Hand\");\n";
+                break;
+            case addCopy2Discard:
+                action = "         "+methodString+"(" + actionVar + ",\"Discard\");\n";
+                break;
+            case addCopy2DrawPile:
+                action = "         "+methodString+"(" + actionVar + ",\"DrawPile\");\n";
+                break;
+            case addCopy2TopDrawPile:
+                action = "         "+methodString+"(" + actionVar + ",\"TopDrawPile\");\n";
+                break;
+            case addCopy2BotDrawPile:
+                action = "         "+methodString+"(" + actionVar + ",\"BotDrawPile\");\n";
+                break;
+            default:
+                break;
+        }
+        return action;
+    }
+    public static String Actions(String matcher, String target, String targetLocation)
     {
         String action = "";
+
         switch (matcher)
         {
             //region Dmg
@@ -780,22 +666,22 @@ public class ContentAdd
 
             //region Add Copy
             case addCopy:
-                switch (where)
+                switch (targetLocation)
                 {
                     case addCopy2Hand:
-                        action = "         this.addToBot(new MakeTempCardInHandAction(this.makeStatEquivalentCopy()," + copy2Hand + "));\n";
+                        action = "         this.addToBot(new MakeTempCardInHandAction(this.makeStatEquivalentCopy()," + actionVar + "));\n";
                         break;
                     case addCopy2Discard:
-                        action = "         this.addToBot(new MakeTempCardInDiscardAction(this.makeStatEquivalentCopy(), " + copy2Disc + "));\n";
+                        action = "         this.addToBot(new MakeTempCardInDiscardAction(this.makeStatEquivalentCopy(), " + actionVar + "));\n";
                         break;
                     case addCopy2DrawPile:
-                        action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy()," + copy2DrawP + " ,true,true));\n";
+                        action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy()," + actionVar + " ,true,true));\n";
                         break;
                     case addCopy2TopDrawPile:
-                        action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + copy2TopDrawP + ",false,false,false));\n";
+                        action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + actionVar + ",false,false,false));\n";
                         break;
                     case addCopy2BotDrawPile:
-                        action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + copy2BotDrawP + ",false,false,true));\n";
+                        action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + actionVar + ",false,false,true));\n";
                         break;
                     default:
                         break;
@@ -803,137 +689,32 @@ public class ContentAdd
 
                 break;
 
-            case addRandomAttackHandCopy:
-                action = "         AddRandomCardHandCopy(" + rAttackHandCopy + ",CardType.ATTACK);\n";
+            case addRandomAttackCopy:
+                action= randomAdd(cpyString,targetLocation,"ATTACK");
                 break;
-            case addRandomSkillHandCopy:
-                action = "         AddRandomCardHandCopy(" + rSkillHandCopy + ",CardType.SKILL);\n";
+            case addRandomSkillCopy:
+                action= randomAdd(cpyString,targetLocation,"SKILL");
                 break;
-            case addRandomPowerHandCopy:
-                action = "         AddRandomCardHandCopy(" + rPowerHandCopy + ",CardType.POWER);\n";
+            case addRandomPowerCopy:
+                action= randomAdd(cpyString,targetLocation,"POWER");
                 break;
-            case addRandomColorlessHandCopy:
-                action = "         AddRandomColorlessCopy(" + rColorlessHandCopy + ",\"Hand\");\n";
-                break;
-
-            case addRandomAttackDiscardCopy:
-                action = "         AddRandomCardDiscardCopy(" + rAttackDiscCopy + ",CardType.ATTACK);\n";
-                break;
-            case addRandomSkillDiscardCopy:
-                action = "         AddRandomCardDiscardCopy(" + rSkillDiscCopy + ",CardType.SKILL);\n";
-                break;
-            case addRandomPowerDiscardCopy:
-                action = "         AddRandomCardDiscardCopy(" + rPowerDiscCopy + ",CardType.POWER);\n";
-                break;
-            case addRandomColorlessDiscardCopy:
-                action = "         AddRandomColorlessCopy(" + rColorlessDiscCopy + ",\"Discard\");\n";
-                break;
-
-            case addRandomAttackDrawPileCopy:
-                action = "         AddRandomCardDrawPCopy(" + rAttackDrawPCopy + ",CardType.ATTACK,\"Random\");\n";
-                break;
-            case addRandomSkillDrawPileCopy:
-                action = "         AddRandomCardDrawPCopy(" + rSkillDrawPCopy + ",CardType.SKILL,\"Random\");\n";
-                break;
-            case addRandomPowerDrawPileCopy:
-                action = "         AddRandomCardDrawPCopy(" + rPowerDrawPCopy + ",CardType.POWER,\"Random\");\n";
-                break;
-            case addRandomColorlessDrawPileCopy:
-                action = "         AddRandomColorlessCopy(" + rColorlessDrawPCopy + ",\"DrawPile\");\n";
-                break;
-
-            case addRandomAttackTopDrawPileCopy:
-                action = "         AddRandomCardDrawPCopy(" + rAttackTopDrawPCopy + ",CardType.ATTACK,\"Top\");\n";
-                break;
-            case addRandomSkillTopDrawPileCopy:
-                action = "         AddRandomCardDrawPCopy(" + rSkillTopDrawPCopy + ",CardType.SKILL,\"Top\");\n";
-                break;
-            case addRandomPowerTopDrawPileCopy:
-                action = "         AddRandomCardDrawPCopy(" + rPowerTopDrawPCopy + ",CardType.POWER,\"Top\");\n";
-                break;
-            case addRandomColorlessTopDrawPileCopy:
-                action = "         AddRandomColorlessCopy(" + rColorlessTopDrawPCopy + ",\"TopDrawPile\");\n";
-                break;
-
-            case addRandomAttackBotDrawPileCopy:
-                action = "         AddRandomCardDrawPCopy(" + rAttackBotDrawPCopy + ",CardType.ATTACK,\"Bot\");\n";
-                break;
-            case addRandomSkillBotDrawPileCopy:
-                action = "         AddRandomCardDrawPCopy(" + rSkillBotDrawPCopy + ",CardType.SKILL,\"Bot\");\n";
-                break;
-            case addRandomPowerBotDrawPileCopy:
-                action = "         AddRandomCardDrawPCopy(" + rPowerBotDrawPCopy + ",CardType.POWER,\"Bot\");\n";
-                break;
-            case addRandomColorlessBotDrawPileCopy:
-                action = "         AddRandomColorlessCopy(" + rColorlessBotDrawPCopy + ",\"BotDrawPile\");\n";
+            case addRandomColorlessCopy:
+                action = randomColorless(cpyString,targetLocation);
                 break;
             //endregion
 
             //region Add Random
-            case addRandomAttackHand:
-                action = "         AddRandomCardHand(" + rAttackHand + ",CardType.ATTACK);\n";
+            case addRandomAttack:
+                action= randomAdd(notCpy,targetLocation,"ATTACK");
                 break;
-            case addRandomSkillHand:
-                action = "         AddRandomCardHand(" + rSkillHand + ",CardType.SKILL);\n";
+            case addRandomSkill:
+                action= randomAdd(notCpy,targetLocation,"SKILL");
                 break;
-            case addRandomPowerHand:
-                action = "         AddRandomCardHand(" + rPowerHand + ",CardType.POWER);\n";
+            case addRandomPower:
+                action= randomAdd(notCpy,targetLocation,"POWER");
                 break;
-            case addRandomColorlessHand:
-                action = "         AddRandomColorless(" + rColorlessHand + ",\"Hand\");\n";
-                break;
-
-            case addRandomAttackDiscard:
-                action = "         AddRandomCardDiscard(" + rAttackDisc + ",CardType.ATTACK);\n";
-                break;
-            case addRandomSkillDiscard:
-                action = "         AddRandomCardDiscard(" + rSkillDisc + ",CardType.SKILL);\n";
-                break;
-            case addRandomPowerDiscard:
-                action = "         AddRandomCardDiscard(" + rPowerDisc + ",CardType.POWER);\n";
-                break;
-            case addRandomColorlessDiscard:
-                action = "         AddRandomColorless(" + rColorlessDisc + ",\"Discard\");\n";
-                break;
-
-            //-----------------------------------
-            case addRandomAttackDrawPile:
-                action = "         AddRandomCardDrawP(" + rAttackDrawP + ",CardType.ATTACK,\"Random\");\n";
-                break;
-            case addRandomSkillDrawPile:
-                action = "         AddRandomCardDrawP(" + rSkillDrawP + ",CardType.SKILL,\"Random\");\n";
-                break;
-            case addRandomPowerDrawPile:
-                action = "         AddRandomCardDrawP(" + rPowerDrawP + ",CardType.POWER,\"Random\");\n";
-                break;
-            case addRandomColorlessDrawPile:
-                action = "         AddRandomColorless(" + rColorlessDrawP + ",\"DrawPile\");\n";
-                break;
-
-            case addRandomAttackTopDrawPile:
-                action = "         AddRandomCardDrawP(" + rAttackTopDrawP + ",CardType.ATTACK,\"Top\");\n";
-                break;
-            case addRandomSkillTopDrawPile:
-                action = "         AddRandomCardDrawP(" + rSkillTopDrawP + ",CardType.SKILL,\"Top\");\n";
-                break;
-            case addRandomPowerTopDrawPile:
-                action = "         AddRandomCardDrawP(" + rPowerTopDrawP + ",CardType.POWER,\"Top\");\n";
-                break;
-            case addRandomColorlessTopDrawPile:
-                action = "         AddRandomColorless(" + rColorlessTopDrawP + ",\"TopDrawPile\");\n";
-                break;
-
-            case addRandomAttackBotDrawPile:
-                action = "         AddRandomCardDrawP(" + rAttackBotDrawP + ",CardType.ATTACK,\"Bot\");\n";
-                break;
-            case addRandomSkillBotDrawPile:
-                action = "         AddRandomCardDrawP(" + rSkillBotDrawP + ",CardType.SKILL,\"Bot\");\n";
-                break;
-            case addRandomPowerBotDrawPile:
-                action = "         AddRandomCardDrawP(" + rPowerBotDrawP + ",CardType.POWER,\"Bot\");\n";
-                break;
-            case addRandomColorlessBotDrawPile:
-                action = "         AddRandomColorless(" + rColorlessBotDrawP + ",\"BotDrawPile\");\n";
+            case addRandomColorless:
+                action = randomColorless(notCpy,targetLocation);
                 break;
             //-----------------------------------
             //endregion
@@ -1115,164 +896,19 @@ public class ContentAdd
 
             //region Add Copy
             case addCopy:
-                switch (where)
-                {
-                    case addCopy2Hand:
-                        Upgrade = "            " + copy2Hand + "=UPGRADE_" + copy2Hand + ";\n";
-
-                        break;
-                    case addCopy2Discard:
-                        Upgrade = "            " + copy2Disc + "=UPGRADE_" + copy2Disc + ";\n";
-
-                        break;
-                    case addCopy2DrawPile:
-                        Upgrade = "            " + copy2DrawP + "=UPGRADE_" + copy2DrawP + ";\n";
-
-                        break;
-                    case addCopy2TopDrawPile:
-                        Upgrade = "            " + copy2TopDrawP + "=UPGRADE_" + copy2TopDrawP + ";\n";
-
-                        break;
-                    case addCopy2BotDrawPile:
-                        Upgrade = "            " + copy2BotDrawP + "=UPGRADE_" + copy2BotDrawP + ";\n";
-
-                        break;
-                    default:
-                        break;
-                }
+            case addRandomAttackCopy:
+            case addRandomSkillCopy:
+            case addRandomPowerCopy:
+            case addRandomColorlessCopy:
+            case addRandomAttack:
+            case addRandomSkill:
+            case addRandomPower:
+            case addRandomColorless:
+                Upgrade = "            " + actionVar + "=UPGRADE_" + actionVar + ";\n";
                 break;
 
-            case addRandomAttackHandCopy:
-                Upgrade = "            " + rAttackHandCopy + "=UPGRADE_" + rAttackHandCopy + ";\n";
-                break;
-            case addRandomSkillHandCopy:
-                Upgrade = "            " + rSkillHandCopy + "=UPGRADE_" + rSkillHandCopy + ";\n";
-                break;
-            case addRandomPowerHandCopy:
-                Upgrade = "            " + rPowerHandCopy + "=UPGRADE_" + rPowerHandCopy + ";\n";
-                break;
-            case addRandomColorlessHandCopy:
-                Upgrade = "            " + rColorlessHandCopy + "=UPGRADE_" + rColorlessHandCopy + ";\n";
-                break;
-
-            case addRandomAttackDiscardCopy:
-                Upgrade = "            " + rAttackDiscCopy + "=UPGRADE_" + rAttackDiscCopy + ";\n";
-                break;
-            case addRandomSkillDiscardCopy:
-                Upgrade = "            " + rSkillDiscCopy + "=UPGRADE_" + rSkillDiscCopy + ";\n";
-                break;
-            case addRandomPowerDiscardCopy:
-                Upgrade = "            " + rPowerDiscCopy + "=UPGRADE_" + rPowerDiscCopy + ";\n";
-                break;
-            case addRandomColorlessDiscardCopy:
-                Upgrade = "            " + rColorlessDiscCopy + "=UPGRADE_" + rColorlessDiscCopy + ";\n";
-                break;
-
-            case addRandomAttackDrawPileCopy:
-                Upgrade = "            " + rAttackDrawPCopy + "=UPGRADE_" + rAttackDrawPCopy + ";\n";
-                break;
-            case addRandomSkillDrawPileCopy:
-                Upgrade = "            " + rSkillDrawPCopy + "=UPGRADE_" + rSkillDrawPCopy + ";\n";
-                break;
-            case addRandomPowerDrawPileCopy:
-                Upgrade = "            " + rPowerDrawPCopy + "=UPGRADE_" + rPowerDrawPCopy + ";\n";
-                break;
-            case addRandomColorlessDrawPileCopy:
-                Upgrade = "            " + rColorlessDrawPCopy + "=UPGRADE_" + rColorlessDrawPCopy + ";\n";
-                break;
-
-            case addRandomAttackTopDrawPileCopy:
-                Upgrade = "            " + rAttackTopDrawPCopy + "=UPGRADE_" + rAttackTopDrawPCopy + ";\n";
-                break;
-            case addRandomSkillTopDrawPileCopy:
-                Upgrade = "            " + rSkillTopDrawPCopy + "=UPGRADE_" + rSkillTopDrawPCopy + ";\n";
-                break;
-            case addRandomPowerTopDrawPileCopy:
-                Upgrade = "            " + rPowerTopDrawPCopy + "=UPGRADE_" + rPowerTopDrawPCopy + ";\n";
-                break;
-            case addRandomColorlessTopDrawPileCopy:
-                Upgrade = "            " + rColorlessTopDrawPCopy + "=UPGRADE_" + rColorlessTopDrawPCopy + ";\n";
-                break;
-
-            case addRandomAttackBotDrawPileCopy:
-                Upgrade = "            " + rAttackBotDrawPCopy + "=UPGRADE_" + rAttackBotDrawPCopy + ";\n";
-                break;
-            case addRandomSkillBotDrawPileCopy:
-                Upgrade = "            " + rSkillBotDrawPCopy + "=UPGRADE_" + rSkillBotDrawPCopy + ";\n";
-                break;
-            case addRandomPowerBotDrawPileCopy:
-                Upgrade = "            " + rPowerBotDrawPCopy + "=UPGRADE_" + rPowerBotDrawPCopy + ";\n";
-                break;
-            case addRandomColorlessBotDrawPileCopy:
-                Upgrade = "            " + rColorlessBotDrawPCopy + "=UPGRADE_" + rColorlessBotDrawPCopy + ";\n";
-                break;
             //endregion
-            //region Add Random
-            case addRandomAttackHand:
-                Upgrade = "            " + rAttackHand + "=UPGRADE_" + rAttackHand + ";\n";
-                break;
-            case addRandomSkillHand:
-                Upgrade = "            " + rSkillHand + "=UPGRADE_" + rSkillHand + ";\n";
-                break;
-            case addRandomPowerHand:
-                Upgrade = "            " + rPowerHand + "=UPGRADE_" + rPowerHand + ";\n";
-                break;
-            case addRandomColorlessHand:
-                Upgrade = "            " + rColorlessHand + "=UPGRADE_" + rColorlessHand + ";\n";
-                break;
 
-            case addRandomAttackDiscard:
-                Upgrade = "            " + rAttackDisc + "=UPGRADE_" + rAttackDisc + ";\n";
-                break;
-            case addRandomSkillDiscard:
-                Upgrade = "            " + rSkillDisc + "=UPGRADE_" + rSkillDisc + ";\n";
-                break;
-            case addRandomPowerDiscard:
-                Upgrade = "            " + rPowerDisc + "=UPGRADE_d" + rPowerDisc + ";\n";
-                break;
-            case addRandomColorlessDiscard:
-                Upgrade = "            " + rColorlessDisc + "=UPGRADE_" + rColorlessDisc + ";\n";
-                break;
-
-            //------------------------------
-            case addRandomAttackDrawPile:
-                Upgrade = "            " + rAttackDrawP + "=UPGRADE_" + rAttackDrawP + ";\n";
-                break;
-            case addRandomSkillDrawPile:
-                Upgrade = "            " + rSkillDrawP + "=UPGRADE_" + rSkillDrawP + ";\n";
-                break;
-            case addRandomPowerDrawPile:
-                Upgrade = "            " + rPowerDrawP + "=UPGRADE_" + rPowerDrawP + ";\n";
-                break;
-            case addRandomColorlessDrawPile:
-                Upgrade = "            " + rColorlessDrawP + "=UPGRADE_" + rColorlessDrawP + ";\n";
-                break;
-
-            case addRandomAttackTopDrawPile:
-                Upgrade = "            " + rAttackTopDrawP + "=UPGRADE_" + rAttackTopDrawP + ";\n";
-                break;
-            case addRandomSkillTopDrawPile:
-                Upgrade = "            " + rSkillTopDrawP + "=UPGRADE_" + rSkillTopDrawP + ";\n";
-                break;
-            case addRandomPowerTopDrawPile:
-                Upgrade = "            " + rPowerTopDrawP + "=UPGRADE_" + rPowerTopDrawP + ";\n";
-                break;
-            case addRandomColorlessTopDrawPile:
-                Upgrade = "            " + rColorlessTopDrawP + "=UPGRADE_" + rColorlessTopDrawP + ";\n";
-                break;
-
-            case addRandomAttackBotDrawPile:
-                Upgrade = "            " + rAttackBotDrawP + "=UPGRADE_" + rAttackBotDrawP + ";\n";
-                break;
-            case addRandomSkillBotDrawPile:
-                Upgrade = "            " + rSkillBotDrawP + "=UPGRADE_" + rSkillBotDrawP + ";\n";
-                break;
-            case addRandomPowerBotDrawPile:
-                Upgrade = "            " + rPowerBotDrawP + "=UPGRADE_" + rPowerBotDrawP + ";\n";
-                break;
-            case addRandomColorlessBotDrawPile:
-                Upgrade = "            " + rColorlessBotDrawP + "=UPGRADE_" + rColorlessBotDrawP + ";\n";
-                break;
             //------------------------------
             //endregion
             //region choose2Draw

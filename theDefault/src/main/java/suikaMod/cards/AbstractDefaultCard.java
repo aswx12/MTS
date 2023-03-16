@@ -543,13 +543,13 @@ public abstract class AbstractDefaultCard extends CustomCard
                 }
                 break;
             case "DrawPile":
-                this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), time, true, true));
+                this.addToBot(new MakeTempCardInDrawPileAction(c.makeStatEquivalentCopy(), time, true, true));
                 break;
             case "TopDrawPile":
-                this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), time, false, false, false));
+                this.addToBot(new MakeTempCardInDrawPileAction(c.makeStatEquivalentCopy(), time, false, false, false));
                 break;
             case "BotDrawPile":
-                this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), time, false, false, true));
+                this.addToBot(new MakeTempCardInDrawPileAction(c.makeStatEquivalentCopy(), time, false, false, true));
                 break;
             default:
                 break;

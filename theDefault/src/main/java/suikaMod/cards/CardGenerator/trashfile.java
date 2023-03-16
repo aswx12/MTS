@@ -12,6 +12,366 @@ import java.util.Iterator;
 
 public class trashfile
 {
+                /*case addRandomAttackHandCopy:
+                action = "         AddRandomCardHandCopy(" + rAttackHandCopy + ",CardType.ATTACK);\n";
+                break;
+            case addRandomSkillHandCopy:
+                action = "         AddRandomCardHandCopy(" + rSkillHandCopy + ",CardType.SKILL);\n";
+                break;
+            case addRandomPowerHandCopy:
+                action = "         AddRandomCardHandCopy(" + rPowerHandCopy + ",CardType.POWER);\n";
+                break;
+            case addRandomColorlessHandCopy:
+                action = "         AddRandomColorlessCopy(" + rColorlessHandCopy + ",\"Hand\");\n";
+                break;
+
+            case addRandomAttackDiscardCopy:
+                action = "         AddRandomCardDiscardCopy(" + rAttackDiscCopy + ",CardType.ATTACK);\n";
+                break;
+            case addRandomSkillDiscardCopy:
+                action = "         AddRandomCardDiscardCopy(" + rSkillDiscCopy + ",CardType.SKILL);\n";
+                break;
+            case addRandomPowerDiscardCopy:
+                action = "         AddRandomCardDiscardCopy(" + rPowerDiscCopy + ",CardType.POWER);\n";
+                break;
+            case addRandomColorlessDiscardCopy:
+                action = "         AddRandomColorlessCopy(" + rColorlessDiscCopy + ",\"Discard\");\n";
+                break;
+
+            case addRandomAttackDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rAttackDrawPCopy + ",CardType.ATTACK,\"Random\");\n";
+                break;
+            case addRandomSkillDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rSkillDrawPCopy + ",CardType.SKILL,\"Random\");\n";
+                break;
+            case addRandomPowerDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rPowerDrawPCopy + ",CardType.POWER,\"Random\");\n";
+                break;
+            case addRandomColorlessDrawPileCopy:
+                action = "         AddRandomColorlessCopy(" + rColorlessDrawPCopy + ",\"DrawPile\");\n";
+                break;
+
+            case addRandomAttackTopDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rAttackTopDrawPCopy + ",CardType.ATTACK,\"Top\");\n";
+                break;
+            case addRandomSkillTopDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rSkillTopDrawPCopy + ",CardType.SKILL,\"Top\");\n";
+                break;
+            case addRandomPowerTopDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rPowerTopDrawPCopy + ",CardType.POWER,\"Top\");\n";
+                break;
+            case addRandomColorlessTopDrawPileCopy:
+                action = "         AddRandomColorlessCopy(" + rColorlessTopDrawPCopy + ",\"TopDrawPile\");\n";
+                break;
+
+            case addRandomAttackBotDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rAttackBotDrawPCopy + ",CardType.ATTACK,\"Bot\");\n";
+                break;
+            case addRandomSkillBotDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rSkillBotDrawPCopy + ",CardType.SKILL,\"Bot\");\n";
+                break;
+            case addRandomPowerBotDrawPileCopy:
+                action = "         AddRandomCardDrawPCopy(" + rPowerBotDrawPCopy + ",CardType.POWER,\"Bot\");\n";
+                break;
+            case addRandomColorlessBotDrawPileCopy:
+                action = "         AddRandomColorlessCopy(" + rColorlessBotDrawPCopy + ",\"BotDrawPile\");\n";
+                break;*/
+
+   /* public static String rAttackHand = "rAttack2HandQty";
+    public static String rSkillHand = "rSkill2HandQty";
+    public static String rPowerHand = "rPower2HandQty";
+    public static String rColorlessHand = "rColorless2HandQty";
+
+    public static String rAttackDisc = "rAttack2DiscQty";
+    public static String rSkillDisc = "rSkill2DiscQty";
+    public static String rPowerDisc = "rPower2DiscQty";
+    public static String rColorlessDisc = "rColorless2DiscQty";
+
+    public static String rAttackDrawP = "rAttack2DrawPQty";
+    public static String rSkillDrawP = "rSkill2DrawPQty";
+    public static String rPowerDrawP = "rPower2DrawPQty";
+    public static String rColorlessDrawP = "rColorless2DrawPQty";
+
+    public static String rAttackTopDrawP = "rAttack2TopDrawPQty";
+    public static String rSkillTopDrawP = "rSkill2TopDrawPQty";
+    public static String rPowerTopDrawP = "rPower2DrawTopPQty";
+    public static String rColorlessTopDrawP = "rColorless2TopDrawPQty";
+
+    public static String rAttackBotDrawP = "rAttack2BotDrawPQty";
+    public static String rSkillBotDrawP = "rSkill2BotDrawPQty";
+    public static String rPowerBotDrawP = "rPower2BotDrawPQty";
+    public static String rColorlessBotDrawP = "rColorless2BotDrawPQty";*/
+
+     /* case addRandomAttackHand:
+                variable = "    private int " + rAttackHand + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackHand + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillHand:
+                variable = "    private int " + rSkillHand + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillHand + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerHand:
+                variable = "    private int " + rPowerHand + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerHand + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessHand:
+                variable = "    private int " + rColorlessHand + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessHand + " = " + upgradeValue + ";\n";
+                break;
+
+            case addRandomAttackDiscard:
+                variable = "    private int " + rAttackDisc + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackDisc + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillDiscard:
+                variable = "    private int " + rSkillDisc + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillDisc + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerDiscard:
+                variable = "    private int " + rPowerDisc + " = " + value + ";\n" +
+                        "    private final int UPGRADE_d" + rPowerDisc + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessDiscard:
+                variable = "    private int " + rColorlessDisc + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessDisc + " = " + upgradeValue + ";\n";
+                break;
+            //--------------------------------------------------
+            case addRandomAttackDrawPile:
+                variable = "    private int " + rAttackDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillDrawPile:
+                variable = "    private int " + rSkillDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerDrawPile:
+                variable = "    private int " + rPowerDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessDrawPile:
+                variable = "    private int " + rColorlessDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessDrawP + " = " + upgradeValue + ";\n";
+                break;
+
+            case addRandomAttackTopDrawPile:
+                variable = "    private int " + rAttackTopDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackTopDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillTopDrawPile:
+                variable = "    private int " + rSkillTopDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillTopDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerTopDrawPile:
+                variable = "    private int " + rPowerTopDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerTopDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessTopDrawPile:
+                variable = "    private int " + rColorlessTopDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessTopDrawP + " = " + upgradeValue + ";\n";
+                break;
+
+            case addRandomAttackBotDrawPile:
+                variable = "    private int " + rAttackBotDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rAttackBotDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomSkillBotDrawPile:
+                variable = "    private int " + rSkillBotDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rSkillBotDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomPowerBotDrawPile:
+                variable = "    private int " + rPowerBotDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rPowerBotDrawP + " = " + upgradeValue + ";\n";
+                break;
+            case addRandomColorlessBotDrawPile:
+                variable = "    private int " + rColorlessBotDrawP + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + rColorlessBotDrawP + " = " + upgradeValue + ";\n";
+                break;
+*/
+
+    /*  case addRandomAttackHand:
+                action = "         AddRandomCardHand(" + rAttackHand + ",CardType.ATTACK);\n";
+                break;
+            case addRandomSkillHand:
+                action = "         AddRandomCardHand(" + rSkillHand + ",CardType.SKILL);\n";
+                break;
+            case addRandomPowerHand:
+                action = "         AddRandomCardHand(" + rPowerHand + ",CardType.POWER);\n";
+                break;
+            case addRandomColorlessHand:
+                action = "         AddRandomColorless(" + rColorlessHand + ",\"Hand\");\n";
+                break;
+
+            case addRandomAttackDiscard:
+                action = "         AddRandomCardDiscard(" + rAttackDisc + ",CardType.ATTACK);\n";
+                break;
+            case addRandomSkillDiscard:
+                action = "         AddRandomCardDiscard(" + rSkillDisc + ",CardType.SKILL);\n";
+                break;
+            case addRandomPowerDiscard:
+                action = "         AddRandomCardDiscard(" + rPowerDisc + ",CardType.POWER);\n";
+                break;
+            case addRandomColorlessDiscard:
+                action = "         AddRandomColorless(" + rColorlessDisc + ",\"Discard\");\n";
+                break;
+
+            //-----------------------------------
+            case addRandomAttackDrawPile:
+                action = "         AddRandomCardDrawP(" + rAttackDrawP + ",CardType.ATTACK,\"Random\");\n";
+                break;
+            case addRandomSkillDrawPile:
+                action = "         AddRandomCardDrawP(" + rSkillDrawP + ",CardType.SKILL,\"Random\");\n";
+                break;
+            case addRandomPowerDrawPile:
+                action = "         AddRandomCardDrawP(" + rPowerDrawP + ",CardType.POWER,\"Random\");\n";
+                break;
+            case addRandomColorlessDrawPile:
+                action = "         AddRandomColorless(" + rColorlessDrawP + ",\"DrawPile\");\n";
+                break;
+
+            case addRandomAttackTopDrawPile:
+                action = "         AddRandomCardDrawP(" + rAttackTopDrawP + ",CardType.ATTACK,\"Top\");\n";
+                break;
+            case addRandomSkillTopDrawPile:
+                action = "         AddRandomCardDrawP(" + rSkillTopDrawP + ",CardType.SKILL,\"Top\");\n";
+                break;
+            case addRandomPowerTopDrawPile:
+                action = "         AddRandomCardDrawP(" + rPowerTopDrawP + ",CardType.POWER,\"Top\");\n";
+                break;
+            case addRandomColorlessTopDrawPile:
+                action = "         AddRandomColorless(" + rColorlessTopDrawP + ",\"TopDrawPile\");\n";
+                break;
+
+            case addRandomAttackBotDrawPile:
+                action = "         AddRandomCardDrawP(" + rAttackBotDrawP + ",CardType.ATTACK,\"Bot\");\n";
+                break;
+            case addRandomSkillBotDrawPile:
+                action = "         AddRandomCardDrawP(" + rSkillBotDrawP + ",CardType.SKILL,\"Bot\");\n";
+                break;
+            case addRandomPowerBotDrawPile:
+                action = "         AddRandomCardDrawP(" + rPowerBotDrawP + ",CardType.POWER,\"Bot\");\n";
+                break;
+            case addRandomColorlessBotDrawPile:
+                action = "         AddRandomColorless(" + rColorlessBotDrawP + ",\"BotDrawPile\");\n";
+                break;*/
+
+    //region Add Random
+           /* case addRandomAttackHand:
+                Upgrade = "            " + rAttackHand + "=UPGRADE_" + rAttackHand + ";\n";
+                break;
+            case addRandomSkillHand:
+                Upgrade = "            " + rSkillHand + "=UPGRADE_" + rSkillHand + ";\n";
+                break;
+            case addRandomPowerHand:
+                Upgrade = "            " + rPowerHand + "=UPGRADE_" + rPowerHand + ";\n";
+                break;
+            case addRandomColorlessHand:
+                Upgrade = "            " + rColorlessHand + "=UPGRADE_" + rColorlessHand + ";\n";
+                break;
+
+            case addRandomAttackDiscard:
+                Upgrade = "            " + rAttackDisc + "=UPGRADE_" + rAttackDisc + ";\n";
+                break;
+            case addRandomSkillDiscard:
+                Upgrade = "            " + rSkillDisc + "=UPGRADE_" + rSkillDisc + ";\n";
+                break;
+            case addRandomPowerDiscard:
+                Upgrade = "            " + rPowerDisc + "=UPGRADE_d" + rPowerDisc + ";\n";
+                break;
+            case addRandomColorlessDiscard:
+                Upgrade = "            " + rColorlessDisc + "=UPGRADE_" + rColorlessDisc + ";\n";
+                break;
+
+            //------------------------------
+            case addRandomAttackDrawPile:
+                Upgrade = "            " + rAttackDrawP + "=UPGRADE_" + rAttackDrawP + ";\n";
+                break;
+            case addRandomSkillDrawPile:
+                Upgrade = "            " + rSkillDrawP + "=UPGRADE_" + rSkillDrawP + ";\n";
+                break;
+            case addRandomPowerDrawPile:
+                Upgrade = "            " + rPowerDrawP + "=UPGRADE_" + rPowerDrawP + ";\n";
+                break;
+            case addRandomColorlessDrawPile:
+                Upgrade = "            " + rColorlessDrawP + "=UPGRADE_" + rColorlessDrawP + ";\n";
+                break;
+
+            case addRandomAttackTopDrawPile:
+                Upgrade = "            " + rAttackTopDrawP + "=UPGRADE_" + rAttackTopDrawP + ";\n";
+                break;
+            case addRandomSkillTopDrawPile:
+                Upgrade = "            " + rSkillTopDrawP + "=UPGRADE_" + rSkillTopDrawP + ";\n";
+                break;
+            case addRandomPowerTopDrawPile:
+                Upgrade = "            " + rPowerTopDrawP + "=UPGRADE_" + rPowerTopDrawP + ";\n";
+                break;
+            case addRandomColorlessTopDrawPile:
+                Upgrade = "            " + rColorlessTopDrawP + "=UPGRADE_" + rColorlessTopDrawP + ";\n";
+                break;
+
+            case addRandomAttackBotDrawPile:
+                Upgrade = "            " + rAttackBotDrawP + "=UPGRADE_" + rAttackBotDrawP + ";\n";
+                break;
+            case addRandomSkillBotDrawPile:
+                Upgrade = "            " + rSkillBotDrawP + "=UPGRADE_" + rSkillBotDrawP + ";\n";
+                break;
+            case addRandomPowerBotDrawPile:
+                Upgrade = "            " + rPowerBotDrawP + "=UPGRADE_" + rPowerBotDrawP + ";\n";
+                break;
+            case addRandomColorlessBotDrawPile:
+                Upgrade = "            " + rColorlessBotDrawP + "=UPGRADE_" + rColorlessBotDrawP + ";\n";
+                break;*/
+
+    /* static final String addRandomAttackHandCopy = "AddRandomAttackCopy(Hand)";
+    static final String addRandomSkillHandCopy = "AddRandomSkillCopy(Hand)";
+    static final String addRandomPowerHandCopy = "AddRandomPowerCopy(Hand)";
+    static final String addRandomColorlessHandCopy = "AddRandomColorlessCopy(Hand)";
+
+    static final String addRandomAttackDiscardCopy = "AddRandomAttackCopy(Discard)";
+    static final String addRandomSkillDiscardCopy = "AddRandomSkillCopy(Discard)";
+    static final String addRandomPowerDiscardCopy = "AddRandomPowerCopy(Discard)";
+    static final String addRandomColorlessDiscardCopy = "AddRandomColorlessCopy(Discard)";
+
+    static final String addRandomAttackDrawPileCopy = "AddRandomAttackCopy(DrawPile)";
+    static final String addRandomSkillDrawPileCopy = "AddRandomSkillCopy(DrawPile)";
+    static final String addRandomPowerDrawPileCopy = "AddRandomPowerCopy(DrawPile)";
+    static final String addRandomColorlessDrawPileCopy = "AddRandomColorlessCopy(DrawPile)";
+
+    static final String addRandomAttackTopDrawPileCopy = "AddRandomAttackCopy(TopDrawPile)";
+    static final String addRandomSkillTopDrawPileCopy = "AddRandomSkillCopy(TopDrawPile)";
+    static final String addRandomPowerTopDrawPileCopy = "AddRandomPowerCopy(TopDrawPile)";
+    static final String addRandomColorlessTopDrawPileCopy = "AddRandomColorlessCopy(TopDrawPile)";
+
+    static final String addRandomAttackBotDrawPileCopy = "AddRandomAttackCopy(BotDrawPile)";
+    static final String addRandomSkillBotDrawPileCopy = "AddRandomSkillCopy(BotDrawPile)";
+    static final String addRandomPowerBotDrawPileCopy = "AddRandomPowerCopy(BotDrawPile)";
+    static final String addRandomColorlessBotDrawPileCopy = "AddRandomColorlessCopy(BotDrawPile)";
+    //endregion
+
+    //region Add Random
+    static final String addRandomAttackHand = "AddRandomAttack(Hand)";
+    static final String addRandomSkillHand = "AddRandomSkill(Hand)";
+    static final String addRandomPowerHand = "AddRandomPower(Hand)";
+    static final String addRandomColorlessHand = "AddRandomColorless(Hand)";
+
+    static final String addRandomAttackDiscard = "AddRandomAttack(Discard)";
+    static final String addRandomSkillDiscard = "AddRandomSkill(Discard)";
+    static final String addRandomPowerDiscard = "AddRandomPower(Discard)";
+    static final String addRandomColorlessDiscard = "AddRandomColorless(Discard)";
+
+    static final String addRandomAttackDrawPile = "AddRandomAttack(DrawPile)";
+    static final String addRandomSkillDrawPile = "AddRandomSkill(DrawPile)";
+    static final String addRandomPowerDrawPile = "AddRandomPower(DrawPile)";
+    static final String addRandomColorlessDrawPile = "AddRandomColorless(DrawPile)";
+
+    static final String addRandomAttackTopDrawPile = "AddRandomAttack(TopDrawPile)";
+    static final String addRandomSkillTopDrawPile = "AddRandomSkill(TopDrawPile)";
+    static final String addRandomPowerTopDrawPile = "AddRandomPower(TopDrawPile)";
+    static final String addRandomColorlessTopDrawPile = "AddRandomColorless(TopDrawPile)";
+
+    static final String addRandomAttackBotDrawPile = "AddRandomAttack(BotDrawPile)";
+    static final String addRandomSkillBotDrawPile = "AddRandomSkill(BotDrawPile)";
+    static final String addRandomPowerBotDrawPile = "AddRandomPower(BotDrawPile)";
+    static final String addRandomColorlessBotDrawPile = "AddRandomColorless(BotDrawPile)";*/
 
     /*" + "\"" + DESCRIPTION + "\"" + "*/
 
