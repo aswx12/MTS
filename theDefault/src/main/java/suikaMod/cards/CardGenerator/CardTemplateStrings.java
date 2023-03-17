@@ -1,18 +1,18 @@
 package suikaMod.cards.CardGenerator;
 
-import com.sun.crypto.provider.JceKeyStore;
 import suikaMod.DefaultMod;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class CardTemplateStrings
-{
+public class CardTemplateStrings {
     public static String MODID = DefaultMod.MODID;
     static StringBuilder sbVariable = new StringBuilder();
     static StringBuilder sbBaseValue = new StringBuilder();
     static StringBuilder sbActions = new StringBuilder();
+    static StringBuilder sbActionsRepeat = new StringBuilder();
     static StringBuilder sbActionsEneAttIntent = new StringBuilder();
+    static StringBuilder sbActionsEneAttIntentRepeat = new StringBuilder();
     static StringBuilder sbActionsOnUpgrade = new StringBuilder();
     static StringBuilder sbActionsEneAttIntentOnUpgrade = new StringBuilder();
     static StringBuilder sbDiscActions = new StringBuilder();
@@ -23,38 +23,37 @@ public class CardTemplateStrings
     static boolean repeat;
 
     //region UTILITIES
-    public static int intParse(JTextField stringToParse)
-    {
+    public static int intParse(JTextField stringToParse) {
         return Integer.parseInt(stringToParse.getText());
     }
 
-    public static String stringParse(JComboBox thingToParse)
-    {
+    public static String stringParse(JComboBox thingToParse) {
         return thingToParse.getSelectedItem().toString();
     }
 
-    public static int GetActionValues(DefaultTableModel actionModel, int row, int col)
-    {
+    public static int GetActionValues(DefaultTableModel actionModel, int row, int col) {
 
         return Integer.parseInt(actionModel.getValueAt(row, col).toString());
     }
 
-    public static String GetActionNames(DefaultTableModel actionTableModel, int row)
-    {
+    public static boolean CheckCellValue(DefaultTableModel actionModel, int row, int col, String compare) {
+
+        return actionModel.getValueAt(row, col).toString().equals(compare);
+    }
+
+    public static String GetActionNames(DefaultTableModel actionTableModel, int row) {
         return DeleteSpace((String) actionTableModel.getValueAt(row, 0));
     }
-    public static String GetActionExtraOption(DefaultTableModel actionTableModel, int row,int col)
-    {
+
+    public static String GetActionExtraOption(DefaultTableModel actionTableModel, int row, int col) {
         return DeleteSpace((String) actionTableModel.getValueAt(row, col));
     }
 
-    public static String upperCase(JComboBox string)
-    {
+    public static String upperCase(JComboBox string) {
         return string.getSelectedItem().toString().toUpperCase();
     }
 
-    public static String Imports()
-    {
+    public static String Imports() {
         String imports = "package " + MODID + ".cards.CustomCards;\n" +
                 "\n" +
                 "import basemod.AutoAdd;\n" +
@@ -89,8 +88,7 @@ public class CardTemplateStrings
         return imports;
     }
 
-    public static String ReplaceSpace(JComboBox input)
-    {
+    public static String ReplaceSpace(JComboBox input) {
         String targetSpaceCheck = upperCase(input);
         if (targetSpaceCheck.matches(".*\\s+.*"))
             return targetSpaceCheck = targetSpaceCheck.replaceAll("[\\s|\\u00A0]+", "_");
@@ -98,8 +96,7 @@ public class CardTemplateStrings
             return targetSpaceCheck;
     }
 
-    public static String DeleteSpace(String input)
-    {
+    public static String DeleteSpace(String input) {
         String targetSpaceCheck = input;
         if (targetSpaceCheck.matches(".*\\s+.*"))
             return targetSpaceCheck = targetSpaceCheck.replaceAll("[\\s|\\u00A0]+", "");
@@ -107,16 +104,13 @@ public class CardTemplateStrings
             return targetSpaceCheck;
     }
 
-    public static void SetState(JCheckBox stateCheck, String state)
-    {
-        if (stateCheck.isSelected())
-        {
+    public static void SetState(JCheckBox stateCheck, String state) {
+        if (stateCheck.isSelected()) {
             sbState.append("            this.").append(state).append("=true; \n");
         }
     }
 
-    public static String CardState(JCheckBox cardStates[])
-    {
+    public static String CardState(JCheckBox cardStates[]) {
         String states = "";
         SetState(cardStates[0], "isInnate");
         SetState(cardStates[1], "retain");
@@ -126,25 +120,19 @@ public class CardTemplateStrings
         return states;
     }
 
-    public static void SetUpgradedState(JCheckBox CardState[], JCheckBox upCardState[], int i, String state)
-    {
-        if (upCardState[i].isSelected())
-        {
-            if (!CardState[i].isSelected())
-            {
+    public static void SetUpgradedState(JCheckBox CardState[], JCheckBox upCardState[], int i, String state) {
+        if (upCardState[i].isSelected()) {
+            if (!CardState[i].isSelected()) {
                 sbUpState.append("            this.").append(state).append("=true; \n");
             }
-        } else
-        {
-            if (CardState[i].isSelected())
-            {
+        } else {
+            if (CardState[i].isSelected()) {
                 sbUpState.append("            this.").append(state).append("=false; \n");
             }
         }
     }
 
-    public static String UpgradedCardState(JCheckBox cardStates[], JCheckBox upCardStates[])
-    {
+    public static String UpgradedCardState(JCheckBox cardStates[], JCheckBox upCardStates[]) {
         String states = "";
         SetUpgradedState(cardStates, upCardStates, 0, "isInnate");
         SetUpgradedState(cardStates, upCardStates, 1, "retain");
@@ -154,13 +142,10 @@ public class CardTemplateStrings
         return states;
     }
 
-    public static String LoopInsert(boolean repeat, String actions, boolean addOnUpgrade, String actionOnUpgrade)
-    {
+    public static String LoopInsert(boolean repeat, String actions, boolean addOnUpgrade, String actionOnUpgrade) {
         String loop = "";
-        if (repeat)
-        {
-            if (addOnUpgrade)
-            {
+        if (repeat) {
+            if (addOnUpgrade) {
                 return loop = "for (int i = 0; i < TIME; i++) {\n" +
                         "           " + actions + actionOnUpgrade + "        }\n";
             }
@@ -196,8 +181,7 @@ public class CardTemplateStrings
                                       DefaultTableModel actionOnUpgradeTableModel,
                                       JCheckBox addActionOnUpgrade,
                                       JCheckBox cardStates[],
-                                      JCheckBox upCardStates[])
-    {
+                                      JCheckBox upCardStates[]) {
 
         String className = DeleteSpace(name.getText());
         String DESCRIPTION = description.getText().replaceAll("(?!\\r)\\n", " NL ");
@@ -207,54 +191,69 @@ public class CardTemplateStrings
         String baseValue = "";
         String actions = "";
         String actionsOnEneAttIntent = "";
+        String actionsRepeat = "";
+        String actionsOnEneAttIntentRepeat = "";
         String actionsOnUpgrade = "";
         String actionsOnEneAttIntentOnUpgrade = "";
         String actionsWhenDiscard = "";
         String upgrade = "";
 
-
+        for (int i = 0; i < actionTableModel.getRowCount(); i++) {
+            if (GetActionNames(actionTableModel, i).equals("Repeat")) //own table?
+            {
+                repeat = true; //rework?
+            }
+        }
         //region Adding info to cards
-        for (int i = 0; i < actionTableModel.getRowCount(); i++)
-        {
+        for (int i = 0; i < actionTableModel.getRowCount(); i++) {
             sbVariable.append(ContentAdd.AllVariable(
                     GetActionNames(actionTableModel, i),
                     GetActionValues(actionTableModel, i, 1),
                     GetActionValues(actionTableModel, i, 2),
-                    GetActionExtraOption(actionTableModel,i,4)));
+                    GetActionExtraOption(actionTableModel, i, 4)));
 
             sbBaseValue.append(ContentAdd.SetBase(
                     GetActionNames(actionTableModel, i)));
 
-            if (actionTableModel.getValueAt(i, 3).equals("None"))
-            {
-                sbActions.append(ContentAdd.AllActions(
-                        GetActionNames(actionTableModel, i),
-                        stringParse(target),
-                        GetActionExtraOption(actionTableModel,i,4)));
-            } else if (actionTableModel.getValueAt(i, 3).equals("Enemy Intent: Attack"))
-            {
-                sbActionsEneAttIntent.append(ContentAdd.AllActions(
-                        GetActionNames(actionTableModel, i),
-                        stringParse(target),
-                        GetActionExtraOption(actionTableModel,i,4)));
+
+            if (CheckCellValue(actionTableModel, i, 3, "None")) {
+                if (repeat && (Boolean) actionTableModel.getValueAt(i, 5)) {
+                    sbActionsRepeat.append(ContentAdd.AllActions(
+                            GetActionNames(actionTableModel, i),
+                            stringParse(target),
+                            GetActionExtraOption(actionTableModel, i, 4)));
+                } else {
+                    sbActions.append(ContentAdd.AllActions(
+                            GetActionNames(actionTableModel, i),
+                            stringParse(target),
+                            GetActionExtraOption(actionTableModel, i, 4)));
+                }
+            } else if (CheckCellValue(actionTableModel, i, 3, "Enemy Intent: Attack")) {
+                if (repeat && (Boolean) actionTableModel.getValueAt(i, 5)) {
+                    sbActionsEneAttIntentRepeat.append(ContentAdd.AllActions(
+                            GetActionNames(actionTableModel, i),
+                            stringParse(target),
+                            GetActionExtraOption(actionTableModel, i, 4)));
+                } else
+                    sbActionsEneAttIntent.append(ContentAdd.AllActions(
+                            GetActionNames(actionTableModel, i),
+                            stringParse(target),
+                            GetActionExtraOption(actionTableModel, i, 4)));
             }
+
 
             sbDiscActions.append(ContentAdd.ActionsWhenDiscard(
                     GetActionNames(actionTableModel, i)));
 
             sbUpgrade.append(ContentAdd.Upgrade(
                     GetActionNames(actionTableModel, i),
-                    GetActionExtraOption(actionTableModel,i,4)));
+                    GetActionExtraOption(actionTableModel, i, 4)));
 
-            if (GetActionNames(actionTableModel, i).equals("Repeat")) //own table?
-            {
-                repeat = true; //rework?
-            }
+
         }
 
-        if(addActionOnUpgrade.isSelected()){
-            for (int i = 0; i < actionOnUpgradeTableModel.getRowCount(); i++)
-            {
+        if (addActionOnUpgrade.isSelected()) {
+            for (int i = 0; i < actionOnUpgradeTableModel.getRowCount(); i++) {
 
                 sbVariable.append(ContentAdd.AllVariableUpgrade(
                         GetActionNames(actionOnUpgradeTableModel, i),
@@ -263,19 +262,17 @@ public class CardTemplateStrings
                 sbBaseValue.append(ContentAdd.SetBase(
                         GetActionNames(actionOnUpgradeTableModel, i)));
 
-                if (actionOnUpgradeTableModel.getValueAt(i, 2).equals("None"))
-                {
+                if (actionOnUpgradeTableModel.getValueAt(i, 2).equals("None")) {
                     sbActionsOnUpgrade.append(ContentAdd.AllActions(
                             GetActionNames(actionOnUpgradeTableModel, i),
                             stringParse(target),
-                            GetActionExtraOption(actionTableModel,i,3)));
+                            GetActionExtraOption(actionTableModel, i, 3)));
 
-                } else if (actionOnUpgradeTableModel.getValueAt(i, 2).equals("Enemy Intent: Attack"))
-                {
+                } else if (actionOnUpgradeTableModel.getValueAt(i, 2).equals("Enemy Intent: Attack")) {
                     sbActionsEneAttIntentOnUpgrade.append(ContentAdd.AllActions(
                             GetActionNames(actionOnUpgradeTableModel, i),
                             stringParse(target),
-                            GetActionExtraOption(actionTableModel,i,3)));
+                            GetActionExtraOption(actionTableModel, i, 3)));
                 }
 
 
@@ -291,7 +288,9 @@ public class CardTemplateStrings
         variable = sbVariable.toString();
         baseValue = sbBaseValue.toString();
         actions = sbActions.toString();
+        actionsRepeat = sbActionsRepeat.toString();
         actionsOnEneAttIntent = sbActionsEneAttIntent.toString();
+        actionsOnEneAttIntentRepeat = sbActionsEneAttIntentRepeat.toString();
         actionsOnUpgrade = sbActionsOnUpgrade.toString();
         actionsOnEneAttIntentOnUpgrade = sbActionsEneAttIntentOnUpgrade.toString();
         actionsWhenDiscard = sbDiscActions.toString();
@@ -299,50 +298,51 @@ public class CardTemplateStrings
 
         //region condition checks
         String closeDiscAction = "";
-        if (!actionsWhenDiscard.isEmpty())
-        {
+        if (!actionsWhenDiscard.isEmpty()) {
             closeDiscAction = "\n   }";
         }
 
         String isMulti = "";
-        if (target.getSelectedItem().toString().equals("All Enemy"))
-        {
+        if (target.getSelectedItem().toString().equals("All Enemy")) {
             isMulti = "isMultiDamage = true;\n";
         }
+        String loop = "        for (int i = 0; i < repeatTIME; i++) {\n";
+        String closeLoop = "        }\n";
+        if (!actionsRepeat.isEmpty()) {
+            actionsRepeat = loop + actionsRepeat + closeLoop;
+        }
+
 
         String eneAttIntent = "        if (m != null && m.getIntentBaseDmg() >= 0)\n" +
                 "        {\n";
-        if (!actionsOnEneAttIntent.isEmpty())
-        {
-            actionsOnEneAttIntent = eneAttIntent + actionsOnEneAttIntent + "        }\n";
+        if (!actionsOnEneAttIntent.isEmpty()) {
+            actionsOnEneAttIntent = eneAttIntent + actionsOnEneAttIntent + closeLoop;
         }
-        if (!actionsOnEneAttIntentOnUpgrade.isEmpty())
-        {
-            actionsOnEneAttIntentOnUpgrade = eneAttIntent + actionsOnEneAttIntentOnUpgrade + "        }\n";
+        if (!actionsOnEneAttIntentOnUpgrade.isEmpty()) {
+            actionsOnEneAttIntentOnUpgrade = eneAttIntent + actionsOnEneAttIntentOnUpgrade + closeLoop;
+        }
+        if (!actionsOnEneAttIntentRepeat.isEmpty()) {
+            actionsOnEneAttIntentRepeat = eneAttIntent + loop + actionsOnEneAttIntentRepeat + closeLoop + closeLoop;
         }
 
         String addActOnUpgrade = "";
-        if (addActionOnUpgrade.isSelected())
-        {
+        if (addActionOnUpgrade.isSelected()) {
             addActOnUpgrade = "        if(this.upgraded){\n" +
-                    "   " + actionsOnUpgrade + actionsOnEneAttIntentOnUpgrade  + "       }\n";
+                    "   " + actionsOnUpgrade + actionsOnEneAttIntentOnUpgrade + "       }\n";
         }
 
         String upDescInit = "";
         String upDescChange = "";
-        if (diffUpDescCheck.isSelected())
-        {
+        if (diffUpDescCheck.isSelected()) {
             upDescInit = "    private static final String upDesc=\"" + upgrade_DESCRIPTION + "\";\n";
             upDescChange = "            rawDescription=upDesc;\n";
-        } else
-        {
+        } else {
             upDescInit = "";
             upDescChange = "";
         }
 
         String cardTags = "";
-        if (name.getText().contains("Strike"))
-        {
+        if (name.getText().contains("Strike")) {
             cardTags = "this.tags.add(CardTags.STRIKE);\n";
         }
 
@@ -389,8 +389,10 @@ public class CardTemplateStrings
                 "    @Override\n" +
                 "    public void use(AbstractPlayer p, AbstractMonster m)\n" +
                 "    {\n" +
-                "" + LoopInsert(repeat, actions, addActionOnUpgrade.isSelected(), addActOnUpgrade) +
+                "" + actions/*LoopInsert(repeat, actions, addActionOnUpgrade.isSelected(), addActOnUpgrade)*/ +
+                "" + actionsRepeat +
                 "" + actionsOnEneAttIntent +
+                "" + actionsOnEneAttIntentRepeat +
                 "    }\n" +
                 "\n" +
                 "" + actionsWhenDiscard + closeDiscAction +

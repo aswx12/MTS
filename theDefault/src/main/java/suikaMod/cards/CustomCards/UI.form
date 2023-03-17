@@ -221,7 +221,6 @@
                         <item value="Add Random Power"/>
                         <item value="Add Random Colorless"/>
                         <item value=""/>
-                        <item value=""/>
                         <item value="Add Random Attack(Hand)"/>
                         <item value="Add Random Attack(Discard)"/>
                         <item value="Add Random Attack(DrawPile)"/>
