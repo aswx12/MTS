@@ -10,6 +10,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.powers.*;
 import com.megacrit.cardcrawl.localization.CardStrings;
@@ -45,10 +46,10 @@ public class ActionTestFile extends AbstractDynamicCard
     private static final int COST = 1;
     private static final int UPGRADED_COST = 1;
 
-    static final int DMG =1;
+    static final int DMG = 1;
 
-    private static String DESC="!D!";
-    private static final String upDesc="upTest";
+    private static String DESC = "!D!";
+    private static final String upDesc = "upTest";
 
 
     // /STAT DECLARATION/
@@ -57,7 +58,7 @@ public class ActionTestFile extends AbstractDynamicCard
     {
         super(ID, "ActionTestFile", IMG, DESC, COST, TYPE, COLOR, RARITY, TARGET);
 
-        baseDamage=DMG;
+        baseDamage = DMG;
         isMultiDamage = true;
         //this.tags.add(CardTags.STARTER_STRIKE);
         //this.tags.add(CardTags.STRIKE);
@@ -83,8 +84,19 @@ public class ActionTestFile extends AbstractDynamicCard
         }*/
 
 
-        this.addToBot(new ApplyPowerAction(m, p, new DexterityPower(m, 2), 2));
-        this.addToBot(new ApplyPowerAction(p, p, new IntangiblePlayerPower(p, 1), 1));
+
+        int count = AbstractDungeon.player.hand.size();
+
+        for (int i = 0; i < count; ++i)
+        {
+            if (Settings.FAST_MODE)
+            {
+                this.addToTop(new ExhaustAction(1, true, true, false, Settings.ACTION_DUR_XFAST));
+            } else
+            {
+                this.addToTop(new ExhaustAction(1, true, true));
+            }
+        }
 
 
 
@@ -117,7 +129,7 @@ public class ActionTestFile extends AbstractDynamicCard
         {
             upgradeName();
             upgradeBaseCost(UPGRADED_COST);
-            rawDescription=upDesc; //dis is da wae
+            rawDescription = upDesc; //dis is da wae
             initializeDescription();
         }
 

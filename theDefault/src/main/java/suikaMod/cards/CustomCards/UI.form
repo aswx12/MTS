@@ -87,7 +87,7 @@
               </model>
             </properties>
           </component>
-          <grid id="93eac" binding="ActionsPanel" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="93eac" binding="ActionsPanel" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="10" bottom="0" right="10"/>
             <constraints>
               <grid row="0" column="0" row-span="2" col-span="6" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -97,7 +97,7 @@
             <children>
               <component id="d1c42" class="javax.swing.JButton" binding="selectActionButton">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Select"/>
@@ -105,7 +105,7 @@
               </component>
               <component id="ce148" class="javax.swing.JButton" binding="removeActionButton">
                 <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Remove "/>
@@ -129,7 +129,7 @@
               </component>
               <scrollpane id="fdae2" binding="tableScroll">
                 <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <verticalScrollBarPolicy value="20"/>
@@ -147,6 +147,7 @@
                       <dropMode value="ON"/>
                       <enabled value="true"/>
                       <fillsViewportHeight value="true"/>
+                      <font/>
                       <minimumSize width="30" height="10"/>
                       <preferredScrollableViewportSize width="450" height="100"/>
                       <preferredSize width="50" height="20"/>
@@ -160,7 +161,7 @@
               </scrollpane>
               <scrollpane id="20d80" binding="actionListScroll">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
@@ -196,16 +197,6 @@
                         <item value="Gain Dexterity"/>
                         <item value="Gain Intangible"/>
                         <item value=""/>
-                        <item value="Apply Vulnerable If Enemy Intent:Attack"/>
-                        <item value="Apply Weak If Enemy Intent:Attack"/>
-                        <item value="Apply Poison If Enemy Intent:Attack"/>
-                        <item value="Apply Strength If Enemy Intent:Attack"/>
-                        <item value=""/>
-                        <item value="Gain Vulnerable If Enemy Intent:Attack"/>
-                        <item value="Gain Weak If Enemy Intent:Attack"/>
-                        <item value="Gain Poison If Enemy Intent:Attack"/>
-                        <item value="Gain Strength If Enemy Intent:Attack"/>
-                        <item value=""/>
                         <item value="Sacrifice HP"/>
                         <item value="Heal"/>
                         <item value=""/>
@@ -221,30 +212,6 @@
                         <item value="Add Random Power"/>
                         <item value="Add Random Colorless"/>
                         <item value=""/>
-                        <item value="Add Random Attack(Hand)"/>
-                        <item value="Add Random Attack(Discard)"/>
-                        <item value="Add Random Attack(DrawPile)"/>
-                        <item value="Add Random Attack(TopDrawPile)"/>
-                        <item value="Add Random Attack(BotDrawPile)"/>
-                        <item value=""/>
-                        <item value="Add Random Skill(Hand)"/>
-                        <item value="Add Random Skill(Discard)"/>
-                        <item value="Add Random Skill(DrawPile)"/>
-                        <item value="Add Random Skill(TopDrawPile)"/>
-                        <item value="Add Random Skill(BotDrawPile)"/>
-                        <item value=""/>
-                        <item value="Add Random Power(Hand)"/>
-                        <item value="Add Random Power(Discard)"/>
-                        <item value="Add Random Power(DrawPile)"/>
-                        <item value="Add Random Power(TopDrawPile)"/>
-                        <item value="Add Random Power(BotDrawPile)"/>
-                        <item value=""/>
-                        <item value="Add Random Colorless(Hand)"/>
-                        <item value="Add Random Colorless(Discard)"/>
-                        <item value="Add Random Colorless(DrawPile)"/>
-                        <item value="Add Random Colorless(TopDrawPile)"/>
-                        <item value="Add Random Colorless(BotDrawPile)"/>
-                        <item value=""/>
                         <item value="Choose To Draw"/>
                         <item value="Choose To Draw(Attack)"/>
                         <item value="Choose To Draw(Skill)"/>
@@ -257,6 +224,11 @@
                         <item value="Draw Per Exhaust"/>
                         <item value="Draw Per Unique Orb"/>
                         <item value="Draw On Power Play"/>
+                        <item value=""/>
+                        <item value="Exhaust Card"/>
+                        <item value="Exhaust Card(Random)"/>
+                        <item value="Exhaust Hand"/>
+                        <item value="Exhaust Any Amount Up To"/>
                       </model>
                       <visible value="true"/>
                       <visibleRowCount value="5"/>
@@ -266,7 +238,7 @@
               </scrollpane>
               <component id="30720" class="javax.swing.JCheckBox" binding="addActionOnUpgradeCheck">
                 <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Add Action On Upgrade"/>
@@ -275,7 +247,7 @@
               <grid id="c57dc" binding="actionOnUpgradePanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="15"/>
                 <constraints>
-                  <grid row="4" column="0" row-span="2" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="true"/>
+                  <grid row="5" column="0" row-span="2" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="true"/>
                 </constraints>
                 <properties/>
                 <border type="line" title="Add Action On Upgrade">
@@ -333,6 +305,21 @@
                   </component>
                 </children>
               </grid>
+              <component id="d9f8d" class="javax.swing.JComboBox" binding="actionCategoryBox">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <model>
+                    <item value="Damage"/>
+                    <item value="EtcTemp"/>
+                    <item value="Buff/Debuff"/>
+                    <item value="Add Card"/>
+                    <item value="Draw Card"/>
+                    <item value="Exhaust Card"/>
+                  </model>
+                </properties>
+              </component>
             </children>
           </grid>
           <component id="bff57" class="javax.swing.JButton" binding="CreateButton">
@@ -352,16 +339,6 @@
             <properties>
               <selected value="true"/>
               <text value="Seen"/>
-            </properties>
-          </component>
-          <component id="44734" class="javax.swing.JCheckBox" binding="InnateCheck">
-            <constraints>
-              <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <horizontalAlignment value="2"/>
-              <horizontalTextPosition value="4"/>
-              <text value="Innate"/>
             </properties>
           </component>
           <grid id="7e678" binding="upDescPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -397,79 +374,6 @@
               </component>
             </children>
           </grid>
-          <component id="3072" class="javax.swing.JCheckBox" binding="upInnateCheck">
-            <constraints>
-              <grid row="6" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Innate"/>
-            </properties>
-          </component>
-          <component id="cd26b" class="javax.swing.JLabel" binding="DefaultStateLabel">
-            <constraints>
-              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Default"/>
-            </properties>
-          </component>
-          <component id="a597e" class="javax.swing.JLabel" binding="onUpgradeStateLabel">
-            <constraints>
-              <grid row="5" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="On  Upgrade"/>
-            </properties>
-          </component>
-          <component id="f1a2f" class="javax.swing.JCheckBox" binding="upRetainCheck">
-            <constraints>
-              <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Retain"/>
-            </properties>
-          </component>
-          <component id="bf37f" class="javax.swing.JCheckBox" binding="RetainCheck">
-            <constraints>
-              <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Retain"/>
-            </properties>
-          </component>
-          <component id="977d0" class="javax.swing.JCheckBox" binding="upExhaustCheck">
-            <constraints>
-              <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Exhaust"/>
-            </properties>
-          </component>
-          <component id="6ca6" class="javax.swing.JCheckBox" binding="ExhaustCheck">
-            <constraints>
-              <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <selected value="false"/>
-              <text value="Exhaust"/>
-            </properties>
-          </component>
-          <component id="18a4b" class="javax.swing.JCheckBox" binding="upEtherealCheck">
-            <constraints>
-              <grid row="9" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Ethereal"/>
-            </properties>
-          </component>
-          <component id="d9474" class="javax.swing.JCheckBox" binding="EtherealCheck">
-            <constraints>
-              <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Ethereal"/>
-            </properties>
-          </component>
           <component id="a1234" class="javax.swing.JComboBox" binding="targetList">
             <constraints>
               <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
@@ -525,6 +429,99 @@
               <text value="  Description: "/>
             </properties>
           </component>
+          <grid id="7029e" binding="cardStatePanel" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="5" column="2" row-span="5" col-span="3" vsize-policy="3" hsize-policy="0" anchor="8" fill="2" indent="0" use-parent-layout="true"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="44734" class="javax.swing.JCheckBox" binding="InnateCheck">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <horizontalAlignment value="2"/>
+                  <horizontalTextPosition value="4"/>
+                  <text value="Innate"/>
+                </properties>
+              </component>
+              <component id="3072" class="javax.swing.JCheckBox" binding="upInnateCheck">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Innate"/>
+                </properties>
+              </component>
+              <component id="cd26b" class="javax.swing.JLabel" binding="DefaultStateLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Default"/>
+                </properties>
+              </component>
+              <component id="a597e" class="javax.swing.JLabel" binding="onUpgradeStateLabel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="On  Upgrade"/>
+                </properties>
+              </component>
+              <component id="f1a2f" class="javax.swing.JCheckBox" binding="upRetainCheck">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Retain"/>
+                </properties>
+              </component>
+              <component id="bf37f" class="javax.swing.JCheckBox" binding="RetainCheck">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Retain"/>
+                </properties>
+              </component>
+              <component id="977d0" class="javax.swing.JCheckBox" binding="upExhaustCheck">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Exhaust"/>
+                </properties>
+              </component>
+              <component id="6ca6" class="javax.swing.JCheckBox" binding="ExhaustCheck">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <selected value="false"/>
+                  <text value="Exhaust"/>
+                </properties>
+              </component>
+              <component id="18a4b" class="javax.swing.JCheckBox" binding="upEtherealCheck">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Ethereal"/>
+                </properties>
+              </component>
+              <component id="d9474" class="javax.swing.JCheckBox" binding="EtherealCheck">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Ethereal"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
       <grid id="adae6" binding="StartPanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

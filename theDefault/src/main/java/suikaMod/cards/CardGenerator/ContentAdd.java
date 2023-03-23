@@ -63,11 +63,11 @@ public class ContentAdd
     static final String addRandomPower = "AddRandomPower";
     static final String addRandomColorless = "AddRandomColorless";
 
-    static final String addCopy2Hand = "Hand";
-    static final String addCopy2Discard = "Discard";
-    static final String addCopy2DrawPile = "DrawPile";
-    static final String addCopy2TopDrawPile = "TopDrawPile";
-    static final String addCopy2BotDrawPile = "BotDrawPile";
+    static final String add2Hand = "Hand";
+    static final String add2Discard = "Discard";
+    static final String add2DrawPile = "DrawPile";
+    static final String add2TopDrawPile = "TopDrawPile";
+    static final String add2BotDrawPile = "BotDrawPile";
 
     //endregion
 
@@ -88,6 +88,14 @@ public class ContentAdd
 
     //endregion
 
+    //region exhaust
+
+    static final String exhaustCard = "ExhaustCard";
+    static final String exhaustCardRandom = "ExhaustCard(Random)";
+    static final String exhaustHand = "ExhaustHand";
+    static final String exhaustUpTo = "ExhaustAnyAmountUpTo";
+
+    //endregion
 
     //endregion
 
@@ -114,19 +122,19 @@ public class ContentAdd
         actionVar = actionVarV;
         switch (where)
         {
-            case addCopy2Hand:
+            case add2Hand:
                 actionVar += V + toHand;
                 break;
-            case addCopy2Discard:
+            case add2Discard:
                 actionVar += V + toDisc;
                 break;
-            case addCopy2DrawPile:
+            case add2DrawPile:
                 actionVar += V + toDrawP;
                 break;
-            case addCopy2TopDrawPile:
+            case add2TopDrawPile:
                 actionVar += V + toTopDrawP;
                 break;
-            case addCopy2BotDrawPile:
+            case add2BotDrawPile:
                 actionVar += V + toBotDrawP;
                 break;
             default:
@@ -335,6 +343,23 @@ public class ContentAdd
                         "    private final int UPGRADE_" + drawOnPowPlay + " = " + upgradeValue + ";\n";
                 break;
             //endregion
+
+
+            //endregion
+
+            //region Exhaust
+            case exhaustCard:
+                variable = "    private int " + exhCard + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + exhCard + " = " + upgradeValue + ";\n";
+                break;
+            case exhaustCardRandom:
+                variable = "    private int " + exhCardR + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + exhCardR + " = " + upgradeValue + ";\n";
+                break;
+            case exhaustUpTo:
+                variable = "    private int " + exhUpTo + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + exhUpTo + " = " + upgradeValue + ";\n";
+                break;
             //endregion
             default:
                 variable = "";
@@ -454,19 +479,19 @@ public class ContentAdd
 
         switch (where)
         {
-            case addCopy2Hand:
+            case add2Hand:
                 action = "         "+methodHand+"(" + actionVar + ",CardType."+cardType+");\n";
                 break;
-            case addCopy2Discard:
+            case add2Discard:
                 action = "         "+methodDisc+"(" + actionVar + ",CardType."+cardType+");\n";
                 break;
-            case addCopy2DrawPile:
+            case add2DrawPile:
                 action = "         "+methodDraw+"(" + actionVar + ",CardType."+cardType+",\"Random\");\n";
                 break;
-            case addCopy2TopDrawPile:
+            case add2TopDrawPile:
                 action = "         "+methodDraw+"(" + actionVar + ",CardType."+cardType+",\"Top\");\n";
                 break;
-            case addCopy2BotDrawPile:
+            case add2BotDrawPile:
                 action = "         "+methodDraw+"(" + actionVar + ",CardType."+cardType+",\"Bot\");\n";
                 break;
             default:
@@ -485,19 +510,19 @@ public class ContentAdd
             methodString="AddRandomColorless";
         switch (where)
         {
-            case addCopy2Hand:
+            case add2Hand:
                 action = "         "+methodString+"(" + actionVar + ",\"Hand\");\n";
                 break;
-            case addCopy2Discard:
+            case add2Discard:
                 action = "         "+methodString+"(" + actionVar + ",\"Discard\");\n";
                 break;
-            case addCopy2DrawPile:
+            case add2DrawPile:
                 action = "         "+methodString+"(" + actionVar + ",\"DrawPile\");\n";
                 break;
-            case addCopy2TopDrawPile:
+            case add2TopDrawPile:
                 action = "         "+methodString+"(" + actionVar + ",\"TopDrawPile\");\n";
                 break;
-            case addCopy2BotDrawPile:
+            case add2BotDrawPile:
                 action = "         "+methodString+"(" + actionVar + ",\"BotDrawPile\");\n";
                 break;
             default:
@@ -668,19 +693,19 @@ public class ContentAdd
             case addCopy:
                 switch (targetLocation)
                 {
-                    case addCopy2Hand:
+                    case add2Hand:
                         action = "         this.addToBot(new MakeTempCardInHandAction(this.makeStatEquivalentCopy()," + actionVar + "));\n";
                         break;
-                    case addCopy2Discard:
+                    case add2Discard:
                         action = "         this.addToBot(new MakeTempCardInDiscardAction(this.makeStatEquivalentCopy(), " + actionVar + "));\n";
                         break;
-                    case addCopy2DrawPile:
+                    case add2DrawPile:
                         action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy()," + actionVar + " ,true,true));\n";
                         break;
-                    case addCopy2TopDrawPile:
+                    case add2TopDrawPile:
                         action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + actionVar + ",false,false,false));\n";
                         break;
-                    case addCopy2BotDrawPile:
+                    case add2BotDrawPile:
                         action = "         this.addToBot(new MakeTempCardInDrawPileAction(this.makeStatEquivalentCopy(), " + actionVar + ",false,false,true));\n";
                         break;
                     default:
@@ -759,6 +784,17 @@ public class ContentAdd
             //endregion
             //endregion
 
+            //region Exhaust
+            case exhaustCard:
+                action = "         this.addToBot(new ExhaustAction("+exhCard+", false));\n";
+                break;
+            case exhaustCardRandom:
+                action = "         this.addToBot(new ExhaustAction("+exhCardR+", true, false, false));\n";
+                break;
+            case exhaustUpTo:
+                action = "         this.addToBot(new ExhaustAction("+exhUpTo+", false, true, true));\n";
+                break;
+            //endregion
             default:
                 action = "";
         }
@@ -948,6 +984,18 @@ public class ContentAdd
                 Upgrade = "            " + drawOnPowPlay + "=UPGRADE_" + drawOnPowPlay + ";\n";
                 break;
             //endregion
+            //endregion
+
+            //region Exhaust
+            case exhaustCard:
+                Upgrade = "            " + exhCard + "=UPGRADE_" + exhCard + ";\n";
+                break;
+            case exhaustCardRandom:
+                Upgrade = "            " + exhCardR + "=UPGRADE_" + exhCardR + ";\n";
+                break;
+            case exhaustUpTo:
+                Upgrade = "            " + exhUpTo + "=UPGRADE_" + exhUpTo + ";\n";
+                break;
             //endregion
             default:
                 Upgrade = "";

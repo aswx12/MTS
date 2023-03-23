@@ -30,7 +30,7 @@ x2 block
 keep block at turn start
 x2 str
 Deal dmg equal block(body slam)
-
+Exhaust Hand
 ----------------------------
 Dual var action
 Deal x dmg to random enemy x time 
@@ -72,13 +72,10 @@ Discard To Hand {hologram
 discard to draw? top & bottom & shuffle
 Discard random [all out attack]
 
-Exhaust Card
-Exhaust Card(Random)[true grit]
 Exhaust non-attack
-Exhaust Hand
-Exhaust Up to?
 Set card Cost
 Exhaust Dmg?  [fiend fire]
+exhaust pile to hand
 Put card from hand to bottom draw
 Delayed add copy
 Choose to Copy

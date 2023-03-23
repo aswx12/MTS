@@ -129,4 +129,12 @@ public class ActionVar
 
 
     //endregion
+
+    //region Exhaust
+
+    public static String exhCard = "exhCardQty";
+    public static String exhCardR = "exhCardRandomQty";
+    public static String exhUpTo = "exhUpToQty";
+
+    //endregion
 }
