@@ -369,7 +369,7 @@ public class UI extends JFrame
                 {
                     for (int j = 1; j < 3; j++)
                     {
-                        if (!InputValueFieldCheck(tabModel, i, j))
+                        if (!inputValidator(tabModel, i, j))
                             return;
                     }
                 }
@@ -377,7 +377,7 @@ public class UI extends JFrame
                 //InputValueFieldCheck(onUpgradeActionTable,upgradeTabModel);
                 for (int i = 0; i < onUpgradeActionTable.getRowCount(); i++)
                 {
-                    if (!InputValueFieldCheck(upgradeTabModel, i, 1))
+                    if (!inputValidator(upgradeTabModel, i, 1))
                         return;
                 }
                 //endregion
@@ -639,13 +639,16 @@ public class UI extends JFrame
                 upCardStates);
     }
 
-    private boolean InputValueFieldCheck(DefaultTableModel model, int i, int j)
+    private boolean inputValidator(DefaultTableModel model, int i, int j)
     {
         String actionName = model.getValueAt(i, 0).toString() + "\n[" + model.getColumnName(j);
         if (model.getValueAt(i, j) == null)
         {
             JOptionPane.showMessageDialog(CreateButton, "Action: " + actionName + "] field is empty");
             return false;
+        }
+        if(model.getValueAt(i, 0).toString().equals("Block")){ //replace block with a list of variableless action _b gg
+            return true;
         }
         cellNum = isNumeric(model.getValueAt(i, j).toString());
         if (!cellNum)

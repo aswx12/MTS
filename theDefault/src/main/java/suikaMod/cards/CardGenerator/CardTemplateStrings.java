@@ -33,6 +33,8 @@ public class CardTemplateStrings {
 
     public static int GetActionValues(DefaultTableModel actionModel, int row, int col) {
 
+        if(actionModel.getValueAt(row, col).toString().equals("x"))
+            return 0;
         return Integer.parseInt(actionModel.getValueAt(row, col).toString());
     }
 
