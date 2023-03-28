@@ -37,12 +37,19 @@ public class ActionCategory
             "Apply Weak",
             "Apply Poison",
             "Apply Strength",
+
             "Gain Vulnerable",
             "Gain Weak",
             "Gain Poison",
             "Gain Strength",
             "Gain Dexterity",
             "Gain Intangible",
+
+            "Gain Double Vulnerable",
+            "Gain Double Weak",
+            "Gain Double Poison",
+            "Gain Double Strength",
+            "Gain Double Dexterity",
     };
     public final String[] addCardArray = {
             "Add Copy",
@@ -75,6 +82,15 @@ public class ActionCategory
             "Exhaust Card(Random)",
             "Exhaust Hand",
             "Exhaust Any Amount Up To",
+    };
+
+    public final String[] varLessAction={ //used to check for variableless action
+            "Exhaust Hand",
+            "Gain Double Vulnerable",
+            "Gain Double Weak",
+            "Gain Double Poison",
+            "Gain Double Strength",
+            "Gain Double Dexterity",
     };
 
 

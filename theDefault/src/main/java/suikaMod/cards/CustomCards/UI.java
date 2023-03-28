@@ -119,15 +119,17 @@ public class UI extends JFrame
         }
         UI ui = new UI();
     }
+    ActionCategory category;
     DefaultListModel dmgListModel = new DefaultListModel();
     DefaultListModel etcListModel = new DefaultListModel();
     DefaultListModel buffListModel = new DefaultListModel();
     DefaultListModel addCardListModel = new DefaultListModel();
     DefaultListModel drawCardListModel = new DefaultListModel();
     DefaultListModel exhListModel = new DefaultListModel();
+
     public void ActionCategory(){
 
-        ActionCategory category = ActionCategory.getInstance();
+        category = ActionCategory.getInstance();
 
         for (String item: category.dmgArray)
             dmgListModel.addElement(item);
@@ -184,6 +186,8 @@ public class UI extends JFrame
                 if (column == 0)
                     return false;
                 if ((column == 3 || column == 4 || column == 5) && getValueAt(row, 0).toString().equals("Repeat"))
+                    return false;
+                if(LockCellValue(this,row) && (column == 1 || column==2))
                     return false;
                 return true;
             }
@@ -437,7 +441,11 @@ public class UI extends JFrame
                         tabModel.addRow(new Object[]{data.toString(), null, null, "x", "x", true});
                         //tabModel.isCellEditable(0,3);
 
-                    } else
+                    }
+                    else if(actionVarlessCheck(data)){
+                        tabModel.addRow(new Object[]{data.toString(), "x", "x", "None", "Hand", true});
+                    }
+                    else
                         tabModel.addRow(new Object[]{data.toString(), null, null, "None", "Hand", false});
                     //tabModel.setValueAt(data, rowIndex++, 0);
                     tableHeight += 20;
@@ -452,7 +460,8 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-
+                if(actionTable.getSelectedRowCount()==0)
+                    return;
                 if (actionTable.getValueAt(actionTable.getSelectedRow(), 0).toString().equals("Repeat"))
                 {
                     actionTable.removeColumn(repeatCol);
@@ -619,6 +628,7 @@ public class UI extends JFrame
 
 
     //region Utils
+
     public String CreateCard()
     {
         return CardTemplateStrings.CardTemplate(
@@ -647,9 +657,13 @@ public class UI extends JFrame
             JOptionPane.showMessageDialog(CreateButton, "Action: " + actionName + "] field is empty");
             return false;
         }
-        if(model.getValueAt(i, 0).toString().equals("Block")){ //replace block with a list of variableless action _b gg
-            return true;
+        for (int k = 0; k < category.varLessAction.length ; k++)
+        {
+            if(model.getValueAt(i, 0).toString().equals(category.varLessAction[k])){ //compare action in table with action in varless list to skip x validation
+                return true;
+            }
         }
+
         cellNum = isNumeric(model.getValueAt(i, j).toString());
         if (!cellNum)
         {
@@ -659,10 +673,30 @@ public class UI extends JFrame
         return true;
     }
 
+    private boolean actionVarlessCheck(Object data){
+        for (int i = 0; i < category.varLessAction.length; i++)
+        {
+            if(data.toString().equals(category.varLessAction[i]))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean LockCellValue(DefaultTableModel tabModel, int row){
+        for (int i = 0; i < category.varLessAction.length ; i++)
+        {
+            if(tabModel.getValueAt(row, 0).toString().equals(category.varLessAction[i]))
+                return true;
+        }
+        return false;
+    }
+
     public void RemoveSelectedActions(JTable table, DefaultListModel actionListModel, String whichTable)
     {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        String dataSave = "";
+/*        int actionCount = table.getRowCount();
+        if(actionCount ==0)
+            return;*/
         int numRows = table.getSelectedRows().length;
         for (int i = 0; i < numRows; i++)
         {

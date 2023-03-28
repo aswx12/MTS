@@ -28,9 +28,7 @@ Variableless Action
 play top card [havoc]
 x2 block
 keep block at turn start
-x2 str
 Deal dmg equal block(body slam)
-Exhaust Hand
 ----------------------------
 Dual var action
 Deal x dmg to random enemy x time 

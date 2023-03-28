@@ -39,7 +39,7 @@ public class ActionTestFile extends AbstractDynamicCard
     public static final String ID = DefaultMod.makeID(ActionTestFile.class.getSimpleName());
     public static final String IMG = makeCardPath("Attack.png");
     private static final CardRarity RARITY = CardRarity.UNCOMMON;
-    private static final CardTarget TARGET = CardTarget.ALL_ENEMY;
+    private static final CardTarget TARGET = CardTarget.ENEMY;
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
@@ -85,18 +85,7 @@ public class ActionTestFile extends AbstractDynamicCard
 
 
 
-        int count = AbstractDungeon.player.hand.size();
 
-        for (int i = 0; i < count; ++i)
-        {
-            if (Settings.FAST_MODE)
-            {
-                this.addToTop(new ExhaustAction(1, true, true, false, Settings.ACTION_DUR_XFAST));
-            } else
-            {
-                this.addToTop(new ExhaustAction(1, true, true));
-            }
-        }
 
 
 

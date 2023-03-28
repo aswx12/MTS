@@ -40,6 +40,12 @@ public class ContentAdd
     static final String gainDex = "GainDexterity";
     static final String gainIntangible = "GainIntangible";
 
+    static final String gain2xVulnerable = "GainDoubleVulnerable";
+    static final String gain2xWeak = "GainDoubleWeak";
+    static final String gain2xPoison = "GainDoublePoison";
+    static final String gain2xStr = "GainDoubleStrength";
+    static final String gain2xDex = "GainDoubleDexterity";
+
     //endregion
     //region Health related
 
@@ -674,6 +680,22 @@ public class ContentAdd
             case gainIntangible:
                 action = "         this.addToBot(new ApplyPowerAction(p, p, new IntangiblePlayerPower(p, " + gIntang + "), " + gIntang + "));\n";
                 break;
+
+            case gain2xVulnerable:
+                action = "         this.addToBot(new GainDoubleVulnerableAction());\n";
+                break;
+            case gain2xWeak:
+                action = "         this.addToBot(new GainDoubleWeakAction());\n";
+                break;
+            case gain2xPoison:
+                action = "         this.addToBot(new GainDoublePoisonAction());\n";
+                break;
+            case gain2xStr:
+                action = "         this.addToBot(new LimitBreakAction());\n";
+                break;
+            case gain2xDex:
+                action = "         this.addToBot(new GainDoubleDexAction());\n";
+                break;
             //endregion
 
             //region Health related
@@ -793,6 +815,9 @@ public class ContentAdd
                 break;
             case exhaustUpTo:
                 action = "         this.addToBot(new ExhaustAction("+exhUpTo+", false, true, true));\n";
+                break;
+            case exhaustHand:
+                action = "         this.addToBot(new ExhaustHandAction());\n";
                 break;
             //endregion
             default:
