@@ -19,7 +19,13 @@ public class ContentAdd
     static final String DPSH = "DamagePerSkillInHand";
     //endregion
     static final String block = "Block";
+
+    static final String block2x = "DoubleBlock";
+
     static final String gainEnergy = "GainEnergy";
+    static final String gain2xEnergy = "DoubleEnergy";
+    static final String gainEnergyNextTurn ="GainEnergyNextTurn";
+    static final String gainEnergyDiscard ="GainEnergyIfDiscard>0";
     static final String repeat = "Repeat";
 
     //region Apply
@@ -192,6 +198,14 @@ public class ContentAdd
             case gainEnergy: //change this later to magic number
                 variable = "    private static final int " + gEnergy + " = " + value + ";\n" +
                         "    private static final int UPGRADE_" + gEnergy + " = " + upgradeValue + ";\n";
+                break;
+            case gainEnergyNextTurn: //change this later to magic number
+                variable = "    private int " + energized + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + energized + " = " + upgradeValue + ";\n";
+                break;
+            case gainEnergyDiscard: //change this later to magic number
+                variable = "    private int " + energyDisc + " = " + value + ";\n" +
+                        "    private final int UPGRADE_" + energyDisc + " = " + upgradeValue + ";\n";
                 break;
             case repeat:
                 variable = "    private int " + rpt + " = " + value + ";\n" +
@@ -618,8 +632,20 @@ public class ContentAdd
             case block:
                 action = "         this.addToBot(new GainBlockAction(p, p, block));\n";
                 break;
+            case block2x:
+                action = "         this.addToBot(new DoubleYourBlockAction(p));\n";
+                break;
             case gainEnergy:
                 action = "         this.addToBot(new GainEnergyAction(magicNumber));\n";
+                break;
+            case gain2xEnergy:
+                action = "         this.addToBot(new DoubleEnergyAction());\n";
+                break;
+            case gainEnergyNextTurn:
+                action = "         this.addToBot(new ApplyPowerAction(p, p, new EnergizedPow(p, "+energized+"), "+energized+"));\n";
+                break;
+            case gainEnergyDiscard:
+                action = "         this.addToBot(new GainEnergyIfDiscardAction("+energyDisc+"));\n";
                 break;
             //region apply
             case applyVulnerable:
@@ -901,12 +927,17 @@ public class ContentAdd
                 break;
             case gainEnergy:
                 Upgrade = "            this.upgradeMagicNumber(UPGRADE_" + gEnergy + ");\n";
-
-                //region Apply
+                break;
+            case gainEnergyNextTurn:
+                Upgrade = "            " + energized + " = UPGRADE_" + energized + ";\n";
+                break;
+            case gainEnergyDiscard:
+                Upgrade = "            " + energyDisc + " = UPGRADE_" + energyDisc + ";\n";
                 break;
             case repeat:
                 Upgrade = "            " + rpt + " = UPGRADE_" + rpt + ";\n";
                 break;
+            //region Apply
             case applyVulnerable:
                 Upgrade = "            " + aVul + "=upgradeAVulnerableValue(UPGRADE_" + aVul + ");\n";
                 break;

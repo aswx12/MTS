@@ -18,6 +18,9 @@ public class ActionVar
     //endregion
     public static String blc = "BLOCK";
     public static String gEnergy = "ENERGY";
+
+    public static String energized ="energizedValue";
+    public static String energyDisc ="energyDiscValue";
     public static String rpt = "repeatTIME";
 
     //region Buff/debuff

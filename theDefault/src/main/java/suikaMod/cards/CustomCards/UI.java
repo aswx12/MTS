@@ -102,46 +102,58 @@ public class UI extends JFrame
 
     public static void main(String[] args)
     {
-        try {// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if (info.getName().equals("Nimbus")) {
+        try
+        {// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+            {
+                if (info.getName().equals("Nimbus"))
+                {
                     UIManager.setLookAndFeel(info.getClassName());
                     UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-                    defaults.put("Table.gridColor", new Color (0,0,0));
+                    defaults.put("Table.gridColor", new Color(0, 0, 0));
                     defaults.put("Table.disabled", false);
                     defaults.put("Table.showGrid", true);
                     defaults.put("Table.intercellSpacing", new Dimension(1, 1));
                     break;
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             //e.printStackTrace();
         }
         UI ui = new UI();
     }
+
     ActionCategory category;
     DefaultListModel dmgListModel = new DefaultListModel();
+    DefaultListModel blcListModel = new DefaultListModel();
+    DefaultListModel energyListModel = new DefaultListModel();
     DefaultListModel etcListModel = new DefaultListModel();
     DefaultListModel buffListModel = new DefaultListModel();
     DefaultListModel addCardListModel = new DefaultListModel();
     DefaultListModel drawCardListModel = new DefaultListModel();
     DefaultListModel exhListModel = new DefaultListModel();
 
-    public void ActionCategory(){
+    public void ActionCategory()
+    {
 
         category = ActionCategory.getInstance();
 
-        for (String item: category.dmgArray)
+        for (String item : category.dmgArray)
             dmgListModel.addElement(item);
-        for (String item: category.etcArray)
+        for (String item : category.blockArry)
+            blcListModel.addElement(item);
+        for (String item : category.energyArray)
+            energyListModel.addElement(item);
+        for (String item : category.etcArray)
             etcListModel.addElement(item);
-        for (String item: category.buffArray)
+        for (String item : category.buffArray)
             buffListModel.addElement(item);
-        for (String item: category.addCardArray)
+        for (String item : category.addCardArray)
             addCardListModel.addElement(item);
-        for (String item: category.drawCardArray)
+        for (String item : category.drawCardArray)
             drawCardListModel.addElement(item);
-        for (String item: category.exhArray)
+        for (String item : category.exhArray)
             exhListModel.addElement(item);
     }
 
@@ -160,7 +172,6 @@ public class UI extends JFrame
         setResizable(false);
 
 
-
         //endregion
 
         //region List & Table Init
@@ -175,9 +186,9 @@ public class UI extends JFrame
 
         ActionCategory();
 
-        actionList.setModel(actionListModel);
+        actionList.setModel(dmgListModel);
         String[] colName = {"Action", "Base Value", "Upgraded Value", "Activation Condition", "Extra Option", "Repeat"};
-        String[] colNameUpGrade = {"Action", "Value", "Activation Condition"};
+        String[] colNameUpGrade = {"Action", "Value", "Activation Condition","Extra Option", "Repeat"};
         tabModel = new DefaultTableModel(null, colName)
         {
             @Override
@@ -187,7 +198,7 @@ public class UI extends JFrame
                     return false;
                 if ((column == 3 || column == 4 || column == 5) && getValueAt(row, 0).toString().equals("Repeat"))
                     return false;
-                if(LockCellValue(this,row) && (column == 1 || column==2))
+                if (LockCellValue(this, row) && (column == 1 || column == 2))
                     return false;
                 return true;
             }
@@ -229,12 +240,22 @@ public class UI extends JFrame
 
         upgradeTabModel = new DefaultTableModel(null, colNameUpGrade)
         {
-            @Override
+         /*   @Override
             public boolean isCellEditable(int row, int column)
             {
                 return column != 0;
+            }*/
+            @Override
+            public boolean isCellEditable(int row, int column)
+            {
+                if (column == 0)
+                    return false;
+                if ((column == 2 || column == 3 || column == 4) && getValueAt(row, 0).toString().equals("Repeat"))
+                    return false;
+                if (LockCellValue(this, row) && (column == 1))
+                    return false;
+                return true;
             }
-
             @Override
             public void setValueAt(Object value, int row, int column)
             {
@@ -248,6 +269,21 @@ public class UI extends JFrame
                 } else
                 {
                     super.setValueAt(value, row, column);
+                }
+            }
+            @Override
+            public Class getColumnClass(int column)
+            {
+                switch (column)
+                {
+                    case 0:
+                    case 1:
+                        return String.class;
+                    case 2:
+                    case 3:
+                        return DefaultComboBoxModel.class;
+                    default:
+                        return Boolean.class;
                 }
             }
         };
@@ -276,6 +312,7 @@ public class UI extends JFrame
         //region add target col
         DefaultComboBoxModel extraOptionListModel = new DefaultComboBoxModel();
         TableColumn extraOptionCol = actionTable.getColumnModel().getColumn(4);
+        TableColumn extraOptionColUp = onUpgradeActionTable.getColumnModel().getColumn(3);
 
         JComboBox<String> extraOptionList = new JComboBox<>();
         extraOptionListModel.addElement("Hand");
@@ -285,11 +322,15 @@ public class UI extends JFrame
         extraOptionListModel.addElement("Bot Draw Pile");
         extraOptionList.setModel(extraOptionListModel);
         extraOptionCol.setCellEditor(new DefaultCellEditor(extraOptionList));
+        extraOptionColUp.setCellEditor(new DefaultCellEditor(extraOptionList));
         //endregion
         //region repeat
         TableColumn repeatCol = actionTable.getColumnModel().getColumn(5);
+        TableColumn repeatColUp = onUpgradeActionTable.getColumnModel().getColumn(4);
 
         actionTable.removeColumn(repeatCol);
+        onUpgradeActionTable.removeColumn(repeatColUp);
+
         //endregion
         actionTable.getTableHeader().setReorderingAllowed(false);
         onUpgradeActionTable.getTableHeader().setReorderingAllowed(false);
@@ -430,9 +471,9 @@ public class UI extends JFrame
                 {
 /*                    if (!data.toString().contains("Add"))
                         actionListModel.removeElement(data);*/
-                    if(existsInTable(actionTable,data) && !actionCategoryBox.getSelectedItem().equals("Add Card")){
-                        JOptionPane.showMessageDialog(selectActionButton, "Already in List!","Error",JOptionPane.ERROR_MESSAGE);
-
+                    if (existsInTable(actionTable, data) && !actionCategoryBox.getSelectedItem().equals("Add Card"))
+                    {
+                        JOptionPane.showMessageDialog(selectActionButton, "Already in List!", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                     if (data.toString().equals("Repeat"))
@@ -441,11 +482,10 @@ public class UI extends JFrame
                         tabModel.addRow(new Object[]{data.toString(), null, null, "x", "x", true});
                         //tabModel.isCellEditable(0,3);
 
-                    }
-                    else if(actionVarlessCheck(data)){
+                    } else if (actionVarlessCheck(data))
+                    {
                         tabModel.addRow(new Object[]{data.toString(), "x", "x", "None", "Hand", true});
-                    }
-                    else
+                    } else
                         tabModel.addRow(new Object[]{data.toString(), null, null, "None", "Hand", false});
                     //tabModel.setValueAt(data, rowIndex++, 0);
                     tableHeight += 20;
@@ -460,7 +500,7 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if(actionTable.getSelectedRowCount()==0)
+                if (actionTable.getSelectedRowCount() == 0)
                     return;
                 if (actionTable.getValueAt(actionTable.getSelectedRow(), 0).toString().equals("Repeat"))
                 {
@@ -556,8 +596,24 @@ public class UI extends JFrame
             {
                 actionList.getSelectedValuesList().stream().forEach((data) ->
                 {
-                    actionListModel.removeElement(data);
-                    upgradeTabModel.addRow(new Object[]{data.toString(), null, "None"});
+                    if (existsInTable(onUpgradeActionTable, data) && !actionCategoryBox.getSelectedItem().equals("Add Card"))
+                    {
+                        JOptionPane.showMessageDialog(AddOnUpgradeButton, "Already in List!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    if (data.toString().equals("Repeat"))
+                    {
+                        onUpgradeActionTable.addColumn(repeatColUp);
+                        upgradeTabModel.addRow(new Object[]{data.toString(), null, "x", "x", true});
+                        //tabModel.isCellEditable(0,3);
+
+                    } else if (actionVarlessCheck(data))
+                    {
+                        upgradeTabModel.addRow(new Object[]{data.toString(), "x", "None", "Hand", true});
+                    } else
+                        upgradeTabModel.addRow(new Object[]{data.toString(), null, "None", "Hand", false});
+                    //actionListModel.removeElement(data);
+                    //upgradeTabModel.addRow(new Object[]{data.toString(), null, "None"});
                     //upgradeTabModel.setValueAt(data, upTableRowIndex++, 0);
                     upTableHeight += 20;
                     SetUpgradeActionTableSize();
@@ -570,6 +626,16 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                if (onUpgradeActionTable.getSelectedRowCount() == 0)
+                    return;
+                if (onUpgradeActionTable.getValueAt(onUpgradeActionTable.getSelectedRow(), 0).toString().equals("Repeat"))
+                {
+                    onUpgradeActionTable.removeColumn(repeatColUp);
+                    for (int i = 0; i < onUpgradeActionTable.getRowCount(); i++)
+                    {
+                        upgradeTabModel.setValueAt(false, i, 4);
+                    }
+                }
                 RemoveSelectedActions(onUpgradeActionTable, actionListModel, "upActionTable");
             }
         });
@@ -602,9 +668,16 @@ public class UI extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 String matcher = actionCategoryBox.getSelectedItem().toString();
-                switch (matcher){
+                switch (matcher)
+                {
                     case "Damage":
                         actionList.setModel(dmgListModel);
+                        break;
+                    case "Block":
+                        actionList.setModel(blcListModel);
+                        break;
+                    case "Energy":
+                        actionList.setModel(energyListModel);
                         break;
                     case "EtcTemp":
                         actionList.setModel(etcListModel);
@@ -657,9 +730,10 @@ public class UI extends JFrame
             JOptionPane.showMessageDialog(CreateButton, "Action: " + actionName + "] field is empty");
             return false;
         }
-        for (int k = 0; k < category.varLessAction.length ; k++)
+        for (int k = 0; k < category.varLessAction.length; k++)
         {
-            if(model.getValueAt(i, 0).toString().equals(category.varLessAction[k])){ //compare action in table with action in varless list to skip x validation
+            if (model.getValueAt(i, 0).toString().equals(category.varLessAction[k]))
+            { //compare action in table with action in varless list to skip x validation
                 return true;
             }
         }
@@ -673,19 +747,21 @@ public class UI extends JFrame
         return true;
     }
 
-    private boolean actionVarlessCheck(Object data){
+    private boolean actionVarlessCheck(Object data)
+    {
         for (int i = 0; i < category.varLessAction.length; i++)
         {
-            if(data.toString().equals(category.varLessAction[i]))
+            if (data.toString().equals(category.varLessAction[i]))
                 return true;
         }
         return false;
     }
 
-    private boolean LockCellValue(DefaultTableModel tabModel, int row){
-        for (int i = 0; i < category.varLessAction.length ; i++)
+    private boolean LockCellValue(DefaultTableModel tabModel, int row)
+    {
+        for (int i = 0; i < category.varLessAction.length; i++)
         {
-            if(tabModel.getValueAt(row, 0).toString().equals(category.varLessAction[i]))
+            if (tabModel.getValueAt(row, 0).toString().equals(category.varLessAction[i]))
                 return true;
         }
         return false;
@@ -779,16 +855,19 @@ public class UI extends JFrame
         }
     }
 
-    public boolean existsInTable(JTable table, Object entry) {
+    public boolean existsInTable(JTable table, Object entry)
+    {
 
         // Get row and column count
         int rowCount = table.getRowCount();
 
         // Check against all entries
-        for (int i = 0; i < rowCount; i++) {
+        for (int i = 0; i < rowCount; i++)
+        {
             String rowEntry = "";
-                rowEntry = table.getValueAt(i, 0).toString();
-            if (rowEntry.equalsIgnoreCase(entry.toString())) {
+            rowEntry = table.getValueAt(i, 0).toString();
+            if (rowEntry.equalsIgnoreCase(entry.toString()))
+            {
                 return true;
             }
         }

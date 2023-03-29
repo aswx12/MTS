@@ -83,7 +83,8 @@ public class ActionTestFile extends AbstractDynamicCard
             this.addToBot(new ApplyPowerAction(p, p, new StrengthPower(p, 1),1));
         }*/
 
-
+        //this.addToBot(new ApplyPowerAction(p, p, new EnergizedPow(p, 2), 2));
+        this.addToBot(new GainEnergyIfDiscardAction(2));
 
 
 

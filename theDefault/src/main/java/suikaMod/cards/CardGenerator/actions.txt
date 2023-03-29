@@ -1,6 +1,5 @@
 DAMAGE RELATED
 
-
 Deal x more dmg based on cards containing certain word ?
 Exh hand, deal x dmg for each card exh [too specific?]
 deal x dmg to random enemy on block gain (power)
@@ -26,9 +25,9 @@ Apply mark[pressure]
 -------------------------------------
 Variableless Action
 play top card [havoc]
-x2 block
 keep block at turn start
 Deal dmg equal block(body slam)
+double energy
 ----------------------------
 Dual var action
 Deal x dmg to random enemy x time 
@@ -38,8 +37,6 @@ Lose x hp, deal x dmg to all enemy at turn end
 ------------------
 Energy related
 Cost x less per time hp loss
-gain energy at turn start
-next turn get energy
 gain energy if a card has been discarded this turn
 
 ------------------------------------

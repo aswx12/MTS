@@ -312,6 +312,8 @@
                 <properties>
                   <model>
                     <item value="Damage"/>
+                    <item value="Block"/>
+                    <item value="Energy"/>
                     <item value="EtcTemp"/>
                     <item value="Buff/Debuff"/>
                     <item value="Add Card"/>

@@ -25,12 +25,25 @@ public class ActionCategory
             "Damage Per Skill In Hand",
     };
 
-    public final String[] etcArray={
+    public final String[] blockArry={
             "Block",
+            "Double Block"
+    };
+
+    //"Reduce Cost On Hp Lost"
+    public final String[] energyArray={
             "Gain Energy",
+            "Double Energy",
+            "Gain Energy Next Turn",
+            "Gain Energy If Discard>0"
+
+    };
+
+    public final String[] etcArray={
             "Repeat",
             "Sacrifice HP",
             "Heal",
+            "Upgrade All"
     };
     public final String[] buffArray = {
             "Apply Vulnerable",
@@ -91,6 +104,8 @@ public class ActionCategory
             "Gain Double Poison",
             "Gain Double Strength",
             "Gain Double Dexterity",
+            "Double Block",
+            "Double Energy",
     };
 
 

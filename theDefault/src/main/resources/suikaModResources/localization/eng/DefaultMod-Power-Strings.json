@@ -1,10 +1,27 @@
 {
-"suikaMod:CommonPower": {
-        "NAME": "Placeholder Power",
-        "DESCRIPTIONS": ["You applied #b", " keyword.", " keywords."]
-},
-"suikaMod:RarePower": {
-        "NAME": "Placeholder Power",
-        "DESCRIPTIONS": ["At the start of your turn, TOUCH #b", " enemy." , " enemies."]
-}
+  "suikaMod:CommonPower": {
+    "NAME": "Placeholder Power",
+    "DESCRIPTIONS": [
+      "You applied #b",
+      " keyword.",
+      " keywords."
+    ]
+  },
+  "suikaMod:RarePower": {
+    "NAME": "Placeholder Power",
+    "DESCRIPTIONS": [
+      "At the start of your turn, TOUCH #b",
+      " enemy.",
+      " enemies."
+    ]
+  },
+  "suikaMod:Energized": {
+    "NAME": "Energized",
+    "DESCRIPTIONS": [
+      "Gain #b",
+      " additional [E] next turn.",
+      " additional [E] next turn.",
+      " - TRANSLATOR NOTE: - The above line is for plural if needed to distinguish from singular."
+    ]
+  }
 }
