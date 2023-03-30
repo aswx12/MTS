@@ -24,8 +24,8 @@ public class ContentAdd
 
     static final String gainEnergy = "GainEnergy";
     static final String gain2xEnergy = "DoubleEnergy";
-    static final String gainEnergyNextTurn ="GainEnergyNextTurn";
-    static final String gainEnergyDiscard ="GainEnergyIfDiscard>0";
+    static final String gainEnergyNextTurn = "GainEnergyNextTurn";
+    static final String gainEnergyDiscard = "GainEnergyIfDiscard>0";
     static final String repeat = "Repeat";
 
     //region Apply
@@ -112,17 +112,18 @@ public class ContentAdd
     //endregion
 
     //endregion
-    static String cpyString="copy";
-    static String notCpy="uniq";
+    static String cpyString = "copy";
+    static String notCpy = "uniq";
+
     //region Variable
     public static String AllVariable(String action, int value, int upgradeValue, String where)
     {
         return Variable(action, value, upgradeValue, where);
     }
 
-    public static String AllVariableUpgrade(String action, int SingleValue)
+    public static String AllVariableUpgrade(String action, int SingleValue, String targetLocation)
     {
-        return Variable(action, SingleValue, 0, "");
+        return Variable(action, SingleValue, 0, targetLocation);
     }
 
     public static String varInit(int value, int upgradeValue)
@@ -130,7 +131,9 @@ public class ContentAdd
         return "    private int " + actionVar + " = " + value + ";\n" +
                 "    private final int UPGRADE_" + actionVar + " = " + upgradeValue + ";\n";
     }
-    public static String SetVersion(String where,int V,String actionVarV,int value,int upgradeValue){
+
+    public static String SetVersion(String where, int V, String actionVarV, int value, int upgradeValue)
+    {
         actionVar = actionVarV;
         switch (where)
         {
@@ -278,34 +281,34 @@ public class ContentAdd
 
             //region Copy
             case addCopy:
-                variable = SetVersion(targetLocation,addCpyV++,addCpy,value,upgradeValue);
+                variable = SetVersion(targetLocation, addCpyV++, addCpy, value, upgradeValue);
                 break;
             case addRandomAttackCopy:
-                variable = SetVersion(targetLocation,randomAttCpyV++, RandomAttCpy,value,upgradeValue);
+                variable = SetVersion(targetLocation, randomAttCpyV++, RandomAttCpy, value, upgradeValue);
                 break;
             case addRandomSkillCopy:
-                variable = SetVersion(targetLocation,randomSkillCpyV++, RandomSkillCpy,value,upgradeValue);
+                variable = SetVersion(targetLocation, randomSkillCpyV++, RandomSkillCpy, value, upgradeValue);
                 break;
             case addRandomPowerCopy:
-                variable = SetVersion(targetLocation,randomPowerCpyV++, RandomPowerCpy,value,upgradeValue);
+                variable = SetVersion(targetLocation, randomPowerCpyV++, RandomPowerCpy, value, upgradeValue);
                 break;
             case addRandomColorlessCopy:
-                variable = SetVersion(targetLocation,randomColorlessCpyV++, RandomColorlessCpy,value,upgradeValue);
+                variable = SetVersion(targetLocation, randomColorlessCpyV++, RandomColorlessCpy, value, upgradeValue);
                 break;
             //endregion
             //-------------------------------------------------------------
             //region Add Random
             case addRandomAttack:
-                variable = SetVersion(targetLocation,randomAttV++, RandomAtt,value,upgradeValue);
+                variable = SetVersion(targetLocation, randomAttV++, RandomAtt, value, upgradeValue);
                 break;
             case addRandomSkill:
-                variable = SetVersion(targetLocation,randomSkillV++,RandomSkill,value,upgradeValue);
+                variable = SetVersion(targetLocation, randomSkillV++, RandomSkill, value, upgradeValue);
                 break;
             case addRandomPower:
-                variable = SetVersion(targetLocation,randomPowerV++,RandomPower,value,upgradeValue);
+                variable = SetVersion(targetLocation, randomPowerV++, RandomPower, value, upgradeValue);
                 break;
             case addRandomColorless:
-                variable = SetVersion(targetLocation,randomColorlessV++,RandomColorless,value,upgradeValue);
+                variable = SetVersion(targetLocation, randomColorlessV++, RandomColorless, value, upgradeValue);
                 break;
 
             //---------------------------------------------------
@@ -479,40 +482,43 @@ public class ContentAdd
     {
         return Actions(action, target, where);
     }
-    public static String randomAdd(String method, String where, String cardType){
-        String action="";
-        String methodHand="";
-        String methodDisc="";
-        String methodDraw="";
+
+    public static String randomAdd(String method, String where, String cardType)
+    {
+        String action = "";
+        String methodHand = "";
+        String methodDisc = "";
+        String methodDraw = "";
 
 
-        if(method.equals(cpyString)){
-            methodHand="AddRandomCardHandCopy";
-            methodDisc ="AddRandomCardDiscardCopy";
-            methodDraw="AddRandomCardDrawPCopy";
-        }
-        else {
-            methodHand="AddRandomCardHand";
-            methodDisc ="AddRandomCardDiscard";
-            methodDraw="AddRandomCardDrawP";
+        if (method.equals(cpyString))
+        {
+            methodHand = "AddRandomCardHandCopy";
+            methodDisc = "AddRandomCardDiscardCopy";
+            methodDraw = "AddRandomCardDrawPCopy";
+        } else
+        {
+            methodHand = "AddRandomCardHand";
+            methodDisc = "AddRandomCardDiscard";
+            methodDraw = "AddRandomCardDrawP";
         }
 
         switch (where)
         {
             case add2Hand:
-                action = "         "+methodHand+"(" + actionVar + ",CardType."+cardType+");\n";
+                action = "         " + methodHand + "(" + actionVar + ",CardType." + cardType + ");\n";
                 break;
             case add2Discard:
-                action = "         "+methodDisc+"(" + actionVar + ",CardType."+cardType+");\n";
+                action = "         " + methodDisc + "(" + actionVar + ",CardType." + cardType + ");\n";
                 break;
             case add2DrawPile:
-                action = "         "+methodDraw+"(" + actionVar + ",CardType."+cardType+",\"Random\");\n";
+                action = "         " + methodDraw + "(" + actionVar + ",CardType." + cardType + ",\"Random\");\n";
                 break;
             case add2TopDrawPile:
-                action = "         "+methodDraw+"(" + actionVar + ",CardType."+cardType+",\"Top\");\n";
+                action = "         " + methodDraw + "(" + actionVar + ",CardType." + cardType + ",\"Top\");\n";
                 break;
             case add2BotDrawPile:
-                action = "         "+methodDraw+"(" + actionVar + ",CardType."+cardType+",\"Bot\");\n";
+                action = "         " + methodDraw + "(" + actionVar + ",CardType." + cardType + ",\"Bot\");\n";
                 break;
             default:
                 break;
@@ -520,36 +526,38 @@ public class ContentAdd
         return action;
     }
 
-    public static String randomColorless(String method,String where){
-        String action="";
-        String methodString="";
-        if(method.equals(cpyString)){
-            methodString="AddRandomColorlessCopy";
-        }
-        else
-            methodString="AddRandomColorless";
+    public static String randomColorless(String method, String where)
+    {
+        String action = "";
+        String methodString = "";
+        if (method.equals(cpyString))
+        {
+            methodString = "AddRandomColorlessCopy";
+        } else
+            methodString = "AddRandomColorless";
         switch (where)
         {
             case add2Hand:
-                action = "         "+methodString+"(" + actionVar + ",\"Hand\");\n";
+                action = "         " + methodString + "(" + actionVar + ",\"Hand\");\n";
                 break;
             case add2Discard:
-                action = "         "+methodString+"(" + actionVar + ",\"Discard\");\n";
+                action = "         " + methodString + "(" + actionVar + ",\"Discard\");\n";
                 break;
             case add2DrawPile:
-                action = "         "+methodString+"(" + actionVar + ",\"DrawPile\");\n";
+                action = "         " + methodString + "(" + actionVar + ",\"DrawPile\");\n";
                 break;
             case add2TopDrawPile:
-                action = "         "+methodString+"(" + actionVar + ",\"TopDrawPile\");\n";
+                action = "         " + methodString + "(" + actionVar + ",\"TopDrawPile\");\n";
                 break;
             case add2BotDrawPile:
-                action = "         "+methodString+"(" + actionVar + ",\"BotDrawPile\");\n";
+                action = "         " + methodString + "(" + actionVar + ",\"BotDrawPile\");\n";
                 break;
             default:
                 break;
         }
         return action;
     }
+
     public static String Actions(String matcher, String target, String targetLocation)
     {
         String action = "";
@@ -642,10 +650,10 @@ public class ContentAdd
                 action = "         this.addToBot(new DoubleEnergyAction());\n";
                 break;
             case gainEnergyNextTurn:
-                action = "         this.addToBot(new ApplyPowerAction(p, p, new EnergizedPow(p, "+energized+"), "+energized+"));\n";
+                action = "         this.addToBot(new ApplyPowerAction(p, p, new EnergizedPow(p, " + energized + "), " + energized + "));\n";
                 break;
             case gainEnergyDiscard:
-                action = "         this.addToBot(new GainEnergyIfDiscardAction("+energyDisc+"));\n";
+                action = "         this.addToBot(new GainEnergyIfDiscardAction(" + energyDisc + "));\n";
                 break;
             //region apply
             case applyVulnerable:
@@ -763,31 +771,31 @@ public class ContentAdd
                 break;
 
             case addRandomAttackCopy:
-                action= randomAdd(cpyString,targetLocation,"ATTACK");
+                action = randomAdd(cpyString, targetLocation, "ATTACK");
                 break;
             case addRandomSkillCopy:
-                action= randomAdd(cpyString,targetLocation,"SKILL");
+                action = randomAdd(cpyString, targetLocation, "SKILL");
                 break;
             case addRandomPowerCopy:
-                action= randomAdd(cpyString,targetLocation,"POWER");
+                action = randomAdd(cpyString, targetLocation, "POWER");
                 break;
             case addRandomColorlessCopy:
-                action = randomColorless(cpyString,targetLocation);
+                action = randomColorless(cpyString, targetLocation);
                 break;
             //endregion
 
             //region Add Random
             case addRandomAttack:
-                action= randomAdd(notCpy,targetLocation,"ATTACK");
+                action = randomAdd(notCpy, targetLocation, "ATTACK");
                 break;
             case addRandomSkill:
-                action= randomAdd(notCpy,targetLocation,"SKILL");
+                action = randomAdd(notCpy, targetLocation, "SKILL");
                 break;
             case addRandomPower:
-                action= randomAdd(notCpy,targetLocation,"POWER");
+                action = randomAdd(notCpy, targetLocation, "POWER");
                 break;
             case addRandomColorless:
-                action = randomColorless(notCpy,targetLocation);
+                action = randomColorless(notCpy, targetLocation);
                 break;
             //-----------------------------------
             //endregion
@@ -834,13 +842,13 @@ public class ContentAdd
 
             //region Exhaust
             case exhaustCard:
-                action = "         this.addToBot(new ExhaustAction("+exhCard+", false));\n";
+                action = "         this.addToBot(new ExhaustAction(" + exhCard + ", false));\n";
                 break;
             case exhaustCardRandom:
-                action = "         this.addToBot(new ExhaustAction("+exhCardR+", true, false, false));\n";
+                action = "         this.addToBot(new ExhaustAction(" + exhCardR + ", true, false, false));\n";
                 break;
             case exhaustUpTo:
-                action = "         this.addToBot(new ExhaustAction("+exhUpTo+", false, true, true));\n";
+                action = "         this.addToBot(new ExhaustAction(" + exhUpTo + ", false, true, true));\n";
                 break;
             case exhaustHand:
                 action = "         this.addToBot(new ExhaustHandAction());\n";

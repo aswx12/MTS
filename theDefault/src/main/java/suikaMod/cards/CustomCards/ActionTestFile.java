@@ -85,10 +85,10 @@ public class ActionTestFile extends AbstractDynamicCard
 
         //this.addToBot(new ApplyPowerAction(p, p, new EnergizedPow(p, 2), 2));
         this.addToBot(new GainEnergyIfDiscardAction(2));
+        if (this.upgraded)
+        {
 
-
-
-
+        }
 
 
         //new VampireDamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.NONE);
