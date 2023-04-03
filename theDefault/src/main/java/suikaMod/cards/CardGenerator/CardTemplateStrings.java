@@ -16,10 +16,15 @@ public class CardTemplateStrings
     static StringBuilder sbActionsEneAttIntent = new StringBuilder();
     static StringBuilder sbActionsEneAttIntentRepeat = new StringBuilder();
 
-    static StringBuilder sbActionsOnUpgrade = new StringBuilder();
-    static StringBuilder sbActionsOnUpgradeRepeat = new StringBuilder();
-    static StringBuilder sbActionsEneAttIntentOnUpgrade = new StringBuilder();
-    static StringBuilder sbActionsEneAttIntentOnUpgradeRepeat = new StringBuilder();
+    static StringBuilder sbAddOnUpgrade = new StringBuilder();
+    static StringBuilder sbAddOnUpgradeRepeat = new StringBuilder();
+    static StringBuilder sbAddOnUpgradeEneAttIntent = new StringBuilder();
+    static StringBuilder sbAddOnUpgradeEneAttIntentRepeat = new StringBuilder();
+
+    static StringBuilder sbDelOnUpgrade = new StringBuilder();
+    static StringBuilder sbDelOnUpgradeRepeat = new StringBuilder();
+    static StringBuilder sbDelOnUpgradeEneAttIntent = new StringBuilder();
+    static StringBuilder sbDelOnUpgradeEneAttIntentRepeat = new StringBuilder();
 
     static StringBuilder sbDiscActions = new StringBuilder();
     static StringBuilder sbUpgrade = new StringBuilder();
@@ -214,6 +219,7 @@ public class CardTemplateStrings
         String DESCRIPTION = description.getText().replaceAll("(?!\\r)\\n", " NL ");
         String upgrade_DESCRIPTION = upDescription.getText().replaceAll("(?!\\r)\\n", " NL ");
 
+        //region strings
         String variable = "";
         String baseValue = "";
 
@@ -222,13 +228,20 @@ public class CardTemplateStrings
         String actionsRepeat = "";
         String actionsOnEneAttIntentRepeat = "";
 
-        String actionsOnUpgrade = "";
-        String actionsOnUpgradeRepeat = "";
-        String actionsOnEneAttIntentOnUpgrade = "";
-        String actionsOnEneAttIntentOnUpgradeRepeat = "";
+        String addOnUpgrade = "";
+        String addOnUpgradeRepeat = "";
+        String addOnUpgradeEneAttIntent = "";
+        String addOnUpgradeEneAttIntentRepeat = "";
+
+        String delOnUpgrade = "";
+        String delOnUpgradeRepeat = "";
+        String delOnUpgradeEneAttIntent = "";
+        String delOnUpgradeEneAttIntentRepeat = "";
 
         String actionsWhenDiscard = "";
         String upgrade = "";
+
+        //endregion
 
         for (int i = 0; i < actionTableModel.getRowCount(); i++)
         {
@@ -239,6 +252,8 @@ public class CardTemplateStrings
         }
 
         //region Adding info to cards
+
+        //region default action
         for (int i = 0; i < actionTableModel.getRowCount(); i++)
         {
             sbVariable.append(ContentAdd.AllVariable(
@@ -291,6 +306,9 @@ public class CardTemplateStrings
 
 
         }
+        //endregion
+
+        //region onUpgrade action
         for (int i = 0; i < actionOnUpgradeTableModel.getRowCount(); i++)
         {
             if (GetActionNames(actionOnUpgradeTableModel, i).equals("Repeat"))
@@ -299,6 +317,7 @@ public class CardTemplateStrings
             }
         }
         int repeatTime = 0;
+
         if (addActionOnUpgrade.isSelected())
         {
             for (int i = 0; i < actionOnUpgradeTableModel.getRowCount(); i++)
@@ -311,50 +330,84 @@ public class CardTemplateStrings
                 sbVariable.append(ContentAdd.AllVariableUpgrade(
                         GetActionNames(actionOnUpgradeTableModel, i),
                         GetActionValues(actionOnUpgradeTableModel, i, 1),
-                        GetActionExtraOption(actionOnUpgradeTableModel, i, 3)));
+                        GetActionExtraOption(actionOnUpgradeTableModel, i, 4)));
 
 
                 sbBaseValue.append(ContentAdd.SetBase(
                         GetActionNames(actionOnUpgradeTableModel, i)));
 
-                if (CheckCellValue(actionOnUpgradeTableModel, i, 2, "None"))
+                if (CheckCellValue(actionOnUpgradeTableModel, i, 2, "Add"))
                 {
-                    if (repeatUpgrade && (Boolean) actionOnUpgradeTableModel.getValueAt(i, 4))
+                    if (CheckCellValue(actionOnUpgradeTableModel, i, 3, "None"))
                     {
-                        sbActionsOnUpgradeRepeat.append(ContentAdd.AllActions(
-                                GetActionNames(actionOnUpgradeTableModel, i),
-                                stringParse(target),
-                                GetActionExtraOption(actionOnUpgradeTableModel, i, 3)));
-                    } else
+                        if (repeatUpgrade && (Boolean) actionOnUpgradeTableModel.getValueAt(i, 5))
+                        {
+                            sbAddOnUpgradeRepeat.append(ContentAdd.AllActions(
+                                    GetActionNames(actionOnUpgradeTableModel, i),
+                                    stringParse(target),
+                                    GetActionExtraOption(actionOnUpgradeTableModel, i, 4)));
+                        } else
+                        {
+                            sbAddOnUpgrade.append(ContentAdd.AllActions(
+                                    GetActionNames(actionOnUpgradeTableModel, i),
+                                    stringParse(target),
+                                    GetActionExtraOption(actionOnUpgradeTableModel, i, 4)));
+                        }
+                    } else if (CheckCellValue(actionOnUpgradeTableModel, i, 3, "Enemy Intent: Attack"))
                     {
-                        sbActionsOnUpgrade.append(ContentAdd.AllActions(
-                                GetActionNames(actionOnUpgradeTableModel, i),
-                                stringParse(target),
-                                GetActionExtraOption(actionOnUpgradeTableModel, i, 3)));
+                        if (repeatUpgrade && (Boolean) actionOnUpgradeTableModel.getValueAt(i, 5))
+                        {
+                            sbAddOnUpgradeEneAttIntentRepeat.append(ContentAdd.AllActions(
+                                    GetActionNames(actionOnUpgradeTableModel, i),
+                                    stringParse(target),
+                                    GetActionExtraOption(actionOnUpgradeTableModel, i, 4)));
+
+                        } else
+                            sbAddOnUpgradeEneAttIntent.append(ContentAdd.AllActions(
+                                    GetActionNames(actionOnUpgradeTableModel, i),
+                                    stringParse(target),
+                                    GetActionExtraOption(actionOnUpgradeTableModel, i, 4)));
                     }
-                } else if (CheckCellValue(actionOnUpgradeTableModel, i, 2, "Enemy Intent: Attack"))
+                } else
                 {
-                    if (repeatUpgrade && (Boolean) actionOnUpgradeTableModel.getValueAt(i, 4))
+                    if (CheckCellValue(actionOnUpgradeTableModel, i, 3, "None"))
                     {
-                        sbActionsEneAttIntentOnUpgradeRepeat.append(ContentAdd.AllActions(
-                                GetActionNames(actionOnUpgradeTableModel, i),
-                                stringParse(target),
-                                GetActionExtraOption(actionOnUpgradeTableModel, i, 3)));
+                        if (repeatUpgrade && (Boolean) actionOnUpgradeTableModel.getValueAt(i, 5))
+                        {
+                            sbDelOnUpgradeRepeat.append(ContentAdd.AllActions(
+                                    GetActionNames(actionOnUpgradeTableModel, i),
+                                    stringParse(target),
+                                    GetActionExtraOption(actionOnUpgradeTableModel, i, 4)));
+                        } else
+                        {
+                            sbDelOnUpgrade.append(ContentAdd.AllActions(
+                                    GetActionNames(actionOnUpgradeTableModel, i),
+                                    stringParse(target),
+                                    GetActionExtraOption(actionOnUpgradeTableModel, i, 4)));
+                        }
+                    } else if (CheckCellValue(actionOnUpgradeTableModel, i, 3, "Enemy Intent: Attack"))
+                    {
+                        if (repeatUpgrade && (Boolean) actionOnUpgradeTableModel.getValueAt(i, 5))
+                        {
+                            sbDelOnUpgradeEneAttIntentRepeat.append(ContentAdd.AllActions(
+                                    GetActionNames(actionOnUpgradeTableModel, i),
+                                    stringParse(target),
+                                    GetActionExtraOption(actionOnUpgradeTableModel, i, 4)));
 
-                    } else
-                        sbActionsEneAttIntentOnUpgrade.append(ContentAdd.AllActions(
-                                GetActionNames(actionOnUpgradeTableModel, i),
-                                stringParse(target),
-                                GetActionExtraOption(actionOnUpgradeTableModel, i, 3)));
+                        } else
+                            sbDelOnUpgradeEneAttIntent.append(ContentAdd.AllActions(
+                                    GetActionNames(actionOnUpgradeTableModel, i),
+                                    stringParse(target),
+                                    GetActionExtraOption(actionOnUpgradeTableModel, i, 4)));
+                    }
                 }
-
 
                 sbDiscActions.append(ContentAdd.ActionsWhenDiscard(
                         GetActionNames(actionOnUpgradeTableModel, i))); //set upgrade condition
 
             }
         }
-
+        //endregion
 
         //endregion
 
@@ -366,10 +419,15 @@ public class CardTemplateStrings
         actionsOnEneAttIntent = sbActionsEneAttIntent.toString();
         actionsOnEneAttIntentRepeat = sbActionsEneAttIntentRepeat.toString();
 
-        actionsOnUpgrade = sbActionsOnUpgrade.toString();
-        actionsOnUpgradeRepeat = sbActionsOnUpgradeRepeat.toString();
-        actionsOnEneAttIntentOnUpgrade = sbActionsEneAttIntentOnUpgrade.toString();
-        actionsOnEneAttIntentOnUpgradeRepeat = sbActionsEneAttIntentOnUpgradeRepeat.toString();
+        addOnUpgrade = sbAddOnUpgrade.toString();
+        addOnUpgradeRepeat = sbAddOnUpgradeRepeat.toString();
+        addOnUpgradeEneAttIntent = sbAddOnUpgradeEneAttIntent.toString();
+        addOnUpgradeEneAttIntentRepeat = sbAddOnUpgradeEneAttIntentRepeat.toString();
+
+        delOnUpgrade = sbDelOnUpgrade.toString();
+        delOnUpgradeRepeat = sbDelOnUpgradeRepeat.toString();
+        delOnUpgradeEneAttIntent = sbDelOnUpgradeEneAttIntent.toString();
+        delOnUpgradeEneAttIntentRepeat = sbDelOnUpgradeEneAttIntentRepeat.toString();
 
         actionsWhenDiscard = sbDiscActions.toString();
         upgrade = sbUpgrade.toString();
@@ -407,28 +465,55 @@ public class CardTemplateStrings
             eneIntentTotal = eneAttIntent + eneIntentTotal + closeStatement;
         }
 
-        String ifUpgrade = "        if(this.upgraded){\n";
+        String ifUpgradeAdd = "        if(this.upgraded){\n";
+        String ifUpgradeDel = "        if(!this.upgraded){\n";
         String loopUpgrade = "        for (int i = 0; i < " + repeatTime + "; i++) {\n";
 
-        if (!actionsOnUpgradeRepeat.isEmpty()) // add actions to repeat
+        //region add section
+        if (!addOnUpgradeRepeat.isEmpty()) // add actions to repeat
         {
-            actionsOnUpgradeRepeat = loopUpgrade + actionsOnUpgradeRepeat + closeStatement;
+            addOnUpgradeRepeat = loopUpgrade + addOnUpgradeRepeat + closeStatement;
         }
-        if (!actionsOnEneAttIntentOnUpgradeRepeat.isEmpty()) //add actions to intent & repeat
+        if (!addOnUpgradeEneAttIntentRepeat.isEmpty()) //add actions to intent & repeat
         {
-            actionsOnEneAttIntentOnUpgradeRepeat = loopUpgrade + actionsOnEneAttIntentOnUpgradeRepeat + closeStatement;
+            addOnUpgradeEneAttIntentRepeat = loopUpgrade + addOnUpgradeEneAttIntentRepeat + closeStatement;
         }
 
-        String eneIntentUpgradeTotal = actionsOnEneAttIntentOnUpgrade + actionsOnEneAttIntentOnUpgradeRepeat;
+        String eneIntentUpgradeTotal = addOnUpgradeEneAttIntent + addOnUpgradeEneAttIntentRepeat;
         if (!eneIntentUpgradeTotal.isEmpty())//total intent add
         {
             eneIntentUpgradeTotal = eneAttIntent + eneIntentUpgradeTotal + closeStatement;
         }
-        String upgradeActionTotal = actionsOnUpgrade + actionsOnUpgradeRepeat + eneIntentUpgradeTotal;
-        if (!upgradeActionTotal.isEmpty())//final actions add to upgrade condition
+        String upgradeAddActionTotal = addOnUpgrade + addOnUpgradeRepeat + eneIntentUpgradeTotal;
+
+        if (!upgradeAddActionTotal.isEmpty())//final actions add to upgrade condition
         {
-            upgradeActionTotal = ifUpgrade + upgradeActionTotal + closeStatement;
+            upgradeAddActionTotal = ifUpgradeAdd + upgradeAddActionTotal + closeStatement;
         }
+        //endregion
+
+        //region del section
+        if (!delOnUpgradeRepeat.isEmpty()) // add actions to repeat
+        {
+            delOnUpgradeRepeat = loopUpgrade + delOnUpgradeRepeat + closeStatement;
+        }
+        if (!delOnUpgradeEneAttIntentRepeat.isEmpty()) //add actions to intent & repeat
+        {
+            delOnUpgradeEneAttIntentRepeat = loopUpgrade + delOnUpgradeEneAttIntentRepeat + closeStatement;
+        }
+
+        String eneIntentUpgradeDelTotal = delOnUpgradeEneAttIntent + delOnUpgradeEneAttIntentRepeat;
+        if (!eneIntentUpgradeDelTotal.isEmpty())//total intent add
+        {
+            eneIntentUpgradeDelTotal = eneAttIntent + eneIntentUpgradeDelTotal + closeStatement;
+        }
+        String upgradeDelActionTotal = delOnUpgrade + delOnUpgradeRepeat + eneIntentUpgradeDelTotal;
+
+        if (!upgradeDelActionTotal.isEmpty())//final actions add to upgrade condition
+        {
+            upgradeDelActionTotal = ifUpgradeDel + upgradeDelActionTotal + closeStatement;
+        }
+        //endregion
 
         String upDescInit = "";
         String upDescChange = "";
@@ -494,7 +579,8 @@ public class CardTemplateStrings
                 "" + actions/*LoopInsert(repeat, actions, addActionOnUpgrade.isSelected(), addActOnUpgrade)*/ +
                 "" + actionsRepeat +
                 "" + eneIntentTotal +
-                "" + upgradeActionTotal +
+                "" + upgradeDelActionTotal +
+                "" + upgradeAddActionTotal +
                 "    }\n" +
                 "\n" +
                 "" + actionsWhenDiscard + closeDiscAction +

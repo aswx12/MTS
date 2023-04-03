@@ -45,6 +45,7 @@ public class ActionCategory
             "Heal",
             "Upgrade All"
     };
+
     public final String[] buffArray = {
             "Apply Vulnerable",
             "Apply Weak",

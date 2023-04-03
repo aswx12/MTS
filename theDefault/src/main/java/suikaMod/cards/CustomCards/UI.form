@@ -241,7 +241,7 @@
                   <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Add Action On Upgrade"/>
+                  <text value="Add/Remove Action On Upgrade"/>
                 </properties>
               </component>
               <grid id="c57dc" binding="actionOnUpgradePanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -250,7 +250,7 @@
                   <grid row="5" column="0" row-span="2" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="true"/>
                 </constraints>
                 <properties/>
-                <border type="line" title="Add Action On Upgrade">
+                <border type="line" title="Add/Remove Action On Upgrade">
                   <color color="-16777216"/>
                 </border>
                 <children>
@@ -283,7 +283,7 @@
                       <text value="Remove"/>
                     </properties>
                   </component>
-                  <component id="f31ae" class="javax.swing.JButton" binding="AddOnUpgradeButton">
+                  <component id="f31ae" class="javax.swing.JButton" binding="AddRemoveOnUpgradeButton">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -292,7 +292,7 @@
                       <contentAreaFilled value="true"/>
                       <horizontalAlignment value="0"/>
                       <margin top="0" left="0" bottom="0" right="0"/>
-                      <text value="Add On Upgrade"/>
+                      <text value="Add/Remove On Upgrade"/>
                     </properties>
                   </component>
                   <component id="6de8b" class="javax.swing.JLabel">
@@ -300,7 +300,7 @@
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Actions To Add On Upgrade List"/>
+                      <text value="Actions To Add/Remove On Upgrade List"/>
                     </properties>
                   </component>
                 </children>

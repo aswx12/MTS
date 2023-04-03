@@ -62,7 +62,7 @@ public class UI extends JFrame
     private JScrollPane actionListScroll;
     private JLabel DefaultStateLabel;
     private JLabel onUpgradeStateLabel;
-    private JButton AddOnUpgradeButton;
+    private JButton AddRemoveOnUpgradeButton;
     private JButton removeUpActionButton;
     private JCheckBox addActionOnUpgradeCheck;
     private JPanel actionOnUpgradePanel;
@@ -188,7 +188,7 @@ public class UI extends JFrame
 
         actionList.setModel(dmgListModel);
         String[] colName = {"Action", "Base Value", "Upgraded Value", "Activation Condition", "Extra Option", "Repeat"};
-        String[] colNameUpGrade = {"Action", "Value", "Activation Condition","Extra Option", "Repeat"};
+        String[] colNameUpGrade = {"Action", "Value", "Add/Remove", "Activation Condition", "Extra Option", "Repeat"};
         tabModel = new DefaultTableModel(null, colName)
         {
             @Override
@@ -240,22 +240,23 @@ public class UI extends JFrame
 
         upgradeTabModel = new DefaultTableModel(null, colNameUpGrade)
         {
-         /*   @Override
-            public boolean isCellEditable(int row, int column)
-            {
-                return column != 0;
-            }*/
+            /*   @Override
+               public boolean isCellEditable(int row, int column)
+               {
+                   return column != 0;
+               }*/
             @Override
             public boolean isCellEditable(int row, int column)
             {
                 if (column == 0)
                     return false;
-                if ((column == 2 || column == 3 || column == 4) && getValueAt(row, 0).toString().equals("Repeat"))
+                if ((column == 2 || column == 3 || column == 4 || column == 5) && getValueAt(row, 0).toString().equals("Repeat"))
                     return false;
                 if (LockCellValue(this, row) && (column == 1))
                     return false;
                 return true;
             }
+
             @Override
             public void setValueAt(Object value, int row, int column)
             {
@@ -271,6 +272,7 @@ public class UI extends JFrame
                     super.setValueAt(value, row, column);
                 }
             }
+
             @Override
             public Class getColumnClass(int column)
             {
@@ -281,6 +283,7 @@ public class UI extends JFrame
                         return String.class;
                     case 2:
                     case 3:
+                    case 4:
                         return DefaultComboBoxModel.class;
                     default:
                         return Boolean.class;
@@ -299,7 +302,7 @@ public class UI extends JFrame
         DefaultComboBoxModel conditionListModel = new DefaultComboBoxModel();
 
         TableColumn conditionColumnDefault = actionTable.getColumnModel().getColumn(3);
-        TableColumn conditionColumnUpgrade = onUpgradeActionTable.getColumnModel().getColumn(2);
+        TableColumn conditionColumnUpgrade = onUpgradeActionTable.getColumnModel().getColumn(3);
 
         JComboBox<String> conditionList = new JComboBox<>();
         conditionListModel.addElement("None");
@@ -312,7 +315,7 @@ public class UI extends JFrame
         //region add target col
         DefaultComboBoxModel extraOptionListModel = new DefaultComboBoxModel();
         TableColumn extraOptionCol = actionTable.getColumnModel().getColumn(4);
-        TableColumn extraOptionColUp = onUpgradeActionTable.getColumnModel().getColumn(3);
+        TableColumn extraOptionColUp = onUpgradeActionTable.getColumnModel().getColumn(4);
 
         JComboBox<String> extraOptionList = new JComboBox<>();
         extraOptionListModel.addElement("Hand");
@@ -324,9 +327,20 @@ public class UI extends JFrame
         extraOptionCol.setCellEditor(new DefaultCellEditor(extraOptionList));
         extraOptionColUp.setCellEditor(new DefaultCellEditor(extraOptionList));
         //endregion
+
+        DefaultComboBoxModel addRemoveModel = new DefaultComboBoxModel();
+        TableColumn addRemoveCol = onUpgradeActionTable.getColumnModel().getColumn(2);
+
+        JComboBox<String> addRemoveOption = new JComboBox<>();
+        addRemoveModel.addElement("Add");
+        addRemoveModel.addElement("Remove");
+        addRemoveOption.setModel(addRemoveModel);
+        addRemoveCol.setCellEditor(new DefaultCellEditor(addRemoveOption));
+
+
         //region repeat
         TableColumn repeatCol = actionTable.getColumnModel().getColumn(5);
-        TableColumn repeatColUp = onUpgradeActionTable.getColumnModel().getColumn(4);
+        TableColumn repeatColUp = onUpgradeActionTable.getColumnModel().getColumn(5);
 
         actionTable.removeColumn(repeatCol);
         onUpgradeActionTable.removeColumn(repeatColUp);
@@ -469,18 +483,25 @@ public class UI extends JFrame
             {
                 actionList.getSelectedValuesList().stream().forEach((data) ->
                 {
-/*                    if (!data.toString().contains("Add"))
-                        actionListModel.removeElement(data);*/
-                    if (existsInTable(actionTable, data) && !actionCategoryBox.getSelectedItem().equals("Add Card"))
-                    {
-                        JOptionPane.showMessageDialog(selectActionButton, "Already in List!", "Error", JOptionPane.ERROR_MESSAGE);
+                    if(data.toString().equals("Repeat") && !(existsInTable(actionTable, data))){
+                        actionTable.addColumn(repeatCol);
+                        tabModel.addRow(new Object[]{data.toString(), null, null, "x", "x", true});
+                        tableHeight += 20;
+                        SetActionTableSize();
                         return;
+                    }
+                    if (existsInTable(actionTable, data) || existsInTable(onUpgradeActionTable, data))
+                    {
+                        if (!actionCategoryBox.getSelectedItem().equals("Add Card"))
+                        {
+                            JOptionPane.showMessageDialog(selectActionButton, "Already in List!", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
                     }
                     if (data.toString().equals("Repeat"))
                     {
                         actionTable.addColumn(repeatCol);
                         tabModel.addRow(new Object[]{data.toString(), null, null, "x", "x", true});
-                        //tabModel.isCellEditable(0,3);
 
                     } else if (actionVarlessCheck(data))
                     {
@@ -589,29 +610,40 @@ public class UI extends JFrame
             }
         });
         //endregion
-        AddOnUpgradeButton.addActionListener(new ActionListener()
+        AddRemoveOnUpgradeButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 actionList.getSelectedValuesList().stream().forEach((data) ->
                 {
-                    if (existsInTable(onUpgradeActionTable, data) && !actionCategoryBox.getSelectedItem().equals("Add Card"))
-                    {
-                        JOptionPane.showMessageDialog(AddOnUpgradeButton, "Already in List!", "Error", JOptionPane.ERROR_MESSAGE);
+                    if(data.toString().equals("Repeat") && !(existsInTable(onUpgradeActionTable, data))){
+                        onUpgradeActionTable.addColumn(repeatColUp);
+                        upgradeTabModel.addRow(new Object[]{data.toString(), null, "x", "x", "x", true});
+                        upTableHeight += 20;
+                        SetUpgradeActionTableSize();
                         return;
                     }
+                    if (existsInTable(actionTable, data) || existsInTable(onUpgradeActionTable, data))
+                    {
+                        if (!actionCategoryBox.getSelectedItem().equals("Add Card"))
+                        {
+                            JOptionPane.showMessageDialog(AddRemoveOnUpgradeButton, "Already in List!", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+
                     if (data.toString().equals("Repeat"))
                     {
                         onUpgradeActionTable.addColumn(repeatColUp);
-                        upgradeTabModel.addRow(new Object[]{data.toString(), null, "x", "x", true});
+                        upgradeTabModel.addRow(new Object[]{data.toString(), null, "x", "x", "x", true});
                         //tabModel.isCellEditable(0,3);
 
                     } else if (actionVarlessCheck(data))
                     {
-                        upgradeTabModel.addRow(new Object[]{data.toString(), "x", "None", "Hand", true});
+                        upgradeTabModel.addRow(new Object[]{data.toString(), "x", "Add", "None", "Hand", true});
                     } else
-                        upgradeTabModel.addRow(new Object[]{data.toString(), null, "None", "Hand", false});
+                        upgradeTabModel.addRow(new Object[]{data.toString(), null, "Add", "None", "Hand", false});
                     //actionListModel.removeElement(data);
                     //upgradeTabModel.addRow(new Object[]{data.toString(), null, "None"});
                     //upgradeTabModel.setValueAt(data, upTableRowIndex++, 0);
@@ -633,7 +665,7 @@ public class UI extends JFrame
                     onUpgradeActionTable.removeColumn(repeatColUp);
                     for (int i = 0; i < onUpgradeActionTable.getRowCount(); i++)
                     {
-                        upgradeTabModel.setValueAt(false, i, 4);
+                        upgradeTabModel.setValueAt(false, i, 5);
                     }
                 }
                 RemoveSelectedActions(onUpgradeActionTable, actionListModel, "upActionTable");
