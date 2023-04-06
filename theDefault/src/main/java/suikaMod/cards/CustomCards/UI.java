@@ -198,8 +198,11 @@ public class UI extends JFrame
                     return false;
                 if ((column == 3 || column == 4 || column == 5) && getValueAt(row, 0).toString().equals("Repeat"))
                     return false;
-                if (LockCellValue(this, row) && (column == 1 || column == 2))
+                if (varlessTableCheck(this, row) && (column == 1 || column == 2))
                     return false;
+                if((column == 4) && !addCardTableCheck(this,row)){
+                    return false;
+                }
                 return true;
             }
 
@@ -252,8 +255,11 @@ public class UI extends JFrame
                     return false;
                 if ((column == 2 || column == 3 || column == 4 || column == 5) && getValueAt(row, 0).toString().equals("Repeat"))
                     return false;
-                if (LockCellValue(this, row) && (column == 1))
+                if (varlessTableCheck(this, row) && (column == 1))
                     return false;
+                if((column == 4) && !addCardTableCheck(this,row)){
+                    return false;
+                }
                 return true;
             }
 
@@ -505,9 +511,12 @@ public class UI extends JFrame
 
                     } else if (actionVarlessCheck(data))
                     {
-                        tabModel.addRow(new Object[]{data.toString(), "x", "x", "None", "Hand", true});
-                    } else
-                        tabModel.addRow(new Object[]{data.toString(), null, null, "None", "Hand", false});
+                        tabModel.addRow(new Object[]{data.toString(), "x", "x", "None", "x", true});
+                    } else if(addCardCheck(data)){
+                        tabModel.addRow(new Object[]{data.toString(), null, null, "None", "None", true});
+                    }
+                    else
+                        tabModel.addRow(new Object[]{data.toString(), null, null, "None", "x", false});
                     //tabModel.setValueAt(data, rowIndex++, 0);
                     tableHeight += 20;
                     SetActionTableSize();
@@ -788,12 +797,30 @@ public class UI extends JFrame
         }
         return false;
     }
+    private boolean addCardCheck(Object data)
+    {
+        for (int i = 0; i < category.addCardArray.length; i++)
+        {
+            if (data.toString().equals(category.addCardArray[i]))
+                return true;
+        }
+        return false;
+    }
 
-    private boolean LockCellValue(DefaultTableModel tabModel, int row)
+    private boolean varlessTableCheck(DefaultTableModel tabModel, int row)
     {
         for (int i = 0; i < category.varLessAction.length; i++)
         {
             if (tabModel.getValueAt(row, 0).toString().equals(category.varLessAction[i]))
+                return true;
+        }
+        return false;
+    }
+    private boolean addCardTableCheck(DefaultTableModel tabModel, int row)
+    {
+        for (int i = 0; i < category.addCardArray.length; i++)
+        {
+            if (tabModel.getValueAt(row, 0).toString().equals(category.addCardArray[i]))
                 return true;
         }
         return false;
