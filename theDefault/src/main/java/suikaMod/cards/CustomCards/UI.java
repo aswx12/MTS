@@ -1,5 +1,6 @@
 package suikaMod.cards.CustomCards;
 
+import com.sun.org.apache.xpath.internal.objects.XObject;
 import suikaMod.cards.CardGenerator.ActionCategory;
 import suikaMod.cards.CardGenerator.CardTemplateStrings;
 
@@ -9,11 +10,10 @@ import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.*;
 import java.nio.file.*;
+import java.util.StringJoiner;
 
 public class UI extends JFrame
 {
@@ -77,6 +77,8 @@ public class UI extends JFrame
     File workingDirectory;
 
     int winXPos = 500;
+
+    int cellHeight=20;
     Point originWinPos = new Point(winXPos, 200);
     Point upActionEnabledWinPos = new Point(winXPos, 100);
 
@@ -85,13 +87,13 @@ public class UI extends JFrame
     DefaultTableModel tabModel;
     DefaultTableModel upgradeTabModel;
 
-    JCheckBox cardStates[] = {
+    JCheckBox[] cardStates = {
             InnateCheck,
             RetainCheck,
             ExhaustCheck,
             EtherealCheck,
     };
-    JCheckBox upCardStates[] = {
+    JCheckBox[] upCardStates = {
             upInnateCheck,
             upRetainCheck,
             upExhaustCheck,
@@ -157,11 +159,23 @@ public class UI extends JFrame
             exhListModel.addElement(item);
     }
 
+    private void CreatedCardTrue()
+    {
+        cardTypeLabel.setVisible(true);
+        cardTypeList.setVisible(true);
+        CardPanel.setVisible(true);
+        CreateButton.setVisible(true);
+        CreateNewCard.setVisible(false);
+        setLocation(originWinPos);
+        SetWindowSize(0);
+    }
     public UI()
     {
         //region UI Init
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        cardTypeLabel.setVisible(false);
+        cardTypeList.setVisible(false);
         CardPanel.setVisible(false);
         upDescPanel.setVisible(false);
         actionOnUpgradePanel.setVisible(false);
@@ -170,7 +184,6 @@ public class UI extends JFrame
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
-
 
         //endregion
 
@@ -200,10 +213,7 @@ public class UI extends JFrame
                     return false;
                 if (varlessTableCheck(this, row) && (column == 1 || column == 2))
                     return false;
-                if((column == 4) && !addCardTableCheck(this,row)){
-                    return false;
-                }
-                return true;
+                return (column != 4) || addCardTableCheck(this, row);
             }
 
             @Override
@@ -257,10 +267,7 @@ public class UI extends JFrame
                     return false;
                 if (varlessTableCheck(this, row) && (column == 1))
                     return false;
-                if((column == 4) && !addCardTableCheck(this,row)){
-                    return false;
-                }
-                return true;
+                return (column != 4) || addCardTableCheck(this, row);
             }
 
             @Override
@@ -384,25 +391,18 @@ public class UI extends JFrame
                     f.setCurrentDirectory(f.getSelectedFile());
                     try
                     {
-
                         // create a new file with name specified
                         // by the file object
                         boolean value = file.createNewFile();
                         if (value)
                         {
                             JOptionPane.showMessageDialog(CreateNewCard, "New Card created");
-                            CardPanel.setVisible(true);
-                            CreateButton.setVisible(true);
-                            CreateNewCard.setVisible(false);
-                            cardTypeLabel.setVisible(false);
-                            cardTypeList.setVisible(false);
-                            setLocation(originWinPos);
-                            SetWindowSize(0);
-
-
+                            CreatedCardTrue();
                         } else
                         {
                             JOptionPane.showMessageDialog(CreateNewCard, "Card Exists, switching to edit mode");
+                            CreatedCardTrue();
+                            ReadSavedFile();
                         }
                     } catch (Exception e)
                     {
@@ -475,6 +475,9 @@ public class UI extends JFrame
                     JOptionPane.showMessageDialog(CreateButton, "Card Properties applied!");
                     // Closes the writer
                     output.close();
+
+                    SaveFile();
+
                 } catch (Exception e)
                 {
                     e.getStackTrace();
@@ -489,10 +492,11 @@ public class UI extends JFrame
             {
                 actionList.getSelectedValuesList().stream().forEach((data) ->
                 {
-                    if(data.toString().equals("Repeat") && !(existsInTable(actionTable, data))){
+                    if (data.toString().equals("Repeat") && !(existsInTable(actionTable, data)))
+                    {
                         actionTable.addColumn(repeatCol);
                         tabModel.addRow(new Object[]{data.toString(), null, null, "x", "x", true});
-                        tableHeight += 20;
+                        tableHeight += cellHeight;
                         SetActionTableSize();
                         return;
                     }
@@ -511,14 +515,14 @@ public class UI extends JFrame
 
                     } else if (actionVarlessCheck(data))
                     {
-                        tabModel.addRow(new Object[]{data.toString(), "x", "x", "None", "x", true});
-                    } else if(addCardCheck(data)){
-                        tabModel.addRow(new Object[]{data.toString(), null, null, "None", "None", true});
-                    }
-                    else
+                        tabModel.addRow(new Object[]{data.toString(), "x", "x", "None", "x", false});
+                    } else if (addCardCheck(data))
+                    {
+                        tabModel.addRow(new Object[]{data.toString(), null, null, "None", "None", false});
+                    } else
                         tabModel.addRow(new Object[]{data.toString(), null, null, "None", "x", false});
                     //tabModel.setValueAt(data, rowIndex++, 0);
-                    tableHeight += 20;
+                    tableHeight += cellHeight;
                     SetActionTableSize();
 
 
@@ -571,11 +575,7 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (InnateCheck.isSelected())
-                {
-                    upInnateCheck.setSelected(true);
-                } else
-                    upInnateCheck.setSelected(false);
+                upInnateCheck.setSelected(InnateCheck.isSelected());
             }
         });
 
@@ -584,11 +584,7 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (RetainCheck.isSelected())
-                {
-                    upRetainCheck.setSelected(true);
-                } else
-                    upRetainCheck.setSelected(false);
+                upRetainCheck.setSelected(RetainCheck.isSelected());
             }
         });
 
@@ -598,11 +594,7 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (ExhaustCheck.isSelected())
-                {
-                    upExhaustCheck.setSelected(true);
-                } else
-                    upExhaustCheck.setSelected(false);
+                upExhaustCheck.setSelected(ExhaustCheck.isSelected());
             }
         });
 
@@ -611,11 +603,7 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (EtherealCheck.isSelected())
-                {
-                    upEtherealCheck.setSelected(true);
-                } else
-                    upEtherealCheck.setSelected(false);
+                upEtherealCheck.setSelected(EtherealCheck.isSelected());
             }
         });
         //endregion
@@ -626,10 +614,11 @@ public class UI extends JFrame
             {
                 actionList.getSelectedValuesList().stream().forEach((data) ->
                 {
-                    if(data.toString().equals("Repeat") && !(existsInTable(onUpgradeActionTable, data))){
+                    if (data.toString().equals("Repeat") && !(existsInTable(onUpgradeActionTable, data)))
+                    {
                         onUpgradeActionTable.addColumn(repeatColUp);
                         upgradeTabModel.addRow(new Object[]{data.toString(), null, "x", "x", "x", true});
-                        upTableHeight += 20;
+                        upTableHeight += cellHeight;
                         SetUpgradeActionTableSize();
                         return;
                     }
@@ -650,13 +639,13 @@ public class UI extends JFrame
 
                     } else if (actionVarlessCheck(data))
                     {
-                        upgradeTabModel.addRow(new Object[]{data.toString(), "x", "Add", "None", "Hand", true});
+                        upgradeTabModel.addRow(new Object[]{data.toString(), "x", "Add", "None", "Hand", false});
                     } else
                         upgradeTabModel.addRow(new Object[]{data.toString(), null, "Add", "None", "Hand", false});
                     //actionListModel.removeElement(data);
                     //upgradeTabModel.addRow(new Object[]{data.toString(), null, "None"});
                     //upgradeTabModel.setValueAt(data, upTableRowIndex++, 0);
-                    upTableHeight += 20;
+                    upTableHeight += cellHeight;
                     SetUpgradeActionTableSize();
 
                 });
@@ -763,6 +752,74 @@ public class UI extends JFrame
                 upCardStates);
     }
 
+    private void ReadSavedFile()
+    {
+        String filePath = "src/main/java/suikaMod/cards/CardData/" + cardName + ".txt";
+        File fileSaved = new File(filePath);
+
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader(fileSaved));
+            // get the first line
+            // get the columns name from the first line
+            // set columns name to the jtable model
+            String firstLine = br.readLine().trim();
+            String[] columnsName = firstLine.split("|");
+            DefaultTableModel model = (DefaultTableModel) actionTable.getModel();
+            model.setColumnIdentifiers(columnsName);
+
+            // get lines from txt file
+            Object[] tableLines = br.lines().toArray();
+
+            // extract data from lines
+            // set data to jtable model
+            for (int i = 0; i < tableLines.length; i++)
+            {
+                String line = tableLines[i].toString().trim();
+                String[] dataRow = line.split("|");
+                if(dataRow.length<6)
+                model.addRow((dataRow));
+                else
+                model.addRow(new Object[]{dataRow[0], dataRow[1], dataRow[2], dataRow[3], dataRow[4], Boolean.parseBoolean(dataRow[5])});
+            }
+            tableHeight=model.getRowCount()*cellHeight;
+            SetActionTableSize();
+        } catch (Exception e)
+        {
+            e.getStackTrace();
+        }
+    }
+
+    private void SaveFile(){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File("src/main/java/suikaMod/cards/CardData/" + cardName + ".txt"))))
+        {
+            StringJoiner joiner = new StringJoiner("|");
+            for (int col = 0; col < actionTable.getColumnCount(); col++)
+            {
+                joiner.add(actionTable.getColumnName(col));
+            }
+            System.out.println(joiner);
+            bw.write(joiner.toString());
+            bw.newLine();
+            for (int row = 0; row < actionTable.getRowCount(); row++)
+            {
+                joiner = new StringJoiner("|");
+                for (int col = 0; col < actionTable.getColumnCount(); col++)
+                {
+                    Object obj = actionTable.getValueAt(row, col);
+                    String value = obj == null ? "null" : obj.toString();
+                    joiner.add(value);
+                }
+                System.out.println(joiner);
+                bw.write(joiner.toString());
+                bw.newLine();
+            }
+        } catch (IOException exp)
+        {
+            exp.printStackTrace();
+        }
+    }
+
     private boolean inputValidator(DefaultTableModel model, int i, int j)
     {
         String actionName = model.getValueAt(i, 0).toString() + "\n[" + model.getColumnName(j);
@@ -797,6 +854,7 @@ public class UI extends JFrame
         }
         return false;
     }
+
     private boolean addCardCheck(Object data)
     {
         for (int i = 0; i < category.addCardArray.length; i++)
@@ -816,6 +874,7 @@ public class UI extends JFrame
         }
         return false;
     }
+
     private boolean addCardTableCheck(DefaultTableModel tabModel, int row)
     {
         for (int i = 0; i < category.addCardArray.length; i++)
@@ -844,11 +903,11 @@ public class UI extends JFrame
             if (whichTable.equals("actionTable"))
             {
                 /* rowIndex--;*/
-                tableHeight -= 20;
+                tableHeight -= cellHeight;
             } else if (whichTable.equals("upActionTable"))
             {
                 /*  upTableRowIndex--;*/
-                upTableHeight -= 20;
+                upTableHeight -= cellHeight;
             }
         }
         SetActionTableSize();

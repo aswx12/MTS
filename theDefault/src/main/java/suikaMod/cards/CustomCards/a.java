@@ -52,6 +52,7 @@ public class a extends AbstractDynamicCard
         //this.tags.add(CardTags.STARTER_STRIKE); 
         //this.tags.add(CardTags.STRIKE);
 
+
     }
 
 

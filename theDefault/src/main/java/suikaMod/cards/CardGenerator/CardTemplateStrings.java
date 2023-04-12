@@ -515,11 +515,21 @@ public class CardTemplateStrings
         }
         //endregion
 
+        String unplayable = "";
+        String unplayableKeyword = "";
+        if (cardType.getSelectedItem().equals("Curse") || cardType.getSelectedItem().equals("Status"))
+        {
+            unplayable = "    public boolean canUse(AbstractPlayer p, AbstractMonster m) {\n" +
+                    "        return false;\n" +
+                    "    }\n";
+            unplayableKeyword = "Unplayable NL ";
+        }
+
         String upDescInit = "";
         String upDescChange = "";
         if (diffUpDescCheck.isSelected())
         {
-            upDescInit = "    private static final String upDesc=\"" + upgrade_DESCRIPTION + "\";\n";
+            upDescInit = "    private static final String upDesc=\"" + unplayableKeyword + upgrade_DESCRIPTION + "\";\n";
             upDescChange = "            rawDescription=upDesc;\n";
         } else
         {
@@ -557,7 +567,7 @@ public class CardTemplateStrings
                 "\n" + variable +
                 "\n" +
                 "    // /STAT DECLARATION/\n" +
-                "\n    private static String desc =\"" + DESCRIPTION + "\";\n" +
+                "\n    private static String desc =\"" + unplayableKeyword + DESCRIPTION + "\";\n" +
                 "" + upDescInit +
 
                 "    public " + className + " ()\n" +
@@ -584,7 +594,7 @@ public class CardTemplateStrings
                 "    }\n" +
                 "\n" +
                 "" + actionsWhenDiscard + closeDiscAction +
-                "\n" +
+                "\n" + unplayable +
                 "    // Upgraded stats.\n" +
                 "    @Override\n" +
                 "    public void upgrade()\n" +
