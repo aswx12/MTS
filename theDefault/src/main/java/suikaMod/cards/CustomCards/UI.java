@@ -78,7 +78,7 @@ public class UI extends JFrame
 
     int winXPos = 500;
 
-    int cellHeight=20;
+    int cellHeight = 20;
     Point originWinPos = new Point(winXPos, 200);
     Point upActionEnabledWinPos = new Point(winXPos, 100);
 
@@ -169,6 +169,10 @@ public class UI extends JFrame
         setLocation(originWinPos);
         SetWindowSize(0);
     }
+
+    TableColumn repeatCol;
+    TableColumn repeatColUp;
+
     public UI()
     {
         //region UI Init
@@ -311,10 +315,10 @@ public class UI extends JFrame
         actionTable.setModel(tabModel);
         onUpgradeActionTable.setModel(upgradeTabModel);
 
+
         //region condi col
         DefaultComboBoxModel conditionListModel = new DefaultComboBoxModel();
-
-        TableColumn conditionColumnDefault = actionTable.getColumnModel().getColumn(3);
+        TableColumn conditionColumnDefault = conditionColumnDefault = actionTable.getColumnModel().getColumn(3);
         TableColumn conditionColumnUpgrade = onUpgradeActionTable.getColumnModel().getColumn(3);
 
         JComboBox<String> conditionList = new JComboBox<>();
@@ -352,8 +356,8 @@ public class UI extends JFrame
 
 
         //region repeat
-        TableColumn repeatCol = actionTable.getColumnModel().getColumn(5);
-        TableColumn repeatColUp = onUpgradeActionTable.getColumnModel().getColumn(5);
+        repeatCol = actionTable.getColumnModel().getColumn(5);
+        repeatColUp = onUpgradeActionTable.getColumnModel().getColumn(5);
 
         actionTable.removeColumn(repeatCol);
         onUpgradeActionTable.removeColumn(repeatColUp);
@@ -754,9 +758,9 @@ public class UI extends JFrame
 
     private void ReadSavedFile()
     {
-        String filePath = "src/main/java/suikaMod/cards/CardData/" + cardName + ".txt";
+        String filePath = "src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
         File fileSaved = new File(filePath);
-
+        Boolean colReadded = false;
         try
         {
             BufferedReader br = new BufferedReader(new FileReader(fileSaved));
@@ -764,10 +768,9 @@ public class UI extends JFrame
             // get the columns name from the first line
             // set columns name to the jtable model
             String firstLine = br.readLine().trim();
-            String[] columnsName = firstLine.split("|");
-            DefaultTableModel model = (DefaultTableModel) actionTable.getModel();
-            model.setColumnIdentifiers(columnsName);
-
+            String[] columnsName = firstLine.split("\\|");
+            if (columnsName.length > 5)
+                actionTable.addColumn(repeatCol);
             // get lines from txt file
             Object[] tableLines = br.lines().toArray();
 
@@ -776,22 +779,27 @@ public class UI extends JFrame
             for (int i = 0; i < tableLines.length; i++)
             {
                 String line = tableLines[i].toString().trim();
-                String[] dataRow = line.split("|");
-                if(dataRow.length<6)
-                model.addRow((dataRow));
+                String[] dataRow = line.split("\\|");
+                if (dataRow.length < 6)
+                    tabModel.addRow((dataRow));
                 else
-                model.addRow(new Object[]{dataRow[0], dataRow[1], dataRow[2], dataRow[3], dataRow[4], Boolean.parseBoolean(dataRow[5])});
+                {
+                    tabModel.addRow(new Object[]{dataRow[0], dataRow[1], dataRow[2], dataRow[3], dataRow[4], Boolean.parseBoolean(dataRow[5])});
+                }
             }
-            tableHeight=model.getRowCount()*cellHeight;
+            tableHeight = tabModel.getRowCount() * cellHeight;
             SetActionTableSize();
+
+
         } catch (Exception e)
         {
             e.getStackTrace();
         }
     }
 
-    private void SaveFile(){
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File("src/main/java/suikaMod/cards/CardData/" + cardName + ".txt"))))
+    private void SaveFile()
+    {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File("src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt"))))
         {
             StringJoiner joiner = new StringJoiner("|");
             for (int col = 0; col < actionTable.getColumnCount(); col++)

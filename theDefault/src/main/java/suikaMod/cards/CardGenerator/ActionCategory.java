@@ -52,6 +52,11 @@ public class ActionCategory
             "Apply Poison",
             "Apply Strength",
 
+            "Apply Double Vulnerable",
+            "Apply Double Weak",
+            "Apply Double Poison",
+            "Apply Double Strength",
+
             "Gain Vulnerable",
             "Gain Weak",
             "Gain Poison",
@@ -105,13 +110,11 @@ public class ActionCategory
             "Gain Double Poison",
             "Gain Double Strength",
             "Gain Double Dexterity",
+            "Apply Double Vulnerable",
+            "Apply Double Weak",
+            "Apply Double Poison",
+            "Apply Double Strength",
             "Double Block",
             "Double Energy",
     };
-
-
-
-
-
-
 }

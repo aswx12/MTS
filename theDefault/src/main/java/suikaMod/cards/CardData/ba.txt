@@ -1,0 +1,9 @@
+Action|Base Value|Upgraded Value|Activation Condition|Extra Option
+Apply Double Vulnerable|x|x|None|x
+Apply Double Weak|x|x|None|x
+Apply Double Poison|x|x|None|x
+Apply Double Strength|x|x|None|x
+Gain Double Vulnerable|x|x|None|x
+Gain Double Weak|x|x|None|x
+Gain Double Poison|x|x|None|x
+Gain Double Strength|x|x|None|x

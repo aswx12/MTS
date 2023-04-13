@@ -1,36 +1,15 @@
 package suikaMod.cards.CustomCards;
 
 import basemod.AutoAdd;
-import basemod.BaseMod;
-import basemod.patches.com.megacrit.cardcrawl.cards.AbstractCard.DamageHooks;
-import com.megacrit.cardcrawl.actions.AbstractGameAction.*;
-import com.megacrit.cardcrawl.actions.common.*;
 import com.megacrit.cardcrawl.actions.unique.*;
-import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
-import com.megacrit.cardcrawl.core.Settings;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
-import com.megacrit.cardcrawl.powers.*;
-import com.megacrit.cardcrawl.localization.CardStrings;
-import com.megacrit.cardcrawl.localization.LocalizedStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import javafx.scene.effect.Effect;
 import suikaMod.DefaultMod;
 import suikaMod.actions.*;
-import suikaMod.actions.ModifyDmgAction;
 import suikaMod.cards.AbstractDynamicCard;
-import suikaMod.cards.DefaultCommonPower;
 import suikaMod.characters.TheDefault;
 
 import static suikaMod.DefaultMod.makeCardPath;
-
-import java.io.File;  // Import the File class
-import java.io.IOException;
-import java.util.Iterator;
-
-import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
 @AutoAdd.Seen
@@ -71,37 +50,15 @@ public class ActionTestFile extends AbstractDynamicCard
     @Override
     public void use(AbstractPlayer p, AbstractMonster m)
     {
-        /*if (m != null && m.getIntentBaseDmg() >= 0) {
-            this.addToBot(new ApplyPowerAction(m, p, new VulnerablePower(m, 1, false),1));
-            this.addToBot(new ApplyPowerAction(m, p, new WeakPower(m, 1, false), 1));
-            this.addToBot(new ApplyPowerAction(m, p, new StrengthPower(m, 1), 1));
-        this.addToBot(new ApplyPowerAction(m, p, new PoisonPower(m, p, 1), 1, AttackEffect.POISON));
+        this.addToBot(new DoubleVulnerableAction(p,p));
+        this.addToBot(new DoubleWeakAction(p,p));
+        this.addToBot(new DoublePoisonAction(p,p));
+        this.addToBot(new DoubleStrAction(p,p));
 
-            this.addToBot(new ApplyPowerAction(p, p, new VulnerablePower(p, 1, false), 1));
-            this.addToBot(new ApplyPowerAction(p, p, new WeakPower(p, 1, false), 1));
-            this.addToBot(new ApplyPowerAction(p, p, new PoisonPower(p, p, 1), 1, AttackEffect.POISON));
-            this.addToBot(new ApplyPowerAction(p, p, new StrengthPower(p, 1),1));
-        }*/
-
-        //this.addToBot(new ApplyPowerAction(p, p, new EnergizedPow(p, 2), 2));
-        this.addToBot(new GainEnergyIfDiscardAction(2));
-        if (this.upgraded)
-        {
-
-        }
-
-
-        //new VampireDamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.NONE);
-        // this.addToBot(new ApplyPowerAction(p, p, new DarkEmbracePower(p, 1), 1));
-        //this.addToBot(new ApplyPowerAction(p, p, new LoseStrengthPower(p, this.magicNumber), this.magicNumber));
-        //addToBot(new SwordBoomerangAction(new DamageInfo(p, 5, damageTypeForTurn), 2));
-       /* if (this.target != null && m.hasPower("Vulnerable"))
-        {
-            this.addToTop(new DrawCardAction(AbstractDungeon.player, 1));
-            this.addToTop(new GainEnergyAction(1));
-        }*/
-
-        //this.addToBot(new ExpertiseAction(p, this.magicNumber));
+        this.addToBot(new DoubleVulnerableAction(m,p));
+        this.addToBot(new DoubleWeakAction(m,p));
+        this.addToBot(new DoublePoisonAction(m,p));
+        this.addToBot(new DoubleStrAction(m,p));
 
     }
 

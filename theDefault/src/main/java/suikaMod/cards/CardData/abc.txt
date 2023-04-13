@@ -1,0 +1,1 @@
+Action|Base Value|Upgraded Value|Activation Condition|Extra Option

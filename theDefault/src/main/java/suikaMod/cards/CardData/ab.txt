@@ -1,0 +1,3 @@
+Action|Base Value|Upgraded Value|Activation Condition|Extra Option|Repeat
+Damage|1|1|Enemy Intent: Attack|x|true
+Repeat|1|1|x|x|true

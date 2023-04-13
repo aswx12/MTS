@@ -1,5 +1,10 @@
 package suikaMod.cards.CardGenerator;
 
+import com.megacrit.cardcrawl.actions.unique.DoublePoisonAction;
+import suikaMod.actions.DoubleStrAction;
+import suikaMod.actions.DoubleVulnerableAction;
+import suikaMod.actions.DoubleWeakAction;
+
 import static suikaMod.cards.CardGenerator.ActionVar.*;
 import static suikaMod.cards.CardGenerator.ActionVar.actionVar;
 
@@ -30,12 +35,14 @@ public class ContentAdd
 
     //region Apply
     static final String applyVulnerable = "ApplyVulnerable";
-
     static final String applyWeak = "ApplyWeak";
-
     static final String applyPoison = "ApplyPoison";
-
     static final String applyStr = "ApplyStrength";
+
+    static final String apply2xVulnerable = "ApplyDoubleVulnerable";
+    static final String apply2xWeak = "ApplyDoubleWeak";
+    static final String apply2xPoison = "ApplyDoublePoison";
+    static final String apply2xStr = "ApplyDoubleStrength";
     //endregion
 
     //region Gain
@@ -691,10 +698,20 @@ public class ContentAdd
                     break;
                 }
                 action = "         this.addToBot(new ApplyPowerAction(m, p, new StrengthPower(m, this.aStrValue), this.aStrValue));\n";
-
+                break;
+            case apply2xVulnerable:
+                action = "         this.addToBot(new DoubleVulnerableAction(m,p));\n";
+                break;
+            case apply2xWeak:
+                action = "         this.addToBot(new DoubleWeakAction(m,p));\n";
+                break;
+            case apply2xPoison:
+                action = "         this.addToBot(new DoublePoisonAction(m,p));\n";
+                break;
+            case apply2xStr:
+                action = "         this.addToBot(new DoubleStrAction(m,p));\n";
                 break;
             //endregion
-
             //region gains
             case gainVulnerable:
                 action = "         this.addToBot(new ApplyPowerAction(p, p, new VulnerablePower(p, this.gVulnerableValue, false), this.gVulnerableValue));\n";
@@ -715,17 +732,20 @@ public class ContentAdd
                 action = "         this.addToBot(new ApplyPowerAction(p, p, new IntangiblePlayerPower(p, " + gIntang + "), " + gIntang + "));\n";
                 break;
 
+
+
+
             case gain2xVulnerable:
-                action = "         this.addToBot(new GainDoubleVulnerableAction());\n";
+                action = "         this.addToBot(new DoubleVulnerableAction(p,p));\n";
                 break;
             case gain2xWeak:
-                action = "         this.addToBot(new GainDoubleWeakAction());\n";
+                action = "         this.addToBot(new DoubleWeakAction(p,p));\n";
                 break;
             case gain2xPoison:
-                action = "         this.addToBot(new GainDoublePoisonAction());\n";
+                action = "         this.addToBot(new DoublePoisonAction(p,p));\n";
                 break;
             case gain2xStr:
-                action = "         this.addToBot(new LimitBreakAction());\n";
+                action = "         this.addToBot(new DoubleStrAction(p,p));\n";
                 break;
             case gain2xDex:
                 action = "         this.addToBot(new GainDoubleDexAction());\n";
