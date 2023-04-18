@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="66" y="40" width="705" height="1002"/>
+      <xy x="66" y="40" width="705" height="986"/>
     </constraints>
     <properties>
       <requestFocusEnabled value="true"/>
@@ -11,10 +11,10 @@
     </properties>
     <border type="none"/>
     <children>
-      <grid id="24502" binding="CardPanel" layout-manager="GridLayoutManager" row-count="13" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="24502" binding="CardPanel" layout-manager="GridLayoutManager" row-count="10" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="2" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <autoscrolls value="false"/>
@@ -33,7 +33,7 @@
           </component>
           <component id="dbc9e" class="javax.swing.JTextField" binding="costField">
             <constraints>
-              <grid row="2" column="1" row-span="1" col-span="5" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+              <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="294" height="30"/>
               </grid>
             </constraints>
@@ -44,7 +44,7 @@
           </component>
           <component id="dc1f" class="javax.swing.JTextField" binding="upCostField">
             <constraints>
-              <grid row="3" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+              <grid row="3" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="294" height="30"/>
               </grid>
             </constraints>
@@ -72,7 +72,7 @@
           </component>
           <component id="fa934" class="javax.swing.JComboBox" binding="rarityList">
             <constraints>
-              <grid row="4" column="1" row-span="1" col-span="5" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+              <grid row="4" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="30"/>
               </grid>
             </constraints>
@@ -90,7 +90,7 @@
           <grid id="93eac" binding="ActionsPanel" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="10" bottom="0" right="10"/>
             <constraints>
-              <grid row="0" column="0" row-span="2" col-span="6" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="0" row-span="2" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -326,7 +326,9 @@
           </grid>
           <component id="bff57" class="javax.swing.JButton" binding="CreateButton">
             <constraints>
-              <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="2" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="314" height="30"/>
+              </grid>
             </constraints>
             <properties>
               <margin top="2" left="6" bottom="2" right="6"/>
@@ -336,7 +338,7 @@
           </component>
           <component id="9e375" class="javax.swing.JCheckBox" binding="unlockCheck">
             <constraints>
-              <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <selected value="true"/>
@@ -346,40 +348,193 @@
           <grid id="7e678" binding="upDescPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="11" column="0" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="true"/>
+              <grid row="8" column="0" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="8" fill="2" indent="0" use-parent-layout="true"/>
             </constraints>
             <properties/>
             <border type="none">
               <color color="-16777216"/>
             </border>
             <children>
-              <component id="3a4a1" class="javax.swing.JTextArea" binding="upDescField">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="294" height="60"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <lineWrap value="true"/>
-                  <margin top="2" left="6" bottom="2" right="6"/>
-                  <text value=""/>
-                </properties>
-              </component>
               <component id="b3845" class="javax.swing.JLabel" binding="upDescLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <labelFor value="3a4a1"/>
-                  <text value="&lt;html&gt; &lt;pre style=&quot;font-family: Default&quot;&gt;  Upgrade   Description:       &lt;/pre&gt; &lt;/html&gt;"/>
+                  <text value="&lt;html&gt; &lt;pre style=&quot;font-family: Default&quot;&gt;  Upgrade&lt;br&gt;  Description:       &lt;/pre&gt; &lt;/html&gt;"/>
+                </properties>
+              </component>
+              <scrollpane id="27471">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="3a4a1" class="javax.swing.JTextArea" binding="upDescField">
+                    <constraints/>
+                    <properties>
+                      <columns value="40"/>
+                      <lineWrap value="true"/>
+                      <margin top="2" left="6" bottom="2" right="6"/>
+                      <rows value="3"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <component id="391f6" class="javax.swing.JLabel" binding="targetLabel">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="a1234"/>
+              <text value="  Target:"/>
+            </properties>
+          </component>
+          <component id="b61ed" class="javax.swing.JCheckBox" binding="upDescCheck">
+            <constraints>
+              <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="314" height="21"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="DIfferent Description On Upgrade"/>
+            </properties>
+          </component>
+          <component id="e0577" class="javax.swing.JLabel" binding="DescriptionLabel">
+            <constraints>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="73" height="58"/>
+              </grid>
+            </constraints>
+            <properties>
+              <labelFor value="a263"/>
+              <text value="  Description: "/>
+            </properties>
+          </component>
+          <grid id="7029e" binding="cardStatePanel" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="5" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="6" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="line" title="Card State" title-justification="2">
+              <title-color color="-16777216"/>
+            </border>
+            <children>
+              <component id="44734" class="javax.swing.JCheckBox" binding="InnateCheck">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <horizontalAlignment value="2"/>
+                  <horizontalTextPosition value="4"/>
+                  <text value="Innate"/>
+                </properties>
+              </component>
+              <component id="3072" class="javax.swing.JCheckBox" binding="upInnateCheck">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Innate"/>
+                </properties>
+              </component>
+              <component id="cd26b" class="javax.swing.JLabel" binding="DefaultStateLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value=" Default"/>
+                </properties>
+              </component>
+              <component id="a597e" class="javax.swing.JLabel" binding="onUpgradeStateLabel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="On  Upgrade"/>
+                </properties>
+              </component>
+              <component id="f1a2f" class="javax.swing.JCheckBox" binding="upRetainCheck">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Retain"/>
+                </properties>
+              </component>
+              <component id="bf37f" class="javax.swing.JCheckBox" binding="RetainCheck">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Retain"/>
+                </properties>
+              </component>
+              <component id="977d0" class="javax.swing.JCheckBox" binding="upExhaustCheck">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Exhaust"/>
+                </properties>
+              </component>
+              <component id="6ca6" class="javax.swing.JCheckBox" binding="ExhaustCheck">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <selected value="false"/>
+                  <text value="Exhaust"/>
+                </properties>
+              </component>
+              <component id="18a4b" class="javax.swing.JCheckBox" binding="upEtherealCheck">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Ethereal"/>
+                </properties>
+              </component>
+              <component id="d9474" class="javax.swing.JCheckBox" binding="EtherealCheck">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Ethereal"/>
                 </properties>
               </component>
             </children>
           </grid>
+          <scrollpane id="55d69">
+            <constraints>
+              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="a263" class="javax.swing.JTextArea" binding="descriptionField">
+                <constraints/>
+                <properties>
+                  <autoscrolls value="false"/>
+                  <columns value="40"/>
+                  <lineWrap value="true"/>
+                  <margin top="2" left="6" bottom="2" right="6"/>
+                  <rows value="3"/>
+                  <tabSize value="8"/>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
           <component id="a1234" class="javax.swing.JComboBox" binding="targetList">
             <constraints>
-              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
+              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="9" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="30"/>
               </grid>
             </constraints>
             <properties>
@@ -393,137 +548,6 @@
               </model>
             </properties>
           </component>
-          <component id="391f6" class="javax.swing.JLabel" binding="targetLabel">
-            <constraints>
-              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <labelFor value="a1234"/>
-              <text value="  Target:"/>
-            </properties>
-          </component>
-          <component id="a263" class="javax.swing.JTextArea" binding="descriptionField">
-            <constraints>
-              <grid row="6" column="1" row-span="4" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="294" height="60"/>
-              </grid>
-            </constraints>
-            <properties>
-              <lineWrap value="true"/>
-              <margin top="2" left="6" bottom="2" right="6"/>
-              <text value=""/>
-            </properties>
-          </component>
-          <component id="b61ed" class="javax.swing.JCheckBox" binding="upDescCheck">
-            <constraints>
-              <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="DIfferent Description On Upgrade"/>
-            </properties>
-          </component>
-          <component id="e0577" class="javax.swing.JLabel" binding="DescriptionLabel">
-            <constraints>
-              <grid row="6" column="0" row-span="4" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <labelFor value="a263"/>
-              <text value="  Description: "/>
-            </properties>
-          </component>
-          <grid id="7029e" binding="cardStatePanel" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <grid row="5" column="2" row-span="5" col-span="3" vsize-policy="3" hsize-policy="0" anchor="8" fill="2" indent="0" use-parent-layout="true"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="44734" class="javax.swing.JCheckBox" binding="InnateCheck">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <horizontalAlignment value="2"/>
-                  <horizontalTextPosition value="4"/>
-                  <text value="Innate"/>
-                </properties>
-              </component>
-              <component id="3072" class="javax.swing.JCheckBox" binding="upInnateCheck">
-                <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Innate"/>
-                </properties>
-              </component>
-              <component id="cd26b" class="javax.swing.JLabel" binding="DefaultStateLabel">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Default"/>
-                </properties>
-              </component>
-              <component id="a597e" class="javax.swing.JLabel" binding="onUpgradeStateLabel">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="On  Upgrade"/>
-                </properties>
-              </component>
-              <component id="f1a2f" class="javax.swing.JCheckBox" binding="upRetainCheck">
-                <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Retain"/>
-                </properties>
-              </component>
-              <component id="bf37f" class="javax.swing.JCheckBox" binding="RetainCheck">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Retain"/>
-                </properties>
-              </component>
-              <component id="977d0" class="javax.swing.JCheckBox" binding="upExhaustCheck">
-                <constraints>
-                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Exhaust"/>
-                </properties>
-              </component>
-              <component id="6ca6" class="javax.swing.JCheckBox" binding="ExhaustCheck">
-                <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <selected value="false"/>
-                  <text value="Exhaust"/>
-                </properties>
-              </component>
-              <component id="18a4b" class="javax.swing.JCheckBox" binding="upEtherealCheck">
-                <constraints>
-                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Ethereal"/>
-                </properties>
-              </component>
-              <component id="d9474" class="javax.swing.JCheckBox" binding="EtherealCheck">
-                <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Ethereal"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
         </children>
       </grid>
       <grid id="adae6" binding="StartPanel" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

@@ -8,26 +8,7 @@ import javax.swing.table.DefaultTableModel;
 public class CardTemplateStrings
 {
     public static String MODID = DefaultMod.MODID;
-    static StringBuilder sbVariable = new StringBuilder();
-    static StringBuilder sbBaseValue = new StringBuilder();
 
-    static StringBuilder sbActions = new StringBuilder();
-    static StringBuilder sbActionsRepeat = new StringBuilder();
-    static StringBuilder sbActionsEneAttIntent = new StringBuilder();
-    static StringBuilder sbActionsEneAttIntentRepeat = new StringBuilder();
-
-    static StringBuilder sbAddOnUpgrade = new StringBuilder();
-    static StringBuilder sbAddOnUpgradeRepeat = new StringBuilder();
-    static StringBuilder sbAddOnUpgradeEneAttIntent = new StringBuilder();
-    static StringBuilder sbAddOnUpgradeEneAttIntentRepeat = new StringBuilder();
-
-    static StringBuilder sbDelOnUpgrade = new StringBuilder();
-    static StringBuilder sbDelOnUpgradeRepeat = new StringBuilder();
-    static StringBuilder sbDelOnUpgradeEneAttIntent = new StringBuilder();
-    static StringBuilder sbDelOnUpgradeEneAttIntentRepeat = new StringBuilder();
-
-    static StringBuilder sbDiscActions = new StringBuilder();
-    static StringBuilder sbUpgrade = new StringBuilder();
 
     static StringBuilder sbState = new StringBuilder();
     static StringBuilder sbUpState = new StringBuilder();
@@ -149,9 +130,10 @@ public class CardTemplateStrings
 
     public static void SetUpgradedState(JCheckBox CardState[], JCheckBox upCardState[], int i, String state)
     {
+
         if (upCardState[i].isSelected())
         {
-            if (!CardState[i].isSelected())
+            if (!CardState[i].isSelected())//maybe not needed
             {
                 sbUpState.append("            this.").append(state).append("=true; \n");
             }
@@ -220,6 +202,27 @@ public class CardTemplateStrings
         String upgrade_DESCRIPTION = upDescription.getText().replaceAll("(?!\\r)\\n", " NL ");
 
         //region strings
+        StringBuilder sbVariable = new StringBuilder();
+        StringBuilder sbBaseValue = new StringBuilder();
+
+        StringBuilder sbActions = new StringBuilder();
+        StringBuilder sbActionsRepeat = new StringBuilder();
+        StringBuilder sbActionsEneAttIntent = new StringBuilder();
+        StringBuilder sbActionsEneAttIntentRepeat = new StringBuilder();
+
+        StringBuilder sbAddOnUpgrade = new StringBuilder();
+        StringBuilder sbAddOnUpgradeRepeat = new StringBuilder();
+        StringBuilder sbAddOnUpgradeEneAttIntent = new StringBuilder();
+        StringBuilder sbAddOnUpgradeEneAttIntentRepeat = new StringBuilder();
+
+        StringBuilder sbDelOnUpgrade = new StringBuilder();
+        StringBuilder sbDelOnUpgradeRepeat = new StringBuilder();
+        StringBuilder sbDelOnUpgradeEneAttIntent = new StringBuilder();
+        StringBuilder sbDelOnUpgradeEneAttIntentRepeat = new StringBuilder();
+
+        StringBuilder sbDiscActions = new StringBuilder();
+        StringBuilder sbUpgrade = new StringBuilder();
+
         String variable = "";
         String baseValue = "";
 
@@ -548,7 +551,7 @@ public class CardTemplateStrings
         if (seen.isSelected())
             unlocked = "Seen";
         else
-            unlocked = "Notseen";
+            unlocked = "NotSeen";
         //endregion
 
         String cardInfo = Imports() +
@@ -610,8 +613,15 @@ public class CardTemplateStrings
                 "        }\n" +
                 "    }\n" +
                 "}";
-
+        BuildersReset();
         return cardInfo;
     }
     //endregion
+
+    private static void BuildersReset()
+    {
+
+        sbState = new StringBuilder();
+        sbUpState = new StringBuilder();
+    }
 }

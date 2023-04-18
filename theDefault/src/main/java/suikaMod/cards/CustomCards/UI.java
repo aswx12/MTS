@@ -77,6 +77,7 @@ public class UI extends JFrame
     File workingDirectory;
 
     int winXPos = 500;
+    int winYPos = 50;
 
     int cellHeight = 20;
     Point originWinPos = new Point(winXPos, 200);
@@ -172,6 +173,8 @@ public class UI extends JFrame
 
     TableColumn repeatCol;
     TableColumn repeatColUp;
+    int xtraTableHeight = 250;
+    int xDescHeight = 90;
 
     public UI()
     {
@@ -318,7 +321,7 @@ public class UI extends JFrame
 
         //region condi col
         DefaultComboBoxModel conditionListModel = new DefaultComboBoxModel();
-        TableColumn conditionColumnDefault = conditionColumnDefault = actionTable.getColumnModel().getColumn(3);
+        TableColumn conditionColumnDefault = actionTable.getColumnModel().getColumn(3);
         TableColumn conditionColumnUpgrade = onUpgradeActionTable.getColumnModel().getColumn(3);
 
         JComboBox<String> conditionList = new JComboBox<>();
@@ -464,8 +467,8 @@ public class UI extends JFrame
                     return;
                 }
                 //endregion
-
-                String cardContent = CreateCard();
+                String cardContent = "";
+                cardContent = CreateCard();
 
                 try
                 {
@@ -474,6 +477,7 @@ public class UI extends JFrame
                     FileWriter output = new FileWriter(f.getSelectedFile() + "/" + cardName + ".java");
 
                     // Writes the  to file
+
                     output.write(cardContent);
                     System.out.println("Data is written to the file.");
                     JOptionPane.showMessageDialog(CreateButton, "Card Properties applied!");
@@ -556,13 +560,13 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                int xDescHeight = 90;
+
                 if (upDescCheck.isSelected())
                 {
                     upDescPanel.setVisible(true);
                     SetWindowSize(xDescHeight);
                     if (addActionOnUpgradeCheck.isSelected())
-                        setLocation(winXPos, 50);
+                        setLocation(winXPos, winYPos);
                 } else
                 {
                     upDescPanel.setVisible(false);
@@ -643,9 +647,12 @@ public class UI extends JFrame
 
                     } else if (actionVarlessCheck(data))
                     {
-                        upgradeTabModel.addRow(new Object[]{data.toString(), "x", "Add", "None", "Hand", false});
+                        upgradeTabModel.addRow(new Object[]{data.toString(), "x", "Add", "None", "x", false});
+                    } else if (addCardCheck(data))
+                    {
+                        upgradeTabModel.addRow(new Object[]{data.toString(), null, null, "None", "None", false});
                     } else
-                        upgradeTabModel.addRow(new Object[]{data.toString(), null, "Add", "None", "Hand", false});
+                        upgradeTabModel.addRow(new Object[]{data.toString(), null, "Add", "None", "x", false});
                     //actionListModel.removeElement(data);
                     //upgradeTabModel.addRow(new Object[]{data.toString(), null, "None"});
                     //upgradeTabModel.setValueAt(data, upTableRowIndex++, 0);
@@ -678,8 +685,6 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                int xtraTableHeight = 250;
-
                 if (addActionOnUpgradeCheck.isSelected())
                 {
                     actionOnUpgradePanel.setVisible(true);
@@ -760,36 +765,137 @@ public class UI extends JFrame
     {
         String filePath = "src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
         File fileSaved = new File(filePath);
-        Boolean colReadded = false;
         try
         {
             BufferedReader br = new BufferedReader(new FileReader(fileSaved));
-            // get the first line
+            cardTypeList.setSelectedItem(br.readLine());
+
+            //region table
+            // get the table line
             // get the columns name from the first line
             // set columns name to the jtable model
-            String firstLine = br.readLine().trim();
-            String[] columnsName = firstLine.split("\\|");
+            int tableCount = Integer.parseInt(br.readLine());
+
+            String colNameLine = br.readLine().trim();
+            String[] columnsName = colNameLine.split("\\|");
             if (columnsName.length > 5)
                 actionTable.addColumn(repeatCol);
             // get lines from txt file
-            Object[] tableLines = br.lines().toArray();
+            //Object[] tableLines = br.lines().toArray();
 
             // extract data from lines
             // set data to jtable model
-            for (int i = 0; i < tableLines.length; i++)
+            for (int i = 0; i < tableCount; i++)
             {
-                String line = tableLines[i].toString().trim();
+                String line = br.readLine().trim();
                 String[] dataRow = line.split("\\|");
                 if (dataRow.length < 6)
-                    tabModel.addRow((dataRow));
-                else
                 {
-                    tabModel.addRow(new Object[]{dataRow[0], dataRow[1], dataRow[2], dataRow[3], dataRow[4], Boolean.parseBoolean(dataRow[5])});
+                    addSavedValue(dataRow, false);
+                } else
+                {
+                    addSavedValue(dataRow, Boolean.parseBoolean(dataRow[5]));
                 }
             }
             tableHeight = tabModel.getRowCount() * cellHeight;
             SetActionTableSize();
+            //endregion
 
+            //region upTable
+            addActionOnUpgradeCheck.setSelected(Boolean.parseBoolean(br.readLine()));
+
+            if (addActionOnUpgradeCheck.isSelected())
+            {
+                actionOnUpgradePanel.setVisible(true);
+                SetWindowSize(xtraTableHeight);
+                setLocation(upActionEnabledWinPos);
+
+                int upTableCount = Integer.parseInt(br.readLine());
+
+                String colNameLineUp = br.readLine().trim();
+                String[] columnsNameUp = colNameLineUp.split("\\|");
+                if (columnsNameUp.length > 5)
+                    onUpgradeActionTable.addColumn(repeatColUp);
+                // get lines from txt file
+                //Object[] tableLines = br.lines().toArray();
+
+                // extract data from lines
+                // set data to jtable model
+                for (int i = 0; i < upTableCount; i++)
+                {
+                    String line = br.readLine().trim();//tableLines[i].toString().trim();
+                    String[] dataRow = line.split("\\|");
+                    if (dataRow.length < 6)
+                        addSavedValueUp(dataRow, false);
+                        //upgradeTabModel.addRow((dataRow));
+                    else
+                    {
+                        addSavedValueUp(dataRow, Boolean.parseBoolean(dataRow[5]));
+                        //upgradeTabModel.addRow(new Object[]{dataRow[0], dataRow[1], dataRow[2], dataRow[3], dataRow[4], Boolean.parseBoolean(dataRow[5])});
+                    }
+                }
+                upTableHeight = upgradeTabModel.getRowCount() * cellHeight;
+                SetUpgradeActionTableSize();
+            }
+            //endregion
+
+            //region cost & rarity & target
+            costField.setText(br.readLine());
+            upCostField.setText(br.readLine());
+            rarityList.setSelectedItem(br.readLine());
+            targetList.setSelectedItem(br.readLine());
+            //endregion
+
+            //region description
+            int descLineCount = Integer.parseInt(br.readLine());
+            StringBuilder sbDesc = new StringBuilder();
+            for (int i = 0; i < descLineCount; i++)
+            {
+                sbDesc.append(br.readLine());
+                if (i < descLineCount - 1)
+                    sbDesc.append("\n");
+            }
+            descriptionField.setText(sbDesc.toString());
+            //endregion
+
+            //region upDescription
+            upDescCheck.setSelected(Boolean.parseBoolean(br.readLine()));
+            if (upDescCheck.isSelected())
+            {
+
+                upDescPanel.setVisible(true);
+                SetWindowSize(xDescHeight);
+                if (addActionOnUpgradeCheck.isSelected())
+                    setLocation(winXPos, winYPos);
+
+                int upDescLineCount = Integer.parseInt(br.readLine());
+                StringBuilder sbUpDesc = new StringBuilder();
+                for (int i = 0; i < upDescLineCount; i++)
+                {
+                    sbUpDesc.append(br.readLine());
+                    if (i < upDescLineCount - 1)
+                        sbUpDesc.append("\n");
+                }
+                upDescField.setText(sbUpDesc.toString());
+            }
+            //endregion
+            unlockCheck.setSelected(Boolean.parseBoolean(br.readLine()));
+
+            //region cards states
+            InnateCheck.setSelected(Boolean.parseBoolean(br.readLine()));
+            upInnateCheck.setSelected(Boolean.parseBoolean(br.readLine()));
+
+            RetainCheck.setSelected(Boolean.parseBoolean(br.readLine()));
+            upRetainCheck.setSelected(Boolean.parseBoolean(br.readLine()));
+
+            ExhaustCheck.setSelected(Boolean.parseBoolean(br.readLine()));
+            upExhaustCheck.setSelected(Boolean.parseBoolean(br.readLine()));
+
+            EtherealCheck.setSelected(Boolean.parseBoolean(br.readLine()));
+            upEtherealCheck.setSelected(Boolean.parseBoolean(br.readLine()));
+            //endregion
+
+            br.close();
 
         } catch (Exception e)
         {
@@ -797,10 +903,29 @@ public class UI extends JFrame
         }
     }
 
+    private void addSavedValue(String[] dataRow, boolean repeat)
+    {
+        tabModel.addRow(new Object[]{dataRow[0], dataRow[1], dataRow[2], dataRow[3], dataRow[4], repeat});
+    }
+
+    private void addSavedValueUp(String[] dataRow, boolean repeat)
+    {
+        upgradeTabModel.addRow(new Object[]{dataRow[0], dataRow[1], dataRow[2], dataRow[3], dataRow[4], repeat});
+    }
+
+
     private void SaveFile()
     {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File("src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt"))))
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(("src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt"))))
         {
+            bw.write(cardTypeList.getSelectedItem().toString());
+            bw.newLine();
+
+            //region table
+            int tableItemCount = actionTable.getRowCount();
+            bw.write(String.valueOf(tableItemCount));
+            bw.newLine();
+
             StringJoiner joiner = new StringJoiner("|");
             for (int col = 0; col < actionTable.getColumnCount(); col++)
             {
@@ -822,6 +947,100 @@ public class UI extends JFrame
                 bw.write(joiner.toString());
                 bw.newLine();
             }
+            //endregion
+
+            //region upTable
+            bw.write(String.valueOf(addActionOnUpgradeCheck.isSelected()));
+            bw.newLine();
+            if (addActionOnUpgradeCheck.isSelected())
+            {
+                int upTableItemCount = onUpgradeActionTable.getRowCount();
+                bw.write(String.valueOf(upTableItemCount));
+                bw.newLine();
+
+                StringJoiner upTableJoiner = new StringJoiner("|");
+                for (int col = 0; col < onUpgradeActionTable.getColumnCount(); col++)
+                {
+                    upTableJoiner.add(onUpgradeActionTable.getColumnName(col));
+                }
+                System.out.println(upTableJoiner);
+                bw.write(upTableJoiner.toString());
+                bw.newLine();
+                for (int row = 0; row < onUpgradeActionTable.getRowCount(); row++)
+                {
+                    upTableJoiner = new StringJoiner("|");
+                    for (int col = 0; col < onUpgradeActionTable.getColumnCount(); col++)
+                    {
+                        Object obj = onUpgradeActionTable.getValueAt(row, col);
+                        String value = obj == null ? "null" : obj.toString();
+                        upTableJoiner.add(value);
+                    }
+                    System.out.println(upTableJoiner);
+                    bw.write(upTableJoiner.toString());
+                    bw.newLine();
+                }
+            }
+            //endregion
+
+            //region cost
+            bw.write(costField.getText());
+            bw.newLine();
+
+            bw.write(upCostField.getText());
+            bw.newLine();
+
+            //endregion
+
+            //region rarity & target
+            bw.write(rarityList.getSelectedItem().toString());
+            bw.newLine();
+
+            bw.write(targetList.getSelectedItem().toString());
+            bw.newLine();
+            //endregion
+
+            //region description
+            bw.write(String.valueOf(descriptionField.getLineCount()));
+            bw.newLine();
+            bw.write(descriptionField.getText());
+            bw.newLine();
+
+            bw.write(String.valueOf(upDescCheck.isSelected()));
+            bw.newLine();
+            if (upDescCheck.isSelected())
+            {
+                bw.write(String.valueOf(upDescField.getLineCount()));
+                bw.newLine();
+                bw.write(upDescField.getText());
+                bw.newLine();
+            }
+            //endregion
+
+            bw.write(String.valueOf(unlockCheck.isSelected()));
+            bw.newLine();
+
+            //region card states
+            bw.write(String.valueOf(InnateCheck.isSelected()));
+            bw.newLine();
+            bw.write(String.valueOf(upInnateCheck.isSelected()));
+            bw.newLine();
+
+            bw.write(String.valueOf(RetainCheck.isSelected()));
+            bw.newLine();
+            bw.write(String.valueOf(upRetainCheck.isSelected()));
+            bw.newLine();
+
+            bw.write(String.valueOf(ExhaustCheck.isSelected()));
+            bw.newLine();
+            bw.write(String.valueOf(upExhaustCheck.isSelected()));
+            bw.newLine();
+
+            bw.write(String.valueOf(EtherealCheck.isSelected()));
+            bw.newLine();
+            bw.write(String.valueOf(upEtherealCheck.isSelected()));
+            //endregion
+
+
         } catch (IOException exp)
         {
             exp.printStackTrace();
