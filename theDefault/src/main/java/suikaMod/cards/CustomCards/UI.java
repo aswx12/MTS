@@ -377,14 +377,14 @@ public class UI extends JFrame
             public void actionPerformed(ActionEvent b)
             {
                 String curDir = System.getProperty("user.dir");
-                System.out.println(curDir);
+
                 cardName = CardTemplateStrings.DeleteSpace(CardName.getText());
                 if (curDir.contains("theDefault"))
                 {
-                    workingDirectory = new File(System.getProperty("user.dir") + "/src/main/java/" + GetModId() + "/cards/CustomCards/");
+                    workingDirectory = new File(curDir + "/src/main/java/" + GetModId() + "/cards/CustomCards/");
                 } else
                 {
-                    workingDirectory = new File(System.getProperty("user.dir") + "/theDefault/src/main/java/" + GetModId() + "/cards/CustomCards/");
+                    workingDirectory = new File(curDir + "/theDefault/src/main/java/" + GetModId() + "/cards/CustomCards/");
                 }
                 f.setCurrentDirectory(workingDirectory);
 
@@ -1218,6 +1218,19 @@ public class UI extends JFrame
         }
         return false;
     }
+
+/*    public static void Test(String name,int count){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/main/java/suikaMod/cards/CardData/BattleData.txt")))*//*BufferedWriter bw = new BufferedWriter(new FileWriter( "BattleData.txt",true)))*//*
+        {
+
+            bw.write("used");
+            System.out.println("Card [" + name + "] used: " + count + " Times");
+            bw.newLine();
+        } catch (IOException exp)
+        {
+            exp.printStackTrace();
+        }
+    }*/
 
     //endregion
 

@@ -25,6 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.*;
 import suikaMod.cards.*;
+import suikaMod.cards.CustomCards.UI;
 import suikaMod.characters.TheDefault;
 import suikaMod.events.IdentityCrisisEvent;
 import suikaMod.potions.PlaceholderPotion;
@@ -36,9 +37,10 @@ import suikaMod.util.IDCheckDontTouchPls;
 import suikaMod.util.TextureLoader;
 import suikaMod.variables.*;
 
+import javax.swing.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Properties;
+import java.util.*;
 
 
 //TODO: DON'T MASS RENAME/REFACTOR
@@ -96,7 +98,6 @@ public class DefaultMod implements
     private static final String AUTHOR = "Suika"; // And pretty soon - You!
     private static final String DESCRIPTION = "A base for Slay the Spire to start your own mod from, feat. the Default.";
 
-    //public static String MODID= "suikaMod"; //IMPORTANT ID
     public static String MODID = "suikaMod"; //IMPORTANT ID
 
     // =============== INPUT TEXTURE LOCATION =================
@@ -570,21 +571,46 @@ public class DefaultMod implements
         return getModID() + ":" + idText;
     }
 
-    int count;
-
+    Map<String,Integer> cardCounter = new HashMap<>();
+    ArrayList<String> usedCards = new ArrayList<>();
     @Override
     public void receiveCardUsed(AbstractCard abstractCard) //IT WORKS
     {
-        if (abstractCard.cardID.equals("suikaMod:a"))
-        {
-            count++;
+        File currentDir = new File("");
+        System.out.println(currentDir.getAbsolutePath());// NOT SAME DIR WHEN IN GAME, USES STEAM PATH
+        //UI.Test(abstractCard.name,count);
+        usedCards.add(abstractCard.name);
+        cardCounter.clear();
+        for(String x:usedCards){
+
+            if(!cardCounter.containsKey(x)){
+                cardCounter.put(x,1);
+            }else{
+                cardCounter.put(x, cardCounter.get(x)+1);
+            }
         }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt")))
+        {
+            for(String key:cardCounter.keySet()){
+                if(cardCounter.get(key)<2){
+                    bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Time");
+                    bw.newLine();
+                }
+                else{
+                    bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Times");
+                    bw.newLine();
+                }
+            }
+        } catch (IOException exp)
+        {
+            exp.printStackTrace();
+        }
+
     }
 
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom)
     {
-        System.out.println(count + " used");
-        count=0;
+
     }
 }

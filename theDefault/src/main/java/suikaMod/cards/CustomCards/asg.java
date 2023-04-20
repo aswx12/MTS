@@ -16,23 +16,23 @@ import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.localization.LocalizedStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import suikaMod.DefaultMod;
+import suikaMod.actions.*;
 import suikaMod.cards.AbstractDynamicCard;
 import suikaMod.characters.TheDefault;
 
 import static suikaMod.DefaultMod.makeCardPath;
 
-import java.io.BufferedWriter;
 import java.io.File;  // Import the File class
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 
 import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
 @AutoAdd.Seen
-public class a extends AbstractDynamicCard
+public class asg extends AbstractDynamicCard
 {
-    public static final String ID = DefaultMod.makeID(a.class.getSimpleName()); 
+    public static final String ID = DefaultMod.makeID(asg.class.getSimpleName()); 
     public static final String IMG = makeCardPath("Attack.png"); 
     private static final CardRarity RARITY = CardRarity.UNCOMMON; 
     private static final CardTarget TARGET = CardTarget.ENEMY; 
@@ -42,18 +42,18 @@ public class a extends AbstractDynamicCard
     private static final int COST = 1;  
     private static final int UPGRADED_COST = 1; 
 
-    private int drawPerExhQty = 1;
-    private final int UPGRADE_drawPerExhQty = 1;
+    private static final int DAMAGE = 2;
+    private static final int UPGRADE_DAMAGE= 2;
 
     // /STAT DECLARATION/
 
-    public a ()
+    private static String desc ="a";
+    public asg ()
     { 
-        super(ID, "a", IMG,"a", COST, TYPE, COLOR, RARITY, TARGET);
+        super(ID, "asg", IMG,desc, COST, TYPE, COLOR, RARITY, TARGET);
+        baseDamage = DAMAGE;
 
-        //this.tags.add(CardTags.STARTER_STRIKE); 
-        //this.tags.add(CardTags.STRIKE);
-
+                      //this.tags.add(CardTags.STARTER_STRIKE); 
 
     }
 
@@ -62,7 +62,8 @@ public class a extends AbstractDynamicCard
     @Override
     public void use(AbstractPlayer p, AbstractMonster m)
     {
-         this.addToBot(new ApplyPowerAction(p, p, new DarkEmbracePower(p, drawPerExhQty), drawPerExhQty));
+        this.addToBot(
+                new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));
     }
 
 
@@ -73,7 +74,7 @@ public class a extends AbstractDynamicCard
         if (!upgraded)
         {
             upgradeName();
-            drawPerExhQty=UPGRADE_drawPerExhQty;
+            upgradeDamage(UPGRADE_DAMAGE);
             upgradeBaseCost(UPGRADED_COST);
             initializeDescription();
         }
