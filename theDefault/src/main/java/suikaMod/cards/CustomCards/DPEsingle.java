@@ -32,28 +32,28 @@ import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 @AutoAdd.Seen
 public class DPEsingle extends AbstractDynamicCard
 {
-    public static final String ID = DefaultMod.makeID(DPEsingle.class.getSimpleName()); 
-    public static final String IMG = makeCardPath("Attack.png"); 
-    private static final CardRarity RARITY = CardRarity.UNCOMMON; 
-    private static final CardTarget TARGET = CardTarget.ENEMY; 
+    public static final String ID = DefaultMod.makeID(DPEsingle.class.getSimpleName());
+    public static final String IMG = makeCardPath("Attack.png");
+    private static final CardRarity RARITY = CardRarity.UNCOMMON;
+    private static final CardTarget TARGET = CardTarget.ENEMY;
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
-    private static final int COST = -1;  
-    private static final int UPGRADED_COST = -1; 
+    private static final int COST = -1;
+    private static final int UPGRADED_COST = -1;
 
     private static final int dmgPerEnergyValue = 2;
-    private static final int UPGRADE_dmgPerEnergyValue= 3;
+    private static final int UPGRADE_dmgPerEnergyValue = 3;
 
     // /STAT DECLARATION/
 
-    public DPEsingle ()
-    { 
-        super(ID, "DPEsingle", IMG,"!suikaMod:DPE!", COST, TYPE, COLOR, RARITY, TARGET);
+    public DPEsingle()
+    {
+        super(ID, "DPEsingle", IMG, "!suikaMod:DPE!", COST, TYPE, COLOR, RARITY, TARGET);
 
         baseDmgPerEnergy = dmgPerEnergyValue;
 
-               //this.tags.add(CardTags.STARTER_STRIKE); 
+        //this.tags.add(CardTags.STARTER_STRIKE);
         //this.tags.add(CardTags.STRIKE);
 
     }
@@ -63,9 +63,9 @@ public class DPEsingle extends AbstractDynamicCard
     @Override
     public void use(AbstractPlayer p, AbstractMonster m)
     {
-         this.addToBot(
+        this.addToBot(
                 new SkewerAction(p, m, dmgPerEnergy, this.damageTypeForTurn, this.freeToPlayOnce, this.energyOnUse));
-        addToBot(new ModifyDmgAction(this.uuid,5));
+
     }
 
 

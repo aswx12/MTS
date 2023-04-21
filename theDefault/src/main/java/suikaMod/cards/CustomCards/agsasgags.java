@@ -71,9 +71,6 @@ public class agsasgags extends AbstractDynamicCard
     public void use(AbstractPlayer p, AbstractMonster m)
     {
          this.addToBot(new BaneAction(m, new DamageInfo(p, this.dmgPsnCondition, this.damageTypeForTurn)));
-         this.addToBot(
-                new DamagePerAttackPlayedAction(m, new DamageInfo(p, this.dmgPerAttPlayed, this.damageTypeForTurn), AttackEffect.SLASH_DIAGONAL));
-         this.addToBot(new FlechetteAction(m, new DamageInfo(p, this.dmgPerSkillInHand, this.damageTypeForTurn)));
     }
 
 

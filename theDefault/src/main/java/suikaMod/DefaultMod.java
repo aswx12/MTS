@@ -14,11 +14,15 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.dungeons.TheCity;
 import com.megacrit.cardcrawl.helpers.CardHelper;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.*;
+import com.megacrit.cardcrawl.map.DungeonMap;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import org.apache.logging.log4j.LogManager;
@@ -81,7 +85,12 @@ public class DefaultMod implements
         EditCharactersSubscriber,
         PostInitializeSubscriber,
         PostBattleSubscriber,
-        OnCardUseSubscriber
+        OnCardUseSubscriber,
+        OnPlayerTurnStartSubscriber,
+        StartActSubscriber,
+        OnStartBattleSubscriber,
+        OnPlayerDamagedSubscriber
+
 {
     // Make sure to implement the subscribers *you* are using (read basemod wiki). Editing cards? EditCardsSubscriber.
     // Making relics? EditRelicsSubscriber. etc., etc., for a full list and how to make your own, visit the basemod wiki.
@@ -571,46 +580,190 @@ public class DefaultMod implements
         return getModID() + ":" + idText;
     }
 
-    Map<String,Integer> cardCounter = new HashMap<>();
+    Map<String, Integer> cardCounter = new HashMap<>();
     ArrayList<String> usedCards = new ArrayList<>();
+    ArrayList<String> usedCardsTotal = new ArrayList<>();
+    int dmgPerTurn;
+    int totalDmg;
+    AbstractRoom currRoom;
+
     @Override
     public void receiveCardUsed(AbstractCard abstractCard) //IT WORKS
     {
-        File currentDir = new File("");
-        System.out.println(currentDir.getAbsolutePath());// NOT SAME DIR WHEN IN GAME, USES STEAM PATH
-        //UI.Test(abstractCard.name,count);
         usedCards.add(abstractCard.name);
-        cardCounter.clear();
-        for(String x:usedCards){
+        usedCardsTotal.add(abstractCard.name);
+    }
 
-            if(!cardCounter.containsKey(x)){
-                cardCounter.put(x,1);
-            }else{
-                cardCounter.put(x, cardCounter.get(x)+1);
+    int turn;
+    int healthPreDmg = 0;
+    Map<AbstractMonster, Integer> monsterHealth = new HashMap<>();
+
+
+    @Override
+    public void receiveOnPlayerTurnStart()
+    {
+        for (AbstractMonster x : AbstractDungeon.getCurrRoom().monsters.monsters)
+        {
+            if (x.lastDamageTaken > 0)
+            {
+                dmgPerTurn += monsterHealth.get(x) - x.currentHealth;
+
+                healthPreDmg = x.currentHealth;
+                monsterHealth.put(x,healthPreDmg);
+                x.lastDamageTaken=0;
+            }
+
+            System.out.println(x.maxHealth);
+            System.out.println(healthPreDmg);
+            System.out.println(x.currentHealth);
+            System.out.println(x.lastDamageTaken);
+        }
+        totalDmg += dmgPerTurn;
+        CardUsedEachTurn();
+        dmgPerTurn = 0;
+
+    }
+
+    void CardUsedEachTurn()
+    {
+        for (String x : usedCards)
+        {
+            if (!cardCounter.containsKey(x))
+            {
+                cardCounter.put(x, 1);
+            } else
+            {
+                cardCounter.put(x, cardCounter.get(x) + 1);
             }
         }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt")))
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt", true)))
         {
-            for(String key:cardCounter.keySet()){
-                if(cardCounter.get(key)<2){
-                    bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Time");
-                    bw.newLine();
+            if (turn > 0)
+            {
+                bw.write("Turn: " + turn);
+                bw.newLine();
+                bw.write("Damage Dealt: " + dmgPerTurn);
+                bw.newLine();
+                bw.write("Total Dealt: " + totalDmg);
+                bw.newLine();
+                for (String key : cardCounter.keySet())
+                {
+                    if (cardCounter.get(key) < 2)
+                    {
+                        bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Time");
+                        bw.newLine();
+                    } else
+                    {
+                        bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Times");
+                        bw.newLine();
+                    }
                 }
-                else{
-                    bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Times");
-                    bw.newLine();
-                }
+                bw.write("-------------------------------------------");
+                bw.newLine();
+                usedCards.clear();
+                cardCounter.clear();
             }
+            turn++;
         } catch (IOException exp)
         {
             exp.printStackTrace();
         }
-
     }
 
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom)
     {
+        CardUsedEachTurn();
+        turn = 0;
+        cardCounter.clear();
+        usedCards.clear();
+        for (String x : usedCardsTotal)
+        {
+            if (!cardCounter.containsKey(x))
+            {
+                cardCounter.put(x, 1);
+            } else
+            {
+                cardCounter.put(x, cardCounter.get(x) + 1);
+            }
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt", true)))
+        {
+            bw.write("Battle Summary: ");
+            bw.newLine();
+            bw.write("Cards used total: ");
+            bw.newLine();
+            for (String key : cardCounter.keySet())
+            {
+                if (cardCounter.get(key) < 2)
+                {
+                    bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Time");
+                    bw.newLine();
+                } else
+                {
+                    bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Times");
+                    bw.newLine();
+                }
+            }
+            bw.write("-------------------------------------------");
+            bw.newLine();
+            usedCardsTotal.clear();
+        } catch (IOException exp)
+        {
+            exp.printStackTrace();
+        }
+    }
 
+    int act;
+
+    @Override
+    public void receiveStartAct()
+    {
+        act = AbstractDungeon.actNum;
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt", true)))
+        {
+            bw.write("***********************************");
+            bw.newLine();
+            bw.write("Act: " + act);
+            bw.newLine();
+        } catch (IOException exp)
+        {
+            exp.printStackTrace();
+        }
+    }
+    int BattleNum = 1;
+
+    @Override
+    public void receiveOnBattleStart(AbstractRoom abstractRoom)
+    {
+        currRoom = abstractRoom;
+        for (AbstractMonster x : abstractRoom.monsters.monsters)
+        {
+            healthPreDmg = x.maxHealth;
+            monsterHealth.put(x, healthPreDmg);
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt", true)))
+        {
+            bw.write("___________________________________");
+            bw.newLine();
+            bw.write("Battle: " + BattleNum++);
+            bw.newLine();
+            bw.write("Fighting:");
+            for (AbstractMonster x : abstractRoom.monsters.monsters)
+            {
+                bw.write(" |" + x.name + "|");
+            }
+            bw.newLine();
+
+        } catch (IOException exp)
+        {
+            exp.printStackTrace();
+        }
+    }
+
+    @Override
+    public int receiveOnPlayerDamaged(int i, DamageInfo damageInfo)
+    {
+        return 0;
     }
 }
