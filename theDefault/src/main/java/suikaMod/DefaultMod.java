@@ -15,21 +15,20 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.dungeons.TheCity;
 import com.megacrit.cardcrawl.helpers.CardHelper;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.*;
-import com.megacrit.cardcrawl.map.DungeonMap;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.w3c.dom.*;
 import suikaMod.cards.*;
-import suikaMod.cards.CustomCards.UI;
 import suikaMod.characters.TheDefault;
 import suikaMod.events.IdentityCrisisEvent;
 import suikaMod.potions.PlaceholderPotion;
@@ -41,7 +40,6 @@ import suikaMod.util.IDCheckDontTouchPls;
 import suikaMod.util.TextureLoader;
 import suikaMod.variables.*;
 
-import javax.swing.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -89,7 +87,9 @@ public class DefaultMod implements
         OnPlayerTurnStartSubscriber,
         StartActSubscriber,
         OnStartBattleSubscriber,
-        OnPlayerDamagedSubscriber
+        OnPlayerDamagedSubscriber,
+        PreMonsterTurnSubscriber,
+        PostPowerApplySubscriber
 
 {
     // Make sure to implement the subscribers *you* are using (read basemod wiki). Editing cards? EditCardsSubscriber.
@@ -583,7 +583,10 @@ public class DefaultMod implements
     Map<String, Integer> cardCounter = new HashMap<>();
     ArrayList<String> usedCards = new ArrayList<>();
     ArrayList<String> usedCardsTotal = new ArrayList<>();
-    int dmgPerTurn;
+
+    Map<String, Integer> powerStackCounter = new HashMap<>();
+    ArrayList<String> powerList = new ArrayList<>();
+    int dmgDealtPerTurn;
     int totalDmg;
     AbstractRoom currRoom;
 
@@ -592,25 +595,55 @@ public class DefaultMod implements
     {
         usedCards.add(abstractCard.name);
         usedCardsTotal.add(abstractCard.name);
+        //blockPerTurn +=abstractCard.block;
+
     }
 
     int turn;
     int healthPreDmg = 0;
     Map<AbstractMonster, Integer> monsterHealth = new HashMap<>();
 
+    int dmgReceivedPerTurn;
+    int dmgReceivedTotal;
+    int blockPerTurn;
+    int totalBlock;
+
+    Boolean blockSaved = false;
+
+    @Override
+    public int receiveOnPlayerDamaged(int i, DamageInfo damageInfo)
+    {
+
+        dmgReceivedPerTurn += i;
+        dmgReceivedTotal += i;
+        return i;
+    }
+
+    @Override
+    public boolean receivePreMonsterTurn(AbstractMonster abstractMonster)
+    {
+        if (!blockSaved)
+        {
+            blockPerTurn = AbstractDungeon.player.currentBlock;
+            blockSaved = true;
+        }
+
+        return true;
+    }
 
     @Override
     public void receiveOnPlayerTurnStart()
     {
+
         for (AbstractMonster x : AbstractDungeon.getCurrRoom().monsters.monsters)
         {
             if (x.lastDamageTaken > 0)
             {
-                dmgPerTurn += monsterHealth.get(x) - x.currentHealth;
+                dmgDealtPerTurn += monsterHealth.get(x) - x.currentHealth;
 
                 healthPreDmg = x.currentHealth;
-                monsterHealth.put(x,healthPreDmg);
-                x.lastDamageTaken=0;
+                monsterHealth.put(x, healthPreDmg);
+                x.lastDamageTaken = 0;
             }
 
             System.out.println(x.maxHealth);
@@ -618,14 +651,27 @@ public class DefaultMod implements
             System.out.println(x.currentHealth);
             System.out.println(x.lastDamageTaken);
         }
-        totalDmg += dmgPerTurn;
-        CardUsedEachTurn();
-        dmgPerTurn = 0;
+        totalDmg += dmgDealtPerTurn;
+        totalBlock += blockPerTurn;
+        TurnUpdate();
+        dmgDealtPerTurn = 0;
+        dmgReceivedPerTurn = 0;
+        blockPerTurn = 0;
+        blockSaved = false;
 
     }
 
-    void CardUsedEachTurn()
+
+    void TurnUpdate()
     {
+        playerHP = AbstractDungeon.player.currentHealth;
+        for (AbstractPower power : AbstractDungeon.player.powers)
+        {
+            //powerList.add(power.name);
+            powerStackCounter.put(power.name, power.amount);
+        }
+        //blockPerTurn = AbstractDungeon.player.currentBlock;
+
         for (String x : usedCards)
         {
             if (!cardCounter.containsKey(x))
@@ -640,11 +686,54 @@ public class DefaultMod implements
         {
             if (turn > 0)
             {
-                bw.write("Turn: " + turn);
+                bw.write("TURN: " + turn);
                 bw.newLine();
-                bw.write("Damage Dealt: " + dmgPerTurn);
+                bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 bw.newLine();
-                bw.write("Total Dealt: " + totalDmg);
+                bw.write("\t PLAYER & MONSTER INFO ");
+                bw.newLine();
+                bw.newLine();
+                bw.write("Player's HP: " + playerHP);
+                bw.newLine();
+                for (AbstractMonster x : AbstractDungeon.getCurrRoom().monsters.monsters)
+                {
+                    bw.write("|" + x.name + "(HP: " + x.currentHealth + ")| ");
+                }
+                bw.newLine();
+                bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                bw.newLine();
+
+                bw.write("          CURRENT POWER ");
+                bw.newLine();
+                bw.newLine();
+                for (String key : powerStackCounter.keySet())
+                {
+                    bw.write("Power: [" + key + "] | Stack: " + powerStackCounter.get(key));
+                    bw.newLine();
+                }
+                bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                bw.newLine();
+
+                bw.write("          PLAYER'S STATS ");
+                bw.newLine();
+                bw.newLine();
+                bw.write("Block Gained: " + blockPerTurn);
+                bw.newLine();
+                bw.write("Total Block Gained: " + totalBlock);
+                bw.newLine();
+                bw.write("Damage Dealt: " + dmgDealtPerTurn);
+                bw.newLine();
+                bw.write("Total Damage Dealt: " + totalDmg);
+                bw.newLine();
+                bw.write("Damage Received: " + dmgReceivedPerTurn);
+                bw.newLine();
+                bw.write("Total Damage Received: " + dmgReceivedTotal);
+                bw.newLine();
+                bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                bw.newLine();
+
+                bw.write("          CARDS' STATS ");
+                bw.newLine();
                 bw.newLine();
                 for (String key : cardCounter.keySet())
                 {
@@ -658,12 +747,16 @@ public class DefaultMod implements
                         bw.newLine();
                     }
                 }
-                bw.write("-------------------------------------------");
+                bw.write("----------------------------------------------------------");
+                bw.newLine();
                 bw.newLine();
                 usedCards.clear();
                 cardCounter.clear();
+                powerStackCounter.clear();
+
             }
             turn++;
+
         } catch (IOException exp)
         {
             exp.printStackTrace();
@@ -673,7 +766,7 @@ public class DefaultMod implements
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom)
     {
-        CardUsedEachTurn();
+        TurnUpdate();
         turn = 0;
         cardCounter.clear();
         usedCards.clear();
@@ -689,7 +782,11 @@ public class DefaultMod implements
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt", true)))
         {
-            bw.write("Battle Summary: ");
+            bw.write("BATTLE SUMMARY: ");
+            bw.newLine();
+            bw.write("Total Damage Dealt: " + totalDmg);
+            bw.newLine();
+            bw.write("Total Damage Received: " + dmgReceivedTotal);
             bw.newLine();
             bw.write("Cards used total: ");
             bw.newLine();
@@ -705,9 +802,10 @@ public class DefaultMod implements
                     bw.newLine();
                 }
             }
-            bw.write("-------------------------------------------");
+            bw.write("+++++++++++++++++++++++++++++++++++++++++++++++");
             bw.newLine();
             usedCardsTotal.clear();
+            powerStackCounter.clear();
         } catch (IOException exp)
         {
             exp.printStackTrace();
@@ -731,11 +829,21 @@ public class DefaultMod implements
             exp.printStackTrace();
         }
     }
+
     int BattleNum = 1;
+    int playerHP;
 
     @Override
     public void receiveOnBattleStart(AbstractRoom abstractRoom)
     {
+        playerHP = AbstractDungeon.player.currentHealth;
+        dmgDealtPerTurn = 0;
+        totalDmg = 0;
+        dmgReceivedPerTurn = 0;
+        dmgReceivedTotal = 0;
+        totalBlock = 0;
+        blockPerTurn = 0;
+        turn = 0;//?
         currRoom = abstractRoom;
         for (AbstractMonster x : abstractRoom.monsters.monsters)
         {
@@ -744,15 +852,18 @@ public class DefaultMod implements
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt", true)))
         {
-            bw.write("___________________________________");
+            bw.write("______________________________________________________________________");
             bw.newLine();
             bw.write("Battle: " + BattleNum++);
+            bw.newLine();
+            bw.write("Player's HP: " + playerHP);
             bw.newLine();
             bw.write("Fighting:");
             for (AbstractMonster x : abstractRoom.monsters.monsters)
             {
-                bw.write(" |" + x.name + "|");
+                bw.write(" |" + x.name + "(HP: " + x.currentHealth + ")|");
             }
+            bw.newLine();
             bw.newLine();
 
         } catch (IOException exp)
@@ -761,9 +872,10 @@ public class DefaultMod implements
         }
     }
 
+
     @Override
-    public int receiveOnPlayerDamaged(int i, DamageInfo damageInfo)
+    public void receivePostPowerApplySubscriber(AbstractPower abstractPower, AbstractCreature abstractCreature, AbstractCreature abstractCreature1)
     {
-        return 0;
+
     }
 }
