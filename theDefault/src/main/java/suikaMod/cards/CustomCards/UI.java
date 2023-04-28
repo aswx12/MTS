@@ -176,6 +176,7 @@ public class UI extends JFrame
     int xtraTableHeight = 250;
     int xDescHeight = 90;
 
+    String curDir;
     public UI()
     {
         //region UI Init
@@ -193,7 +194,7 @@ public class UI extends JFrame
         setResizable(false);
 
         //endregion
-
+        curDir = System.getProperty("user.dir");
         //region List & Table Init
         DefaultListModel originActionListModel = new DefaultListModel();
         DefaultListModel actionListModel = new DefaultListModel();
@@ -376,7 +377,7 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent b)
             {
-                String curDir = System.getProperty("user.dir");
+
 
                 cardName = CardTemplateStrings.DeleteSpace(CardName.getText());
                 if (curDir.contains("theDefault"))
@@ -763,7 +764,15 @@ public class UI extends JFrame
 
     private void ReadSavedFile()
     {
-        String filePath = "src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
+        String filePath;
+        if(curDir.contains("theDefault")){
+            filePath = "/src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
+
+        }
+        else {
+            filePath = "theDefault/src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
+
+        }
         File fileSaved = new File(filePath);
         try
         {
@@ -916,7 +925,16 @@ public class UI extends JFrame
 
     private void SaveFile()
     {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(("src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt"))))
+        String filePath;
+        if(curDir.contains("theDefault")){
+            filePath = "/src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
+
+        }
+        else {
+            filePath = "theDefault/src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
+
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter((filePath))))
         {
             bw.write(cardTypeList.getSelectedItem().toString());
             bw.newLine();
