@@ -44,7 +44,7 @@
   },
   "suikaMod:DefaultSecondMagicNumberSkill": {
     "NAME": "Cool 2 Number Card",
-    "DESCRIPTION": "Apply !M! Vulnerable and !suikaMod:SecondMagic! poison to an enemy."
+    "DESCRIPTION": "Apply !suikaMod:aVul! Vulnerable and !suikaMod:SecondMagic! poison to an enemy."
   },
   "suikaMod:OrbSkill": {
     "NAME": "Get Orb",

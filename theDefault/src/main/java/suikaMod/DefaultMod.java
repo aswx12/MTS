@@ -15,7 +15,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
-import com.megacrit.cardcrawl.core.AbstractCreature;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.dungeons.TheCity;
@@ -23,8 +23,10 @@ import com.megacrit.cardcrawl.helpers.CardHelper;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.*;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
+import com.megacrit.cardcrawl.ui.panels.EnergyPanel;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -89,7 +91,9 @@ public class DefaultMod implements
         OnStartBattleSubscriber,
         OnPlayerDamagedSubscriber,
         PreMonsterTurnSubscriber,
-        PostPowerApplySubscriber
+        PostDrawSubscriber,
+        PostExhaustSubscriber,
+        PostPotionUseSubscriber
 
 {
     // Make sure to implement the subscribers *you* are using (read basemod wiki). Editing cards? EditCardsSubscriber.
@@ -580,7 +584,7 @@ public class DefaultMod implements
         return getModID() + ":" + idText;
     }
 
-    Map<String, Integer> cardCounter = new HashMap<>();
+    Map<String, Integer> usedCardCounter = new HashMap<>();
     ArrayList<String> usedCards = new ArrayList<>();
     ArrayList<String> usedCardsTotal = new ArrayList<>();
 
@@ -589,14 +593,17 @@ public class DefaultMod implements
     int dmgDealtPerTurn;
     int totalDmg;
     AbstractRoom currRoom;
-
+int test;
     @Override
     public void receiveCardUsed(AbstractCard abstractCard) //IT WORKS
     {
+       // String className= abstractCard.getClass().getSuperclass().getSuperclass().getSimpleName();
         usedCards.add(abstractCard.name);
         usedCardsTotal.add(abstractCard.name);
-        //blockPerTurn +=abstractCard.block;
-
+ /*       if(className.equals("AbstractDefaultCard")){
+            AbstractDefaultCard a = (AbstractDefaultCard) abstractCard;
+            test += a.damage+a.+a.dmgPerEnergy* EnergyPanel.totalCount;
+        }*/
     }
 
     int turn;
@@ -631,10 +638,8 @@ public class DefaultMod implements
         return true;
     }
 
-    @Override
-    public void receiveOnPlayerTurnStart()
+    void dmgCalculation()
     {
-
         for (AbstractMonster x : AbstractDungeon.getCurrRoom().monsters.monsters)
         {
             if (x.lastDamageTaken > 0)
@@ -645,14 +650,14 @@ public class DefaultMod implements
                 monsterHealth.put(x, healthPreDmg);
                 x.lastDamageTaken = 0;
             }
-
-            System.out.println(x.maxHealth);
-            System.out.println(healthPreDmg);
-            System.out.println(x.currentHealth);
-            System.out.println(x.lastDamageTaken);
         }
         totalDmg += dmgDealtPerTurn;
         totalBlock += blockPerTurn;
+    }
+
+    @Override
+    public void receiveOnPlayerTurnStart()
+    {
         TurnUpdate();
         dmgDealtPerTurn = 0;
         dmgReceivedPerTurn = 0;
@@ -664,15 +669,16 @@ public class DefaultMod implements
 
     void TurnUpdate()
     {
+        dmgCalculation();
+
         playerHP = AbstractDungeon.player.currentHealth;
         for (AbstractPower power : AbstractDungeon.player.powers)
         {
             //powerList.add(power.name);
             powerStackCounter.put(power.name, power.amount);
         }
-        //blockPerTurn = AbstractDungeon.player.currentBlock;
 
-        for (String x : usedCards)
+       /* for (String x : usedCards)
         {
             if (!cardCounter.containsKey(x))
             {
@@ -681,7 +687,32 @@ public class DefaultMod implements
             {
                 cardCounter.put(x, cardCounter.get(x) + 1);
             }
-        }
+        }*/
+        usedCardCounter = hashMapAdder(usedCards);
+        cardDrawCounter = hashMapAdder(drawnCards);
+       /* for (String x : drawnCards)
+        {
+            if (!cardDrawCounter.containsKey(x))
+            {
+                cardDrawCounter.put(x, 1);
+            } else
+            {
+                cardDrawCounter.put(x, cardDrawCounter.get(x) + 1);
+            }
+        }*/
+        exhDrawCounter = hashMapAdder(exhCards);
+
+        potionCounter = hashMapAdder(usedPotions);
+/*        for (String x : usedPotions)
+        {
+            if (!potionCounter.containsKey(x))
+            {
+                potionCounter.put(x, 1);
+            } else
+            {
+                potionCounter.put(x, potionCounter.get(x) + 1);
+            }
+        }*/
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt", true)))
         {
             if (turn > 0)
@@ -694,6 +725,15 @@ public class DefaultMod implements
                 bw.newLine();
                 bw.newLine();
                 bw.write("Player's HP: " + playerHP);
+                bw.newLine();
+                bw.write("Potion: ");
+                for (AbstractPotion x : AbstractDungeon.player.potions)
+                {
+                    if (x.name.equals("Potion Slot"))
+                        bw.write("[Empty] ");
+                    else
+                        bw.write("[" + x.name + "] ");
+                }
                 bw.newLine();
                 for (AbstractMonster x : AbstractDungeon.getCurrRoom().monsters.monsters)
                 {
@@ -717,42 +757,103 @@ public class DefaultMod implements
                 bw.write("          PLAYER'S STATS ");
                 bw.newLine();
                 bw.newLine();
-                bw.write("Block Gained: " + blockPerTurn);
-                bw.newLine();
-                bw.write("Total Block Gained: " + totalBlock);
-                bw.newLine();
                 bw.write("Damage Dealt: " + dmgDealtPerTurn);
                 bw.newLine();
-                bw.write("Total Damage Dealt: " + totalDmg);
+                bw.write("Block Gained: " + blockPerTurn);
                 bw.newLine();
                 bw.write("Damage Received: " + dmgReceivedPerTurn);
                 bw.newLine();
-                bw.write("Total Damage Received: " + dmgReceivedTotal);
-                bw.newLine();
                 bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 bw.newLine();
-
-                bw.write("          CARDS' STATS ");
+                //region used cards counter
+                bw.write("          Used Cards ");
                 bw.newLine();
                 bw.newLine();
-                for (String key : cardCounter.keySet())
+                for (String key : usedCardCounter.keySet())
                 {
-                    if (cardCounter.get(key) < 2)
+                    if (usedCardCounter.get(key) < 2)
                     {
-                        bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Time");
+                        bw.write("Card [" + key + "] used: " + usedCardCounter.get(key) + " Time");
                         bw.newLine();
                     } else
                     {
-                        bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Times");
+                        bw.write("Card [" + key + "] used: " + usedCardCounter.get(key) + " Times");
                         bw.newLine();
                     }
                 }
+                //endregion
+                bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                bw.newLine();
+                //region card draw counter
+                bw.write("          Drawn Cards ");
+                bw.newLine();
+                bw.newLine();
+                for (String key : cardDrawCounter.keySet())
+                {
+                    if (cardDrawCounter.get(key) < 2)
+                    {
+                        bw.write("Card [" + key + "] drawn: " + cardDrawCounter.get(key) + " Time");
+                        bw.newLine();
+                    } else
+                    {
+                        bw.write("Card [" + key + "] drawn: " + cardDrawCounter.get(key) + " Times");
+                        bw.newLine();
+                    }
+                }
+                //endregion
+                bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                bw.newLine();
+                //region card exh counter
+                bw.write("          Exhausted Cards ");
+                bw.newLine();
+                bw.newLine();
+                for (String key : exhDrawCounter.keySet())
+                {
+                    if (exhDrawCounter.get(key) < 2)
+                    {
+                        bw.write("Card [" + key + "] exhausted: " + exhDrawCounter.get(key) + " Time");
+                        bw.newLine();
+                    } else
+                    {
+                        bw.write("Card [" + key + "] exhausted: " + exhDrawCounter.get(key) + " Times");
+                        bw.newLine();
+                    }
+                }
+                //endregion
+                bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                bw.newLine();
+                //region potion counter
+                bw.write("          Potion Used ");
+                bw.newLine();
+                bw.newLine();
+                for (String key : potionCounter.keySet())
+                {
+                    if (potionCounter.get(key) < 2)
+                    {
+                        bw.write("Potion [" + key + "] used: " + potionCounter.get(key) + " Time");
+                        bw.newLine();
+                    } else
+                    {
+                        bw.write("Potion [" + key + "] used: " + potionCounter.get(key) + " Times");
+                        bw.newLine();
+                    }
+                }
+                //endregion
                 bw.write("----------------------------------------------------------");
                 bw.newLine();
                 bw.newLine();
+
+                //region list clear
                 usedCards.clear();
-                cardCounter.clear();
+                usedCardCounter.clear();
+                drawnCards.clear();
+                cardDrawCounter.clear();
+                exhCards.clear();
+                exhDrawCounter.clear();
+                usedPotions.clear();
+                potionCounter.clear();
                 powerStackCounter.clear();
+                //endregion
 
             }
             turn++;
@@ -763,14 +864,29 @@ public class DefaultMod implements
         }
     }
 
+    HashMap<String, Integer> hashMapAdder(ArrayList<String> list)
+    {
+        ArrayList<String> temp = list;
+        HashMap<String, Integer> tempHash = new HashMap<String, Integer>();
+        for (String x : temp)
+        {
+            if (!tempHash.containsKey(x))
+            {
+                tempHash.put(x, 1);
+            } else
+            {
+                tempHash.put(x, tempHash.get(x) + 1);
+            }
+        }
+        return tempHash;
+    }
+
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom)
     {
         TurnUpdate();
         turn = 0;
-        cardCounter.clear();
-        usedCards.clear();
-        for (String x : usedCardsTotal)
+       /* for (String x : usedCardsTotal)
         {
             if (!cardCounter.containsKey(x))
             {
@@ -779,33 +895,108 @@ public class DefaultMod implements
             {
                 cardCounter.put(x, cardCounter.get(x) + 1);
             }
-        }
+        }*/
+        usedCardCounter = hashMapAdder(usedCardsTotal);
+        cardDrawCounter = hashMapAdder(drawnCardsTotal);
+        exhDrawCounter = hashMapAdder(exhCardsTotal);
+        potionCounter = hashMapAdder(usedPotionsTotal);
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt", true)))
         {
-            bw.write("BATTLE SUMMARY: ");
+            bw.write("          BATTLE SUMMARY: ");
+            bw.newLine();
             bw.newLine();
             bw.write("Total Damage Dealt: " + totalDmg);
             bw.newLine();
+            bw.write("Total Block Gained: " + totalBlock);
+            bw.newLine();
             bw.write("Total Damage Received: " + dmgReceivedTotal);
             bw.newLine();
-            bw.write("Cards used total: ");
+            bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             bw.newLine();
-            for (String key : cardCounter.keySet())
+            //region used cards
+            bw.write("        Cards Used Total ");
+            bw.newLine();
+            for (String key : usedCardCounter.keySet())
             {
-                if (cardCounter.get(key) < 2)
+                if (usedCardCounter.get(key) < 2)
                 {
-                    bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Time");
+                    bw.write("Card [" + key + "] used: " + usedCardCounter.get(key) + " Time");
                     bw.newLine();
                 } else
                 {
-                    bw.write("Card [" + key + "] used: " + cardCounter.get(key) + " Times");
+                    bw.write("Card [" + key + "] used: " + usedCardCounter.get(key) + " Times");
                     bw.newLine();
                 }
             }
+            //endregion
+            bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            bw.newLine();
+            //region card draw counter
+            bw.write("        Cards Drawn Total ");
+            bw.newLine();
+            bw.newLine();
+            for (String key : cardDrawCounter.keySet())
+            {
+                if (cardDrawCounter.get(key) < 2)
+                {
+                    bw.write("Card [" + key + "] drawn: " + cardDrawCounter.get(key) + " Time");
+                    bw.newLine();
+                } else
+                {
+                    bw.write("Card [" + key + "] drawn: " + cardDrawCounter.get(key) + " Times");
+                    bw.newLine();
+                }
+            }
+            //endregion
+            bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            bw.newLine();
+            //region card exh counter
+            bw.write("      Exhausted Cards Total ");
+            bw.newLine();
+            bw.newLine();
+            for (String key : exhDrawCounter.keySet())
+            {
+                if (exhDrawCounter.get(key) < 2)
+                {
+                    bw.write("Card [" + key + "] exhausted: " + exhDrawCounter.get(key) + " Time");
+                    bw.newLine();
+                } else
+                {
+                    bw.write("Card [" + key + "] exhausted: " + exhDrawCounter.get(key) + " Times");
+                    bw.newLine();
+                }
+            }
+            //endregion
+            bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            bw.newLine();
+            //region potion counter
+            bw.write("        Potion Used Total");
+            bw.newLine();
+            bw.newLine();
+            for (String key : potionCounter.keySet())
+            {
+                if (potionCounter.get(key) < 2)
+                {
+                    bw.write("Potion [" + key + "] used: " + potionCounter.get(key) + " Time");
+                    bw.newLine();
+                } else
+                {
+                    bw.write("Potion [" + key + "] used: " + potionCounter.get(key) + " Times");
+                    bw.newLine();
+                }
+            }
+            //endregion
             bw.write("+++++++++++++++++++++++++++++++++++++++++++++++");
             bw.newLine();
             usedCardsTotal.clear();
+            drawnCardsTotal.clear();
+            exhCardsTotal.clear();
+            usedPotionsTotal.clear();
             powerStackCounter.clear();
+            dmgDealtPerTurn = 0;
+            dmgReceivedPerTurn = 0;
+            blockPerTurn = 0;
+            blockSaved = false;
         } catch (IOException exp)
         {
             exp.printStackTrace();
@@ -858,6 +1049,15 @@ public class DefaultMod implements
             bw.newLine();
             bw.write("Player's HP: " + playerHP);
             bw.newLine();
+            bw.write("Potion: ");
+            for (AbstractPotion x : AbstractDungeon.player.potions)
+            {
+                if (x.name.equals("Potion Slot"))
+                    bw.write("[Empty] ");
+                else
+                    bw.write("[" + x.name + "] ");
+            }
+            bw.newLine();
             bw.write("Fighting:");
             for (AbstractMonster x : abstractRoom.monsters.monsters)
             {
@@ -873,9 +1073,36 @@ public class DefaultMod implements
     }
 
 
-    @Override
-    public void receivePostPowerApplySubscriber(AbstractPower abstractPower, AbstractCreature abstractCreature, AbstractCreature abstractCreature1)
-    {
+    Map<String, Integer> cardDrawCounter = new HashMap<>();
+    ArrayList<String> drawnCards = new ArrayList<>();
+    ArrayList<String> drawnCardsTotal = new ArrayList<>();
 
+    @Override
+    public void receivePostDraw(AbstractCard abstractCard)
+    {
+        drawnCards.add(abstractCard.name);
+        drawnCardsTotal.add(abstractCard.name);
+    }
+
+    Map<String, Integer> exhDrawCounter = new HashMap<>();
+    ArrayList<String> exhCards = new ArrayList<>();
+    ArrayList<String> exhCardsTotal = new ArrayList<>();
+
+    @Override
+    public void receivePostExhaust(AbstractCard abstractCard)
+    {
+        exhCards.add(abstractCard.name);
+        exhCardsTotal.add(abstractCard.name);
+    }
+
+    Map<String, Integer> potionCounter = new HashMap<>();
+    ArrayList<String> usedPotions = new ArrayList<>();
+    ArrayList<String> usedPotionsTotal = new ArrayList<>();
+
+    @Override
+    public void receivePostPotionUse(AbstractPotion abstractPotion)
+    {
+        usedPotions.add(abstractPotion.name);
+        usedPotionsTotal.add(abstractPotion.name);
     }
 }
