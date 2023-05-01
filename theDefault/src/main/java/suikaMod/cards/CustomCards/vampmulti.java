@@ -49,7 +49,7 @@ public class vampmulti extends AbstractDynamicCard
 
     public vampmulti ()
     { 
-        super(ID, "vampmulti", IMG,"!suikaMod:Vamp!", COST, TYPE, COLOR, RARITY, TARGET);
+        super(ID, "vampmulti", IMG,"!suikaMod:DVamp!", COST, TYPE, COLOR, RARITY, TARGET);
 
         baseVampDmg = vampDmgValue;
 

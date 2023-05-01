@@ -53,7 +53,7 @@ public class all3 extends AbstractDynamicCard
 
     public all3()
     {
-        super(ID, "all3", IMG, "!D! & !suikaMod:DPE! & !suikaMod:Vamp!", COST, TYPE, COLOR, RARITY, TARGET);
+        super(ID, "all3", IMG, "!D! & !suikaMod:DPE! & !suikaMod:DVamp!", COST, TYPE, COLOR, RARITY, TARGET);
 
         this.baseDamage = DAMAGE;
         dmgPerEnergy = this.baseDmgPerEnergy = dmgPerEnergyValue;

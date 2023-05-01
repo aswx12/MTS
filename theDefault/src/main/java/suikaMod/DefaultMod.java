@@ -15,7 +15,6 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.dungeons.TheCity;
@@ -26,7 +25,6 @@ import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
-import com.megacrit.cardcrawl.ui.panels.EnergyPanel;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -475,7 +473,10 @@ public class DefaultMod implements
         BaseMod.addDynamicVariable(new DefaultCustomVariable());
         BaseMod.addDynamicVariable(new DefaultSecondMagicNumber());
         BaseMod.addDynamicVariable(new DPE());
-        BaseMod.addDynamicVariable(new Vamp());
+        BaseMod.addDynamicVariable(new DPAP());
+        BaseMod.addDynamicVariable(new DPSH());
+        BaseMod.addDynamicVariable(new DTP());
+        BaseMod.addDynamicVariable(new DVAMP());
         // BaseMod.addCard(new Suika());
 
         logger.info("Adding cards");
@@ -593,11 +594,12 @@ public class DefaultMod implements
     int dmgDealtPerTurn;
     int totalDmg;
     AbstractRoom currRoom;
-int test;
+    int test;
+
     @Override
     public void receiveCardUsed(AbstractCard abstractCard) //IT WORKS
     {
-       // String className= abstractCard.getClass().getSuperclass().getSuperclass().getSimpleName();
+        // String className= abstractCard.getClass().getSuperclass().getSuperclass().getSimpleName();
         usedCards.add(abstractCard.name);
         usedCardsTotal.add(abstractCard.name);
  /*       if(className.equals("AbstractDefaultCard")){
@@ -609,12 +611,13 @@ int test;
     int turn;
     int healthPreDmg = 0;
     Map<AbstractMonster, Integer> monsterHealth = new HashMap<>();
+    Map<AbstractMonster, Integer> monsterBlock = new HashMap<>();
 
     int dmgReceivedPerTurn;
     int dmgReceivedTotal;
     int blockPerTurn;
     int totalBlock;
-
+    int monsterBlockGain;
     Boolean blockSaved = false;
 
     @Override
@@ -626,6 +629,8 @@ int test;
         return i;
     }
 
+    Map<AbstractMonster, Integer> monsterHpPreHealing = new HashMap<>();
+
     @Override
     public boolean receivePreMonsterTurn(AbstractMonster abstractMonster)
     {
@@ -634,22 +639,46 @@ int test;
             blockPerTurn = AbstractDungeon.player.currentBlock;
             blockSaved = true;
         }
-
+        monsterHpPreHealing.put(abstractMonster, abstractMonster.currentHealth);
         return true;
     }
 
+    Map<AbstractMonster, Integer> monsterHealing = new HashMap<>();
+
+
     void dmgCalculation()
     {
+        int dmgCal;
+        int healing;
+
         for (AbstractMonster x : AbstractDungeon.getCurrRoom().monsters.monsters)
         {
-            if (x.lastDamageTaken > 0)
-            {
-                dmgDealtPerTurn += monsterHealth.get(x) - x.currentHealth;
+            monsterHealing.put(x, 0);
+            dmgCal = monsterHealth.get(x) - monsterHpPreHealing.get(x);
+            System.out.println("Prehealth " + monsterHealth.get(x));
 
-                healthPreDmg = x.currentHealth;
-                monsterHealth.put(x, healthPreDmg);
+            if (monsterHpPreHealing.get(x) >= x.currentHealth)
+            {
+                if (x.lastDamageTaken > 0)
+                    dmgDealtPerTurn += dmgCal;
+                x.lastDamageTaken = 0;
+            } else
+            {
+                healing = x.currentHealth - monsterHpPreHealing.get(x);
+                monsterHealing.put(x, healing);
+                if (x.lastDamageTaken > 0)
+                {
+                    if (x.currentHealth <= monsterHpPreHealing.get(x))
+                    {
+                        dmgDealtPerTurn += dmgCal + healing;
+                    } else
+                        dmgDealtPerTurn += dmgCal;
+                }
                 x.lastDamageTaken = 0;
             }
+            healthPreDmg = x.currentHealth;
+            monsterHealth.put(x, healthPreDmg);
+            System.out.println("this turn: " + x.currentHealth);
         }
         totalDmg += dmgDealtPerTurn;
         totalBlock += blockPerTurn;
@@ -663,14 +692,15 @@ int test;
         dmgReceivedPerTurn = 0;
         blockPerTurn = 0;
         blockSaved = false;
+        monsterBlockSaved = false;
 
     }
 
 
     void TurnUpdate()
     {
-        dmgCalculation();
 
+        dmgCalculation();
         playerHP = AbstractDungeon.player.currentHealth;
         for (AbstractPower power : AbstractDungeon.player.powers)
         {
@@ -678,46 +708,16 @@ int test;
             powerStackCounter.put(power.name, power.amount);
         }
 
-       /* for (String x : usedCards)
-        {
-            if (!cardCounter.containsKey(x))
-            {
-                cardCounter.put(x, 1);
-            } else
-            {
-                cardCounter.put(x, cardCounter.get(x) + 1);
-            }
-        }*/
         usedCardCounter = hashMapAdder(usedCards);
         cardDrawCounter = hashMapAdder(drawnCards);
-       /* for (String x : drawnCards)
-        {
-            if (!cardDrawCounter.containsKey(x))
-            {
-                cardDrawCounter.put(x, 1);
-            } else
-            {
-                cardDrawCounter.put(x, cardDrawCounter.get(x) + 1);
-            }
-        }*/
         exhDrawCounter = hashMapAdder(exhCards);
-
         potionCounter = hashMapAdder(usedPotions);
-/*        for (String x : usedPotions)
-        {
-            if (!potionCounter.containsKey(x))
-            {
-                potionCounter.put(x, 1);
-            } else
-            {
-                potionCounter.put(x, potionCounter.get(x) + 1);
-            }
-        }*/
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt", true)))
         {
             if (turn > 0)
             {
-                bw.write("TURN: " + turn);
+                bw.write("TURN " + turn + " RESULT:");
                 bw.newLine();
                 bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 bw.newLine();
@@ -737,7 +737,10 @@ int test;
                 bw.newLine();
                 for (AbstractMonster x : AbstractDungeon.getCurrRoom().monsters.monsters)
                 {
-                    bw.write("|" + x.name + "(HP: " + x.currentHealth + ")| ");
+                    if(monsterHealing.get(x)>=1)
+                    bw.write(" |" + x.name + "(HP: " + x.currentHealth+ ") {Healed: "+ monsterHealing.get(x) +"}|"); // {Block Gained: " + monsterBlock.get(x) + "}
+                    else
+                        bw.write(" |" + x.name + "(HP: " + x.currentHealth+ ")|");
                 }
                 bw.newLine();
                 bw.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -757,7 +760,7 @@ int test;
                 bw.write("          PLAYER'S STATS ");
                 bw.newLine();
                 bw.newLine();
-                bw.write("Damage Dealt: " + dmgDealtPerTurn);
+                bw.write("Unblocked Damage Dealt: " + dmgDealtPerTurn);
                 bw.newLine();
                 bw.write("Block Gained: " + blockPerTurn);
                 bw.newLine();
@@ -886,16 +889,6 @@ int test;
     {
         TurnUpdate();
         turn = 0;
-       /* for (String x : usedCardsTotal)
-        {
-            if (!cardCounter.containsKey(x))
-            {
-                cardCounter.put(x, 1);
-            } else
-            {
-                cardCounter.put(x, cardCounter.get(x) + 1);
-            }
-        }*/
         usedCardCounter = hashMapAdder(usedCardsTotal);
         cardDrawCounter = hashMapAdder(drawnCardsTotal);
         exhDrawCounter = hashMapAdder(exhCardsTotal);
@@ -905,7 +898,7 @@ int test;
             bw.write("          BATTLE SUMMARY: ");
             bw.newLine();
             bw.newLine();
-            bw.write("Total Damage Dealt: " + totalDmg);
+            bw.write("Total Unblocked Damage Dealt: " + totalDmg);
             bw.newLine();
             bw.write("Total Block Gained: " + totalBlock);
             bw.newLine();
@@ -1023,11 +1016,19 @@ int test;
 
     int BattleNum = 1;
     int playerHP;
+    int lastRoundBlock;
+
+    int firstTurnHp;
 
     @Override
     public void receiveOnBattleStart(AbstractRoom abstractRoom)
     {
-        playerHP = AbstractDungeon.player.currentHealth;
+        monsterBlockSaved = false;
+        monsterHealth.clear();
+        monsterBlock.clear();
+        monsterHealing.clear();
+        monsterHpPreHealing.clear();
+        firstTurnHp = AbstractDungeon.player.currentHealth;
         dmgDealtPerTurn = 0;
         totalDmg = 0;
         dmgReceivedPerTurn = 0;
@@ -1039,15 +1040,20 @@ int test;
         for (AbstractMonster x : abstractRoom.monsters.monsters)
         {
             healthPreDmg = x.maxHealth;
+            lastRoundBlock = x.currentBlock;
             monsterHealth.put(x, healthPreDmg);
+            monsterBlock.put(x, lastRoundBlock);
+            monsterHealing.put(x, 0);
+            monsterHpPreHealing.put(x, x.currentHealth);
         }
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleData.txt", true)))
         {
             bw.write("______________________________________________________________________");
             bw.newLine();
             bw.write("Battle: " + BattleNum++);
             bw.newLine();
-            bw.write("Player's HP: " + playerHP);
+            bw.write("Player's HP: " + firstTurnHp);
             bw.newLine();
             bw.write("Potion: ");
             for (AbstractPotion x : AbstractDungeon.player.potions)
@@ -1061,7 +1067,10 @@ int test;
             bw.write("Fighting:");
             for (AbstractMonster x : abstractRoom.monsters.monsters)
             {
-                bw.write(" |" + x.name + "(HP: " + x.currentHealth + ")|");
+               /* if(monsterBlock.get(x)>0)
+                bw.write(" |" + x.name + "(HP: " + x.currentHealth + ")"+ "{Block: " + x.currentBlock +"}|");
+                else*/
+                    bw.write(" |" + x.name + "(HP: " + x.currentHealth + ")|");
             }
             bw.newLine();
             bw.newLine();
@@ -1077,11 +1086,23 @@ int test;
     ArrayList<String> drawnCards = new ArrayList<>();
     ArrayList<String> drawnCardsTotal = new ArrayList<>();
 
+    Boolean monsterBlockSaved;
+
     @Override
     public void receivePostDraw(AbstractCard abstractCard)
     {
         drawnCards.add(abstractCard.name);
         drawnCardsTotal.add(abstractCard.name);
+        /*if (!monsterBlockSaved)
+        {
+            for (AbstractMonster x : AbstractDungeon.getCurrRoom().monsters.monsters)
+            {
+                monsterBlock.put(x, x.currentBlock);
+                monsterBlockSaved = true;
+                x.
+
+            }
+        }*/
     }
 
     Map<String, Integer> exhDrawCounter = new HashMap<>();
@@ -1105,4 +1126,5 @@ int test;
         usedPotions.add(abstractPotion.name);
         usedPotionsTotal.add(abstractPotion.name);
     }
+
 }

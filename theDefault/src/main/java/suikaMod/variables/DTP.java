@@ -2,11 +2,12 @@ package suikaMod.variables;
 
 import basemod.abstracts.DynamicVariable;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.ui.panels.EnergyPanel;
 import suikaMod.cards.AbstractDefaultCard;
 
 import static suikaMod.DefaultMod.makeID;
 
-public class Vamp extends DynamicVariable
+public class DTP extends DynamicVariable
 {
 
     //For in-depth comments, check the other variable(DefaultCustomVariable). It's nearly identical.
@@ -14,7 +15,7 @@ public class Vamp extends DynamicVariable
     @Override
     public String key()
     {
-        return makeID("Vamp");
+        return makeID("DTP");
         // This is what you put between "!!" in your card strings to actually display the number.
         // You can name this anything (no spaces), but please pre-phase it with your mod name as otherwise mod conflicts can occur.
         // Remember, we're using makeID so it automatically puts "theDefault:" (or, your id) before the name.
@@ -23,27 +24,26 @@ public class Vamp extends DynamicVariable
     @Override
     public boolean isModified(AbstractCard card)
     {
-        return ((AbstractDefaultCard) card).isVampDmgModified;
+        return ((AbstractDefaultCard) card).isDmgPsnConditionModified;
 
     }
-
     @Override
     public int value(AbstractCard card)
     {
-        return ((AbstractDefaultCard) card).vampDmg;
+        return ((AbstractDefaultCard) card).dmgPsnCondition;
     }
-
+    public void setIsModified(AbstractCard card, boolean v) {
+        ((AbstractDefaultCard) card).isDmgPsnConditionModified = v;
+    }
     @Override
     public int baseValue(AbstractCard card)
     {
-        return ((AbstractDefaultCard) card).baseVampDmg;
+        return ((AbstractDefaultCard) card).baseDmgPsnCondition;
     }
-    public void setIsModified(AbstractCard card, boolean v) {
-        ((AbstractDefaultCard) card).isDPEModified = v;
-    }
+
     @Override
     public boolean upgraded(AbstractCard card)
     {
-        return ((AbstractDefaultCard) card).upgradedVampDmg;
+        return ((AbstractDefaultCard) card).upgradedDmgPsnCondition;
     }
 }

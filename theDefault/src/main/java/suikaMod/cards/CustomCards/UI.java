@@ -766,7 +766,7 @@ public class UI extends JFrame
     {
         String filePath;
         if(curDir.contains("theDefault")){
-            filePath = "/src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
+            filePath = "src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
 
         }
         else {
@@ -927,7 +927,7 @@ public class UI extends JFrame
     {
         String filePath;
         if(curDir.contains("theDefault")){
-            filePath = "/src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
+            filePath = "src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
 
         }
         else {

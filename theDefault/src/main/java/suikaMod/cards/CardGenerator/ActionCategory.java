@@ -43,7 +43,6 @@ public class ActionCategory
             "Repeat",
             "Sacrifice HP",
             "Heal",
-            "Upgrade All"
     };
 
     public final String[] buffArray = {
@@ -117,4 +116,6 @@ public class ActionCategory
             "Double Block",
             "Double Energy",
     };
+
+
 }

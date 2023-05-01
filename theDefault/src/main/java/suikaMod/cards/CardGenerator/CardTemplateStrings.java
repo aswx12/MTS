@@ -178,6 +178,23 @@ public class CardTemplateStrings
     }
 
     //endregion
+    public static final String[] dNum = {
+            "DPE",
+            "DVAMP",
+            "DTP",
+            "DPAP",
+            "DPSH",
+    };
+
+    public static String ID(String idText)
+    {
+        return MODID + ":" + idText;
+    }
+
+    public static String DNUM(String text)
+    {
+        return "!" + text + "!";
+    }
 
     //region Basic Attack
     public static String CardTemplate(JTextField name,
@@ -198,8 +215,20 @@ public class CardTemplateStrings
     {
 
         String className = DeleteSpace(name.getText());
-        String DESCRIPTION = description.getText().replaceAll("(?!\\r)\\n", " NL ");
-        String upgrade_DESCRIPTION = upDescription.getText().replaceAll("(?!\\r)\\n", " NL ");
+
+        String DESCRIPTION = description.getText();
+        DESCRIPTION = DESCRIPTION.replaceAll("(?!\\r)\\n", " NL ");
+        for (int i = 0; i < dNum.length; i++)
+        {
+            DESCRIPTION = DESCRIPTION.replaceAll(DNUM(dNum[i]), DNUM(ID(dNum[i])));
+        }
+        
+        String upgrade_DESCRIPTION = upDescription.getText();
+        upgrade_DESCRIPTION = upgrade_DESCRIPTION.replaceAll("(?!\\r)\\n", " NL ");
+        for (int i = 0; i < dNum.length; i++)
+        {
+            upgrade_DESCRIPTION = upgrade_DESCRIPTION.replaceAll(DNUM(dNum[i]), DNUM(ID(dNum[i])));
+        }
 
         //region strings
         StringBuilder sbVariable = new StringBuilder();
