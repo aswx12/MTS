@@ -222,7 +222,7 @@ public class CardTemplateStrings
         {
             DESCRIPTION = DESCRIPTION.replaceAll(DNUM(dNum[i]), DNUM(ID(dNum[i])));
         }
-        
+
         String upgrade_DESCRIPTION = upDescription.getText();
         upgrade_DESCRIPTION = upgrade_DESCRIPTION.replaceAll("(?!\\r)\\n", " NL ");
         for (int i = 0; i < dNum.length; i++)

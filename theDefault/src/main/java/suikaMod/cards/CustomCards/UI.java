@@ -1,6 +1,5 @@
 package suikaMod.cards.CustomCards;
 
-import com.sun.org.apache.xpath.internal.objects.XObject;
 import suikaMod.cards.CardGenerator.ActionCategory;
 import suikaMod.cards.CardGenerator.CardTemplateStrings;
 
@@ -68,6 +67,7 @@ public class UI extends JFrame
     private JPanel actionOnUpgradePanel;
     private JComboBox actionCategoryBox;
     private JPanel cardStatePanel;
+    private JButton newCardButton;
 
     int rowIndex = 0;
     int upTableRowIndex = 0;
@@ -102,7 +102,7 @@ public class UI extends JFrame
     };
     String cardName;
 
-
+    static UI ui;
     public static void main(String[] args)
     {
         try
@@ -124,7 +124,8 @@ public class UI extends JFrame
         {
             //e.printStackTrace();
         }
-        UI ui = new UI();
+         ui = new UI();
+
     }
 
     ActionCategory category;
@@ -491,6 +492,8 @@ public class UI extends JFrame
                 {
                     e.getStackTrace();
                 }
+
+
             }
         });
 
@@ -735,6 +738,15 @@ public class UI extends JFrame
                         actionList.setModel(exhListModel);
                         break;
                 }
+            }
+        });
+        newCardButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                ui.dispose();
+                ui = new UI();
             }
         });
     }

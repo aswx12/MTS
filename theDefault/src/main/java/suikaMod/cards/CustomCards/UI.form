@@ -548,6 +548,14 @@
               </model>
             </properties>
           </component>
+          <component id="f6cb7" class="javax.swing.JButton" binding="newCardButton" default-binding="true">
+            <constraints>
+              <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="New Card"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <grid id="adae6" binding="StartPanel" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
