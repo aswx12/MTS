@@ -1,0 +1,21 @@
+Attack
+1
+Action|Base Value|Upgraded Value|Activation Condition|Extra Option
+Damage|2|1|None|x
+false
+1
+1
+Uncommon
+Enemy
+1
+a
+false
+true
+false
+false
+false
+false
+false
+false
+false
+false

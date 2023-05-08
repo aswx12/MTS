@@ -196,6 +196,8 @@ public class UI extends JFrame
 
         //endregion
         curDir = System.getProperty("user.dir");
+        curDir=curDir.replace("out\\artifacts\\suikaMod_jar","src\\main\\java\\"+GetModId()+"\\cards\\CustomCards");
+
         //region List & Table Init
         DefaultListModel originActionListModel = new DefaultListModel();
         DefaultListModel actionListModel = new DefaultListModel();
@@ -378,17 +380,16 @@ public class UI extends JFrame
             @Override
             public void actionPerformed(ActionEvent b)
             {
-
-
                 cardName = CardTemplateStrings.DeleteSpace(CardName.getText());
-                if (curDir.contains("theDefault"))
+                //curDir = System.getProperty("user.dir");
+          /*      if (curDir.contains("theDefault"))
                 {
                     workingDirectory = new File(curDir + "/src/main/java/" + GetModId() + "/cards/CustomCards/");
                 } else
                 {
                     workingDirectory = new File(curDir + "/theDefault/src/main/java/" + GetModId() + "/cards/CustomCards/");
-                }
-                f.setCurrentDirectory(workingDirectory);
+                }*/ //testing
+                f.setCurrentDirectory(new File(curDir));
 
                 if (!CardName.getText().isEmpty())
                 {
@@ -482,6 +483,7 @@ public class UI extends JFrame
 
                     output.write(cardContent);
                     System.out.println("Data is written to the file.");
+                    String filePath = System.getProperty("user.dir");
                     JOptionPane.showMessageDialog(CreateButton, "Card Properties applied!");
                     // Closes the writer
                     output.close();
@@ -776,15 +778,17 @@ public class UI extends JFrame
 
     private void ReadSavedFile()
     {
-        String filePath;
-        if(curDir.contains("theDefault")){
+        String filePath = System.getProperty("user.dir");;
+        /*if(curDir.contains("theDefault")){
             filePath = "src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
 
         }
         else {
             filePath = "theDefault/src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
 
-        }
+        }*/
+        filePath=filePath.replace("out\\artifacts\\suikaMod_jar","src\\main\\java\\"+GetModId()+"\\cards\\CardData\\" + cardName + ".txt");
+
         File fileSaved = new File(filePath);
         try
         {
@@ -937,15 +941,17 @@ public class UI extends JFrame
 
     private void SaveFile()
     {
-        String filePath;
-        if(curDir.contains("theDefault")){
+        String filePath = System.getProperty("user.dir");
+        /*if(curDir.contains("theDefault")){
             filePath = "src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
 
         }
         else {
             filePath = "theDefault/src/main/java/" + GetModId() + "/cards/CardData/" + cardName + ".txt";
 
-        }
+        }*/
+        filePath=filePath.replace("out\\artifacts\\suikaMod_jar","src\\main\\java\\"+GetModId()+"\\cards\\CardData\\" + cardName + ".txt");
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter((filePath))))
         {
             bw.write(cardTypeList.getSelectedItem().toString());
