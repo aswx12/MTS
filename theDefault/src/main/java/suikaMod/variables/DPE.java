@@ -30,7 +30,7 @@ public class DPE extends DynamicVariable
     @Override
     public int value(AbstractCard card)
     {
-        return ((AbstractDefaultCard) card).dmgPerEnergy * EnergyPanel.getCurrentEnergy();
+        return ((AbstractDefaultCard) card).dmgPerEnergy;
     }
     public void setIsModified(AbstractCard card, boolean v) {
         ((AbstractDefaultCard) card).isDPEModified = v;

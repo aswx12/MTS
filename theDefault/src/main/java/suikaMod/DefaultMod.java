@@ -476,7 +476,10 @@ public class DefaultMod implements
         BaseMod.addDynamicVariable(new DPAP());
         BaseMod.addDynamicVariable(new DPSH());
         BaseMod.addDynamicVariable(new DTP());
-        BaseMod.addDynamicVariable(new DVAMP());
+        BaseMod.addDynamicVariable(new XDPE());
+        BaseMod.addDynamicVariable(new XDPAP());
+        BaseMod.addDynamicVariable(new XDPSH());
+
         // BaseMod.addCard(new Suika());
 
         logger.info("Adding cards");

@@ -33,16 +33,8 @@ public class DPAP extends DynamicVariable
     @Override
     public int value(AbstractCard card)
     {
-        int count = 0;
-        Iterator var2 = AbstractDungeon.actionManager.cardsPlayedThisTurn.iterator();
 
-        while(var2.hasNext()) {
-            AbstractCard c = (AbstractCard)var2.next();
-            if (c.type == AbstractCard.CardType.ATTACK) {
-                ++count;
-            }
-        }
-        return ((AbstractDefaultCard) card).dmgPerAttPlayed * count;
+        return ((AbstractDefaultCard) card).dmgPerAttPlayed;
     }
     public void setIsModified(AbstractCard card, boolean v) {
         ((AbstractDefaultCard) card).isDPAPModified = v;
