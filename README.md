@@ -40,12 +40,12 @@ Damage Per Skill In Hand: !XDPSH!
 
 Block: !B!
 
-Energy: !M!
+Energy: !M!<br>
 Energy icon: [E]
 
-Want to color code you text? 
-           v text you want to color.
-[#0000ff]text[]<-closing 
+Want to color code you text? <br>
+           v text you want to color.<br>
+[#0000ff]text[]<-closing <br>
    ^color code
 
 
