@@ -1,52 +1,54 @@
-# StS-Default Mod Base
+# StS-TheCreator
 
-Welcome to this extremely over-commented Slay the Spire modding base. 
-
-This is a minimal "default clean slate" for creating Slay the spire mods. 
-
-Use it to make your own mod of any type - If you want to add any standard in-game content (character, cards, relics, events, etc.), this is a good starting point.
-
-It features 1 character (the Default) with a minimal set of things: 1 card of each type, 1 debuff, 1 relic, etc.
-
-If you're new to modding, you basically *need* the BaseMod wiki for whatever you wish to add, and you can work your way thought it with this base. Another very important thing is to look at other mods (get them from their github!), as well as the base-game code, and see how they do things. 
-
-https://github.com/daviscook477/BaseMod/wiki
-
-This base itself isn't going to help you code or anything!! Nor does it provide basic Java learning - if you need that go through the codeacademy free java course! While I have been putting comments about what does what, this is just a nice starting point if you need a place to start learning from that's not an absolute empty canvas, or an overly-complicated, difficult to understand mod. But you still need to learn how the in-game code works and how to piece things together on your own. (i.e. this base will show you where to put the code for double-tap, but not what it is/how to write it. Look up the actual cards and backward-engineer them for that.)
-
-Feel free to use this in any way you like, of course. 
-
-If you have any issues or you want to recommend and/or add something to the mod that you feel would be helpful, feel free to submit an issue or a PR!
+An UI for the StS-modding API allowing users to create cards without programming experience.
 
 Happy modding!
 
 ---
 
-## Check the wiki to get started:
+## Guide:
+Before using the UI, it is recommended that you should have some kind of program that packages the mod after you have added a card to it. You should also subcribe to **Basemode**, **StSLib** and **ModTheSPire** from steam. In the pom.xml, change the steam path to your steam path. I recommend Intellj with maven.
 
-https://github.com/Gremious/StS-DefaultModBase/wiki
 
----
-
-## Know what you're doing?
-
-Hop on over to the Quick Start branch. It's a fully cloneable, uncommented version of the Default ready for jump-starting a brand new mod!
-
----
-
-## Some HD Slay the Spire art assets:
-
-Includes:
- - Empty Relic Template feat. empty bottle
- - Empty Card Template
- - Color-Changable cardback
- - A couple of HD Monster vectors (Louse, Nob, Sentry, Sneaky Gremlin)
- - A coupe of HD items (J.A.X., A Coin)
- - 2 people silhouettes
- - A curse Background
-
-https://mega.nz/#F!gfpgTCyK!2oFOjVFKyOreKv7zdY1fEQ
-
-(If you want to contribute to this collection feel free to send me a message through [#modding](https://www.megacrit.com/) or a github issue.)
+1. Name the card, choose a location to save the card, for it to work, the card must be within the "Cards" folder. (Should already be at location once the create card button is pressed)
+Using the name of an existing card will load that card's content(edit mode)
+2. Card type: choose the type of the card.
+3. Action list, browse categories for actions
+4. Once actions are added to the action table, fill out the action value and choose options presented in the table as you see fit.(select actions in table and press remove if want to remove)
+5. Want to add/remove action on upgrade? Tick the box otherwise skip to step 7
+6. Select from the action list, fill out value as usual, choose to whether add or remove
+7. Fill out cost, choose card's rarity and target.
+8. Write a description for the card, refer to the keycodes section for dynamic numbers.
+9. Want a different description upon upgrade? select the box and repeat step 8
+10. Card states: default is when the card is not upgraded. If the box for each item is selected, that state will appear on the version of the card that was selected.
+11. Seen is just for the card to be unlocked in the library so you can see it. 
+12. Create card! wooo
+13. Press new card for new card, obviously. 
 
 ---
+## Keycodes
+Damage: **!D!**<br>
+Vampire damage: **!DVAMP!**<br>
+Damage If Target Poisoned: **!DTP!**
+
+(base damage)<br>
+Damage Per Energy Used: **!DPE**! <br>
+Damage Per Attack Played: **!DPAP!**<br>
+Damage Per Skill In Hand: **!DPSH!**
+
+(these keycodes calculate the total damage for you)<br>
+Damage Per Energy Used: **!XDPE!** <br>
+Damage Per Attack Played: **!XDPAP!**<br>
+Damage Per Skill In Hand: **!XDPSH!**
+
+Block: **!B!**
+
+Energy: **!M!**<br>
+Energy icon: **[E]**
+
+Want to color code you text? <br>
+&emsp;&emsp;&emsp;&emsp;&emsp;v text you want to color.<br>
+**[#0000ff]text[]**<-closing <br>
+&emsp;^color code
+
+
