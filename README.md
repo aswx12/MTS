@@ -24,19 +24,18 @@ Using the name of an existing card will load that card's content(edit mode)
 
 ---
 ## Keycodes
-Damage: !D!\
-Vampire damage: !DVAMP!\
-
+Damage: !D!<br>
+Vampire damage: !DVAMP!<br>
 Damage If Target Poisoned: !DTP!
 
-(base damage)
-Damage Per Energy Used: !DPE! 
-Damage Per Attack Played: !DPAP!
+(base damage)<br>
+Damage Per Energy Used: !DPE! <br>
+Damage Per Attack Played: !DPAP!<br>
 Damage Per Skill In Hand: !DPSH!
 
-(these keycodes calculate the total damage for you)
-Damage Per Energy Used: !XDPE! 
-Damage Per Attack Played: !XDPAP!
+(these keycodes calculate the total damage for you)<br>
+Damage Per Energy Used: !XDPE! <br>
+Damage Per Attack Played: !XDPAP!<br>
 Damage Per Skill In Hand: !XDPSH!
 
 Block: !B!
