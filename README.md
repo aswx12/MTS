@@ -24,28 +24,28 @@ Using the name of an existing card will load that card's content(edit mode)
 
 ---
 ## Keycodes
-Damage: !D!<br>
-Vampire damage: !DVAMP!<br>
-Damage If Target Poisoned: !DTP!
+Damage: **!D!**<br>
+Vampire damage: **!DVAMP!**<br>
+Damage If Target Poisoned: **!DTP!**
 
 (base damage)<br>
-Damage Per Energy Used: !DPE! <br>
-Damage Per Attack Played: !DPAP!<br>
-Damage Per Skill In Hand: !DPSH!
+Damage Per Energy Used: **!DPE**! <br>
+Damage Per Attack Played: **!DPAP!**<br>
+Damage Per Skill In Hand: **!DPSH!**
 
 (these keycodes calculate the total damage for you)<br>
-Damage Per Energy Used: !XDPE! <br>
-Damage Per Attack Played: !XDPAP!<br>
-Damage Per Skill In Hand: !XDPSH!
+Damage Per Energy Used: **!XDPE!** <br>
+Damage Per Attack Played: **!XDPAP!**<br>
+Damage Per Skill In Hand: **!XDPSH!**
 
-Block: !B!
+Block: **!B!**
 
-Energy: !M!<br>
-Energy icon: [E]
+Energy: **!M!**<br>
+Energy icon: **[E]**
 
 Want to color code you text? <br>
-           v text you want to color.<br>
-[#0000ff]text[]<-closing <br>
+_____________v text you want to color.<br>
+**[#0000ff]text[]**<-closing <br>
    ^color code
 
 
