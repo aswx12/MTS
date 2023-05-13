@@ -44,7 +44,7 @@ Energy: **!M!**<br>
 Energy icon: **[E]**
 
 Want to color code you text? <br>
-<t>v text you want to color.<br>
+<br />v text you want to color.<br>
 **[#0000ff]text[]**<-closing <br>
    ^color code
 
