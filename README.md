@@ -23,5 +23,29 @@ Using the name of an existing card will load that card's content(edit mode)
 13. Press new card for new card, obviously. 
 
 ---
-**##Keycodes**
+## Keycodes
+Damage: !D!
+Vampire damage: !DVAMP!
+Damage If Target Poisoned: !DTP!
+
+(base damage)
+Damage Per Energy Used: !DPE! 
+Damage Per Attack Played: !DPAP!
+Damage Per Skill In Hand: !DPSH!
+
+(these keycodes calculate the total damage for you)
+Damage Per Energy Used: !XDPE! 
+Damage Per Attack Played: !XDPAP!
+Damage Per Skill In Hand: !XDPSH!
+
+Block: !B!
+
+Energy: !M!
+Energy icon: [E]
+
+Want to color code you text? 
+           v text you want to color.
+[#0000ff]text[]<-closing 
+   ^color code
+
 
