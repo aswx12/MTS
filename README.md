@@ -26,6 +26,7 @@ Using the name of an existing card will load that card's content(edit mode)
 ## Keycodes
 Damage: !D!
 Vampire damage: !DVAMP!
+
 Damage If Target Poisoned: !DTP!
 
 (base damage)
