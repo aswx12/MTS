@@ -7,7 +7,7 @@ Happy modding!
 ---
 
 ## Guide:
-Before using the UI, it is recommended that you should have some kind of program that packages the mod after you have added a card to it. You should also subcribe to **Basemode**,**StSLib** and **ModTheSPire** from steam. In the pom.xml, change the steam path to your steam path. I recommend Intellj with maven.
+Before using the UI, it is recommended that you should have some kind of program that packages the mod after you have added a card to it. You should also subcribe to **Basemode**, **StSLib** and **ModTheSPire** from steam. In the pom.xml, change the steam path to your steam path. I recommend Intellj with maven.
 
 
 1. Name the card, choose a location to save the card, for it to work, the card must be within the "Cards" folder. (Should already be at location once the create card button is pressed)
