@@ -46,6 +46,6 @@ Energy icon: **[E]**
 Want to color code you text? <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;v text you want to color.<br>
 **[#0000ff]text[]**<-closing <br>
-   ^color code
+&emsp;^color code
 
 
