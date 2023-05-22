@@ -184,6 +184,9 @@ public class CardTemplateStrings
             "DTP",
             "DPAP",
             "DPSH",
+            "XDPE",
+            "XDPAP",
+            "XDPSH",
     };
 
     public static String ID(String idText)

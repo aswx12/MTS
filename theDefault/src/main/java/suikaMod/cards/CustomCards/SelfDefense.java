@@ -29,27 +29,34 @@ import java.util.Iterator;
 import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
-@AutoAdd.Seen
-public class h extends AbstractDynamicCard
+@AutoAdd.Ignore
+public class SelfDefense extends AbstractDynamicCard
 {
-    public static final String ID = DefaultMod.makeID(h.class.getSimpleName()); 
+    public static final String ID = DefaultMod.makeID(SelfDefense.class.getSimpleName()); 
     public static final String IMG = makeCardPath("Attack.png"); 
-    private static final CardRarity RARITY = CardRarity.UNCOMMON; 
+    private static final CardRarity RARITY = CardRarity.RARE; 
     private static final CardTarget TARGET = CardTarget.ENEMY; 
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
-    private static final int COST = 1;  
-    private static final int UPGRADED_COST = 1; 
+    private static final int COST = 3;  
+    private static final int UPGRADED_COST = 3; 
 
+    private static final int DAMAGE = 10;
+    private static final int UPGRADE_DAMAGE= 20;
+    private static final int BLOCK = 5;
+    private static final int UPGRADE_BLOCK = 10;
 
     // /STAT DECLARATION/
 
-    private static String desc ="a";
-    public h ()
+    private static String desc ="Deal !D! damage and Gain !B! Block NL If Enemy Intents To Attack NL Retain";
+    public SelfDefense ()
     { 
-        super(ID, "h", IMG,desc, COST, TYPE, COLOR, RARITY, TARGET);
+        super(ID, "Self Defense", IMG,desc, COST, TYPE, COLOR, RARITY, TARGET);
+        baseDamage = DAMAGE;
+        baseBlock = BLOCK;
 
+            this.retain=true; 
                       //this.tags.add(CardTags.STARTER_STRIKE); 
 
     }
@@ -59,6 +66,12 @@ public class h extends AbstractDynamicCard
     @Override
     public void use(AbstractPlayer p, AbstractMonster m)
     {
+        if (m != null && m.getIntentBaseDmg() >= 0)
+        {
+        this.addToBot(
+                new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));
+         this.addToBot(new GainBlockAction(p, p, block));
+        }
     }
 
 
@@ -69,6 +82,8 @@ public class h extends AbstractDynamicCard
         if (!upgraded)
         {
             upgradeName();
+            upgradeDamage(UPGRADE_DAMAGE);
+            upgradeBlock(UPGRADE_BLOCK);
             upgradeBaseCost(UPGRADED_COST);
             initializeDescription();
         }

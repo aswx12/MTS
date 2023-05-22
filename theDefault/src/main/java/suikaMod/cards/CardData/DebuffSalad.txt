@@ -1,0 +1,35 @@
+Skill
+3
+Action|Base Value|Upgraded Value|Activation Condition|Extra Option
+Apply Vulnerable|2|5|None|x
+Apply Weak|2|5|None|x
+Apply Poison|2|5|None|x
+true
+3
+Action|Value|Add/Remove|Activation Condition|Extra Option
+Apply Double Vulnerable|x|Add|None|x
+Apply Double Weak|x|Add|None|x
+Apply Double Poison|x|Add|None|x
+2
+4
+Rare
+Enemy
+3
+Apply 2 Vulnerable, 2 Weak, 2 Poison
+Exhaust
+(Having salad in its name doesn't mean it's healthy)
+true
+4
+Apply 5 Vulnerable, 5 Weak, 5 Poison
+Double Vulnerable, Weak, Poison
+Exhaust
+(Salad To Heaven)
+true
+false
+false
+false
+false
+true
+true
+false
+false

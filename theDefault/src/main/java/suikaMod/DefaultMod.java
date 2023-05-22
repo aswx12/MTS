@@ -473,6 +473,7 @@ public class DefaultMod implements
         BaseMod.addDynamicVariable(new DefaultCustomVariable());
         BaseMod.addDynamicVariable(new DefaultSecondMagicNumber());
         BaseMod.addDynamicVariable(new DPE());
+        BaseMod.addDynamicVariable(new DVAMP());
         BaseMod.addDynamicVariable(new DPAP());
         BaseMod.addDynamicVariable(new DPSH());
         BaseMod.addDynamicVariable(new DTP());
@@ -657,6 +658,10 @@ public class DefaultMod implements
         for (AbstractMonster x : AbstractDungeon.getCurrRoom().monsters.monsters)
         {
             monsterHealing.put(x, 0);
+            if(!monsterHealth.containsKey(x)){
+                monsterHealth.put(x,x.maxHealth);
+                monsterHpPreHealing.put(x, x.currentHealth);
+            }
             dmgCal = monsterHealth.get(x) - monsterHpPreHealing.get(x);
             System.out.println("Prehealth " + monsterHealth.get(x));
 

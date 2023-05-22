@@ -1,0 +1,37 @@
+Attack
+5
+Action|Base Value|Upgraded Value|Activation Condition|Extra Option
+Damage Per Energy Used|2|4|None|x
+Damage Per Attack Played|2|5|None|x
+Damage Per Skill In Hand|2|3|None|x
+Sacrifice HP|3|5|None|x
+Gain Strength|2|6|None|x
+false
+0
+0
+Uncommon
+Enemy
+6
+With The Power Of FRIENDSHIP
+Deal !DPE! per Energy( !XDPE! )
+Deal !DPAP! per attack played( !XDPAP! )
+Deal !DPSH! per skill in hand( !XDPSH! )
+Sacrifice 3 HP and Gain 2 Strength 
+Retain
+true
+6
+With The Power Of FRIENDSHIP
+Deal !DPE! per Energy( !XDPE! )
+Deal !DPAP! per attack played( !XDPAP! )
+Deal !DPSH! per skill in hand( !XDPSH! )
+Sacrifice 5 HP and Gain 6 Strength 
+Retain
+true
+false
+false
+true
+true
+false
+false
+false
+false

@@ -23,6 +23,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import suikaMod.DefaultMod;
 import suikaMod.cards.*;
+import suikaMod.cards.CustomCards.DebuffSalad;
+import suikaMod.cards.CustomCards.PoisonNeedles;
+import suikaMod.cards.CustomCards.PowerOfFriendship;
+import suikaMod.cards.CustomCards.VampireKnife;
 import suikaMod.relics.DefaultClickableRelic;
 import suikaMod.relics.PlaceholderRelic;
 import suikaMod.relics.PlaceholderRelic2;
@@ -156,11 +160,17 @@ public class TheDefault extends CustomPlayer {
         ArrayList<String> retVal = new ArrayList<>();
 
         logger.info("Begin loading starter Deck Strings");
-        retVal.add(DefaultCommonAttack.ID);
+
+        for (int i = 0; i < 3; i++)
+        {
+            retVal.add(DefaultCommonAttack.ID);
+            retVal.add(DefaultCommonSkill.ID);
+        }
+
         retVal.add(DefaultUncommonAttack.ID);
         retVal.add(DefaultRareAttack.ID);
 
-        retVal.add(DefaultCommonSkill.ID);
+
         retVal.add(DefaultUncommonSkill.ID);
         retVal.add(DefaultRareSkill.ID);
 
@@ -170,9 +180,14 @@ public class TheDefault extends CustomPlayer {
 
         retVal.add(DefaultAttackWithVariable.ID);
         retVal.add(DefaultSecondMagicNumberSkill.ID);
-        retVal.add(OrbSkill.ID);
+        for (int i = 0; i < 3; i++)
+        {
+            retVal.add(PowerOfFriendship.ID);
+        }
         return retVal;
     }
+
+    //NL [#0000ff]This[] [#ff0000]Is[] [#ffff00]How[] [#88888]color[] [#ff00ff]works.[]
 
     // Starting Relics	
     public ArrayList<String> getStartingRelics() {

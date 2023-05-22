@@ -32,14 +32,17 @@ public class XDPSH extends DynamicVariable
     @Override
     public int value(AbstractCard card)
     {
-        Iterator var1 = AbstractDungeon.player.hand.group.iterator();
         int count=0;
-        while(var1.hasNext()) {
-            AbstractCard c = (AbstractCard)var1.next();
-            if (c.type == AbstractCard.CardType.SKILL) {
-                count++;
+        if(AbstractDungeon.isPlayerInDungeon()){
+            Iterator var1 = AbstractDungeon.player.hand.group.iterator();
+            while(var1.hasNext()) {
+                AbstractCard c = (AbstractCard)var1.next();
+                if (c.type == AbstractCard.CardType.SKILL) {
+                    count++;
+                }
             }
         }
+
         return ((AbstractDefaultCard) card).dmgPerSkillInHand * count;
     }
     public void setIsModified(AbstractCard card, boolean v) {

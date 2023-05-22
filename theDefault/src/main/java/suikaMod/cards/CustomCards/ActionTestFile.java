@@ -12,7 +12,7 @@ import suikaMod.characters.TheDefault;
 import static suikaMod.DefaultMod.makeCardPath;
 
 
-@AutoAdd.Seen
+@AutoAdd.Ignore
 public class ActionTestFile extends AbstractDynamicCard
 {
     public static final String ID = DefaultMod.makeID(ActionTestFile.class.getSimpleName());

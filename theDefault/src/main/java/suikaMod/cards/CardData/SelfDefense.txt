@@ -1,0 +1,24 @@
+Attack
+2
+Action|Base Value|Upgraded Value|Activation Condition|Extra Option
+Damage|10|20|Enemy Intent: Attack|x
+Block|5|10|Enemy Intent: Attack|x
+false
+3
+3
+Rare
+Enemy
+3
+Deal !D! damage and Gain !B! Block
+If Enemy Intents To Attack
+Retain
+false
+true
+false
+false
+true
+true
+false
+false
+false
+false

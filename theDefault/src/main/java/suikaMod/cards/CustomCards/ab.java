@@ -29,7 +29,7 @@ import java.util.Iterator;
 import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
-@AutoAdd.Seen
+@AutoAdd.Ignore
 public class ab extends AbstractDynamicCard
 {
     public static final String ID = DefaultMod.makeID(ab.class.getSimpleName()); 

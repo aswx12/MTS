@@ -1,0 +1,28 @@
+Attack
+2
+Action|Base Value|Upgraded Value|Activation Condition|Extra Option
+Vampire Damage|3|5|None|x
+Gain Energy|2|3|None|x
+false
+0
+0
+Common
+Enemy
+3
+Deal !DVAMP! Damage and Heal !DVAMP! HP
+Gain !M! Energy
+Ethereal
+true
+3
+Deal !DVAMP! Damage and Heal !DVAMP! HP
+Gain !M! Energy
+Exhaust
+true
+false
+false
+false
+false
+false
+false
+true
+false

@@ -29,30 +29,35 @@ import java.util.Iterator;
 import static com.megacrit.cardcrawl.core.CardCrawlGame.languagePack;
 
 
-@AutoAdd.Seen
-public class c extends AbstractDynamicCard
+@AutoAdd.Ignore
+public class VampireKnife extends AbstractDynamicCard
 {
-    public static final String ID = DefaultMod.makeID(c.class.getSimpleName()); 
+    public static final String ID = DefaultMod.makeID(VampireKnife.class.getSimpleName()); 
     public static final String IMG = makeCardPath("Attack.png"); 
-    private static final CardRarity RARITY = CardRarity.UNCOMMON; 
+    private static final CardRarity RARITY = CardRarity.COMMON; 
     private static final CardTarget TARGET = CardTarget.ENEMY; 
     private static final CardType TYPE = CardType.ATTACK;       //
     public static final CardColor COLOR = TheDefault.Enums.COLOR_GRAY;
 
-    private static final int COST = 1;  
-    private static final int UPGRADED_COST = 1; 
+    private static final int COST = 0;  
+    private static final int UPGRADED_COST = 0; 
 
-    private static final int DAMAGE = 1;
-    private static final int UPGRADE_DAMAGE= 2;
+    private static final int vampDmgValue = 3;
+    private static final int UPGRADE_vampDmgValue= 5;
+    private static final int ENERGY = 2;
+    private static final int UPGRADE_ENERGY = 3;
 
     // /STAT DECLARATION/
 
-    private static String desc ="a";
-    public c ()
+    private static String desc ="Deal !suikaMod:DVAMP! Damage and Heal !suikaMod:DVAMP! HP NL Gain !M! Energy NL Ethereal";
+    private static final String upDesc="Deal !suikaMod:DVAMP! Damage and Heal !suikaMod:DVAMP! HP NL Gain !M! Energy NL Exhaust";
+    public VampireKnife ()
     { 
-        super(ID, "c", IMG,desc, COST, TYPE, COLOR, RARITY, TARGET);
-        baseDamage = DAMAGE;
+        super(ID, "VampireKnife", IMG,desc, COST, TYPE, COLOR, RARITY, TARGET);
+        baseVampDmg = vampDmgValue;
+        magicNumber = baseMagicNumber = ENERGY;
 
+            this.isEthereal=true; 
                       //this.tags.add(CardTags.STARTER_STRIKE); 
 
     }
@@ -63,7 +68,8 @@ public class c extends AbstractDynamicCard
     public void use(AbstractPlayer p, AbstractMonster m)
     {
         this.addToBot(
-                new DamageAction(m, new DamageInfo(p, damage, damageTypeForTurn), AttackEffect.SLASH_HORIZONTAL));
+                new VampireDamageAction(m, new DamageInfo(p, vampDmg, damageTypeForTurn), AttackEffect.NONE));
+         this.addToBot(new GainEnergyAction(magicNumber));
     }
 
 
@@ -74,8 +80,11 @@ public class c extends AbstractDynamicCard
         if (!upgraded)
         {
             upgradeName();
-            upgradeDamage(UPGRADE_DAMAGE);
+            upgradeVampDmg(UPGRADE_vampDmgValue);
+            this.upgradeMagicNumber(UPGRADE_ENERGY);
             upgradeBaseCost(UPGRADED_COST);
+            rawDescription=upDesc;
+            this.isEthereal=false; 
             initializeDescription();
         }
     }
