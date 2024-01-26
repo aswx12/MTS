@@ -24,6 +24,8 @@ public class ActionVar
     public static String rpt = "repeatTIME";
 
     //region Buff/debuff
+    //(a)pply
+    //(g)ain
     public static String aVul = "aVULNERABLE";
     /*    static int aVulVersion;
         static String aVulOrg = aVul;*/
@@ -69,6 +71,7 @@ public class ActionVar
     //Discard(Disc)
     //Qty(quantity)
     //Draw Pile(DrawP)
+    //(V)ersion
     public static String toDisc = "DiscQty";
 
     public static String toHand = "HandQty";

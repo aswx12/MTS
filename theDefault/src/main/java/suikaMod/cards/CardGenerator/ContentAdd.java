@@ -1,10 +1,5 @@
 package suikaMod.cards.CardGenerator;
 
-import com.megacrit.cardcrawl.actions.unique.DoublePoisonAction;
-import suikaMod.actions.DoubleStrAction;
-import suikaMod.actions.DoubleVulnerableAction;
-import suikaMod.actions.DoubleWeakAction;
-
 import static suikaMod.cards.CardGenerator.ActionVar.*;
 import static suikaMod.cards.CardGenerator.ActionVar.actionVar;
 
@@ -165,6 +160,20 @@ public class ContentAdd
         return varInit(value, upgradeValue);
     }
 
+    public static String PrivateStaticInt(String varName, int value, int upgradeValue){ //Private static is for variables that are modifiable during play
+        String initPhrase = "    private static final int " + varName + " = " + value + ";\n" +
+                "    private static final int UPGRADE_" + varName + "= " + upgradeValue + ";\n";
+        return initPhrase;
+        //use this and replace with all "private static final int" if you want cleaner code, if not just ignore
+    }
+
+    public static String PrivateInt(String varName, int value, int upgradeValue){ //without static is for variables that are not modifiable during play
+        String initPhrase = "    private final int " + varName + " = " + value + ";\n" +
+                "    private final int UPGRADE_" + varName + "= " + upgradeValue + ";\n";
+        return initPhrase;
+        //use this and replace with all "private final int" if you want cleaner code, if not just ignore
+    }
+
     public static String Variable(String matcher, int value, int upgradeValue, String targetLocation)
     {
         String variable = "";
@@ -172,12 +181,10 @@ public class ContentAdd
         {
             //region Damage
             case damage:
-                variable = "    private static final int " + dmg + " = " + value + ";\n" +
-                        "    private static final int UPGRADE_" + dmg + "= " + upgradeValue + ";\n";
+                variable = PrivateStaticInt(dmg,value,upgradeValue);
                 break;
             case modifyDmg:
-                variable = "    private int " + dmgModify + " = " + value + ";\n" +
-                        "    private final int UPGRADE_" + dmgModify + "= " + upgradeValue + ";\n";
+                variable = PrivateInt(dmgModify,value,upgradeValue);
                 break;
             case DPE:
                 variable = "    private static final int " + dmgPerEnergy + " = " + value + ";\n" +
@@ -919,6 +926,13 @@ public class ContentAdd
         return Upgrade(action, where);
     }
 
+    public static String UpgradeValue(String action){
+        String phrase = "            " + action + "=UPGRADE_" + action + ";\n";
+        return phrase;
+        //use this and replace with all phrases like for example
+        // " + energized + " = UPGRADE_" + energized + "
+        //if you want cleaner code, else just ignore
+    }
     public static String Upgrade(String matcher, String where)
     {
         String Upgrade = "";
@@ -930,7 +944,7 @@ public class ContentAdd
                 break;
 
             case modifyDmg:
-                Upgrade = "            " + dmgModify + "=UPGRADE_" + dmgModify + ";\n";
+                Upgrade = UpgradeValue(dmgModify);
                 break;
 
             case DPE:
