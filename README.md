@@ -1,6 +1,6 @@
 # StS-TheCreator
 
-An UI for the StS-modding API allowing users to create cards without programming experience.
+A UI for the StS-modding API allowing users to create cards without programming experience.
 
 Happy modding!
 
